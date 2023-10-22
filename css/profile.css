@@ -1,0 +1,142 @@
+/* Get template font */
+@import url("https://fonts.googleapis.com/css?family=Muli:300,400,600,700,800,900");
+
+p, li, input, button {
+    font-family: "Muli", sans-serif;
+    color: #666;
+    font-size: 14px;
+    font-weight: 400;
+}
+  
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Muli", sans-serif;
+    font-weight: 600;
+    color: #333;
+}
+  
+p {
+    color: #666;
+}
+  
+h1 {
+    font-size: 35px;
+}
+  
+h2 {
+    font-size: 25px;
+}
+  
+h3 {
+    font-size: 20px;
+}
+  
+h4 {
+    font-size: 18px;
+}
+  
+p {
+    color: #888;
+}
+
+label {
+    font-size: 14px;
+    letter-spacing: 0;
+    color: #848484;
+}
+
+.btn {
+    font-size: 15px;
+    letter-spacing: 1px;
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 4px;
+}
+
+.btn:active,
+.btn:focus {
+  color: #ddd;
+  box-shadow: none;
+}
+
+.btn.active:focus,
+.btn:active:focus,
+.btn:focus {
+  outline: 0;
+}
+
+.btn-transparent {
+    background: transparent;
+    color: #5672f9;
+    border: 1px solid #5672f9;
+}
+
+.btn-transparent:hover {
+    background: #082de1;
+    color: #fff;
+}
+
+.btn-secondary {
+    background: #fff;
+    color: #000;
+    border-color: #fff;
+}
+  
+.btn-secondary:hover {
+    background: grey;
+    color: #fff;
+    border-color: #fff;
+}
+
+.user-profile {
+    padding-top: 50px;
+}
+
+.widget {
+    background: #fff;
+    box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.1);
+    padding: 25px 30px 30px;
+    margin-bottom: 30px;
+    border-radius: 2px;
+}
+
+.widget .widget-header {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #dedede;
+}
+
+.widget.user {
+    padding-top: 50px;
+}
+
+.widget.user .image img {
+    width: 157px;
+    height: 157px;
+    border-radius: 100%;
+    border: 7px solid #dedede;
+}
+
+.widget.user h5 {
+    font-size: 20px;
+    margin-top: 23px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.widget .welcome-message h2 {
+    font-size: 30px;
+    line-height: 54px;
+    letter-spacing: 0.05em;
+}
+
+.widget.personal-info .form-group, .widget.change-password .form-group {
+    margin-bottom: 25px;
+}
+
+.widget.change-password button {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}

@@ -1,0 +1,165 @@
+/* Get template font */
+@import url("https://fonts.googleapis.com/css?family=Muli:300,400,600,700,800,900");
+
+body {
+    line-height: 1.5;
+    font-family: "Muli", sans-serif;
+}
+
+a {
+    transition: all 0.3s ease-in 0s;
+    color: #000;
+    text-decoration: none;
+    color: #5672f9;
+}
+
+a:focus,
+a:hover {
+  text-decoration: none;
+  outline: 0;
+  color: #5672f9;
+}
+
+li,
+button {
+    font-family: "Muli", sans-serif;
+    color: #666;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.navigation {
+    padding: 20px 0;
+}
+
+.navigation .navbar-nav {
+    text-align: center;
+}
+
+.main-nav .nav-item .nav-link {
+    font-size: 16px;
+    line-height: 43px;
+    padding: 0 20px;
+}
+
+.main-nav .nav-item .nav-link span {
+    margin-left: 4px;
+}
+
+.main-nav .nav-item .nav-link.dropdown-toggle {
+    padding-right: 10px;
+}
+
+.main-nav .nav-item .dropdown-toggle::after {
+    border: none;
+}
+
+.main-nav .nav-item.active .nav-link {
+    color: #5672f9;
+}
+
+.dropdown-menu {
+    padding: 0;
+    border-radius: 0;
+}
+
+.dropdown-menu li:first-child {
+    margin-top: 12px;
+}
+
+.dropdown-menu li:last-child {
+    margin-bottom: 12px;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+    background: #5672f9;
+}
+
+.dropdown-item {
+    font-size: 14px;
+    padding: 10px 60px 10px 25px;
+}
+
+@media (max-width: 992px) {
+    .dropdown-item {
+        padding: 10px 25px 10px 25px;
+        text-align: center;
+    }
+}
+
+.nav-item.dropdown {
+    position: relative;
+}
+
+.nav-item .nav-link.dropdown-toggle {
+    padding-right: 10px;
+}
+
+.main-nav .nav-item .dropdown-toggle::after {
+    border: none;
+}
+
+@media (min-width: 992px) {
+    .dropdown-slide {
+        position: static;
+    }
+
+    .dropdown-slide .open>a,
+    .dropdown-slide .open>a:focus,
+    .dropdown-slide .open>a:hover {
+        background: transparent;
+    }
+
+    .dropdown-slide.full-width .dropdown-menu {
+        left: 0 !important;
+        right: 0 !important;
+    }
+
+    .dropdown-slide .dropdown-menu {
+        margin-top: 0;
+        border-radius: 0;
+        opacity: 1;
+        visibility: visible;
+        position: absolute;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        transition: 0.3s all;
+        position: absolute;
+        display: block;
+        visibility: hidden;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: visibility 0.2s, opacity 0.2s, transform 500ms cubic-bezier(0.43, 0.26, 0.11, 0.99);
+    }
+}
+
+@media (min-width: 992px) and (max-width: 480px) {
+    .dropdown-slide .dropdown-menu {
+        transform: none;
+    }
+}
+
+@media (min-width: 992px) {
+    .dropdown:hover>.dropdown-menu {
+        display: none;
+        opacity: 1;
+        display: block;
+        transform: translate(0px, 0px);
+        opacity: 1;
+        visibility: visible;
+        color: #777;
+        transform: translateY(0px);
+    }
+}
+
+/* Create listing button */
+.create-button {
+    background: #28a745;
+    color: #fff;
+    padding: 8px 20px !important;
+    display: inline-block;
+}
+
+.create-button:hover {
+    color: #fff;
+}
