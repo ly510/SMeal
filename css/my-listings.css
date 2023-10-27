@@ -1,0 +1,46 @@
+  .search-bar,
+  .dropdown-menu,
+  .search-btn {
+    height: 40px;
+    padding: 0 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+  }
+
+  .search-bar {
+    width: 500px;
+    margin-left: 30px;
+    margin-bottom: 10px;
+  }
+
+  #createListing-btn {
+    margin-left: 30px;
+    margin-bottom: 50px;
+  }
+
+  .search-btn {
+    width: 80px;
+  }
+  
+  .createListing {
+    height: 40px;
+    padding: 0 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .listing-container {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-left: 30px;
+    margin-right: 30px;
+  }
+
+  .listing-description, .listing-restaurant {
+    color: grey;
+    margin-bottom: 2px;
+  }
