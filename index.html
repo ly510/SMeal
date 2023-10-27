@@ -12,153 +12,193 @@
 
     <title>Welcome to SMeal</title>
     <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/navbar.css">
 </head>
+<body class="body-wrapper">
+    <!-- Nav Bar -->
+	<header>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<nav class="navbar navbar-expand-lg navbar-light navigation">
+						<a class="navbar-brand" href="index.html">
+							<img src="img/logo-black.png" alt="" style="max-height: 60px;">
+						</a>
+						<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+							aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+							<span class="navbar-toggler-icon"></span>
+						</button>
+						<div class="collapse navbar-collapse" id="navbarSupportedContent">
+							<ul class="navbar-nav ms-auto main-nav">
+								<li class="nav-item">
+									<a class="nav-link" href="#" id="login">Login</a>
+								</li>
+                                <li class="nav-item">
+									<a class="nav-link" href="#" id="signup">Sign Up</a>
+								</li>
+                                <li class="nav-item">
+									<a class="nav-link" href="#about-href" id="about">About</a>
+								</li>
+                            </ul>
+						</div>
+					</nav>					
+				</div>
+			</div>
+		</div>
+	</header>
 
-<body>
-    <div class="nav-bar">
-        <div class="nav-bar-left">
-            <a href="index.html"><img src="img/logo-white.png" alt="logo" class="logo"></a>
-        </div>
-        <div class="nav-bar-right">
-            <a href="#" class="nav-bar-item" id="login">Login</a>
-            <a href="#" class="nav-bar-item" id="signup">Sign Up</a>
-            <a href="about.html" class="nav-bar-item" id="about">About Us</a>
-        </div>
-    </div>
-
-    <!-- <div class="content">
-      <img src="img/food1.png" alt="food" class="food-image">
-    </div> -->
-    
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-6">
-          <div id="carouselExampleControls" class="carousel slide mx-auto" data-bs-ride="carousel">
-            <div class="carousel-inner">
-              <!-- Set slide 1 of carousel as active -->
-              <div class="carousel-item active">
-                <img src="img/food2.jpg" class="d-block w-80" alt="food1">
-              </div>
-              <!-- Add other images as other carousel slides -->
-              <div class="carousel-item">
-                <img src="img/food1.jpg" class="d-block w-80" alt="food2">
-              </div>
-              <div class="carousel-item">
-                <img src="img/food3.jpeg" class="d-block w-80" alt="food3">
+    <section id="landingPage" class="bsb-hero-2 bsb-tpl-bg-blue py-5 py-xl-8 py-xxl-10">
+        <div class="container overflow-hidden">
+          <div class="row gy-3 gy-lg-0 align-items-lg-center justify-content-lg-between">
+            <div class="col-12 col-lg-6 order-1 order-lg-0">
+              <h1 class="display-3 fw-bolder mb-3">A <mark class="bsb-tpl-highlight"><span class="bsb-tpl-font-hw display-2 text-accent fw-normal">better way</span><br></mark> to never miss a meal again.</h1>
+              <p class="fs-4 mb-5">Our campus, your deliveries - join SMU's exclusive Intra-School Delivery Platform</p>
+              <div class="d-grid gap-2 d-sm-flex">
+                <button type="button" class="btn btn-primary bsb-btn-3xl rounded-pill" id="opensignupModal">Create Account</button>
+                <button type="button" class="btn btn-outline-primary bsb-btn-3xl rounded-pill" id="openLoginModal">Log In</button>
               </div>
             </div>
-            <!-- Add carousel control buttons -->
-            <button class="carousel-control-prev" type="button" 
-                data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" 
-                data-bs-target="#carouselExampleControls" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
+            <div class="col-12 col-lg-5 text-center">
+              <img class="img-fluid" loading="lazy" src="img/food3-2.jpeg" alt="" style="-webkit-mask-image: url(img/blob.svg); mask-image: url(img/blob.svg); width: 100%;">
+            </div>
           </div>
         </div>
-        <div class="col-md-6 d-flex align-items-center justify-content-center">
-          <div class="d-flex flex-column">
-            <h1 class="header-text">Never miss a <br> meal again!</h1>
-            <h6 class="description-text">with our food delivery platform <br>
-            specially designed for SMU</h6>
-            <input type="submit" class="cta-btn" value="Take me to goodness!" id="opensignupModal" data-bs-dismiss="modal">
-          </div>
-        </div>
-        </div>
-        </div>
-        
-    </div>
+      </section>
+</body>
+<br>
+<br>
+  <!-- About the platform -->
+  <main id="about">
 
-    <!-- Login Modal -->
-    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
+    <!-- Section - Services -->
+    <!-- Service 3 - Bootstrap Brain Component -->
+    <section id="scrollspyServices" class="py-5 py-xl-8 bsb-section-py-xxl-1">
+      <div class="container mb-5 mb-md-6 mb-xl-10">
+        <div class="row justify-content-md-center">
+          <div class="col-12 col-md-10 col-lg-9 col-xl-8 col-xxl-7 text-center">
+            <h2 class="display-5 fw-bolder mb-4">Specially designed for SM-You <br>with these specific benefits <br>in mind.</h2>
+          </div>
+        </div>
+      </div>
+
+      <div class="container overflow-hidden">
+        <div class="row gy-5 gx-md-4 gy-lg-0 gx-xxl-5 justify-content-center">
+          <div class="col-11 col-sm-6 col-lg-3">
+
+            <h4 class="mb-3">Affordability</h4>
+            <p class="mb-3 text-secondary">Enjoy cost-effective deliveries right on campus and bid farewell to platform and commission fees. <br><br> 
+                                            We understand you're on a budget, so why not switch to an affordable, everyday alternative right here?</p>
+          </div>
+          <div class="col-11 col-sm-6 col-lg-3">
+
+            <h4 class="mb-3">Convenience</h4>
+            <p class="mb-3 text-secondary">Experience ultimate convenience with on-campus deliveries. Your needs, your schedule, our service. <br><br>
+                                            No more having to travel to collect your order. We'll bring it right to you at your classrooms or study areas!</p>
+          </div>
+          <div class="col-11 col-sm-6 col-lg-3">
+    
+            <h4 class="mb-3">Diverse Options</h4>
+            <p class="mb-3 text-secondary">Explore diverse food options with SMeal, and choose options from restaurants near you!. <br><br>
+                                            Don't settle for less when you're in a rush! When a classroom door closes, the SMeal window opens.  </p>
+          </div>
+          <div class="col-11 col-sm-6 col-lg-3">
+
+            <h4 class="mb-3">Rewards System</h4>
+            <p class="mb-3 text-secondary" id="about-href">Unlock rewards with points earned from every order you've helped fulfill. Because hey, <br><br>
+                                            Helping your peers pays off. You get to enjoy exclusive perks and discounts with the points earned.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+<!-- Login Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel"
+aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+    <div class="modal-header text-center">
+        <img src="img/logo-black.png" width="70px" class="modal-title"/>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <form action="#">
+            <h4 class="modal-title text-center" id="signupModalLabel">Login Now!</h4>
+            <fieldset class="p-4">
+                <label for="l_email" class="form-label">SMU Email Address</label>
+                <input id="l_email" class="form-control mb-3" type="text" placeholder="abc@xxx.smu.edu.sg / abc@smu.edu.sg" required>
+
+                <label for="l_pwd" class="form-label">Password</label>
+                <input id="l_pwd" class="form-control mb-3" type="password" placeholder="Password" required>
+
+                <button type="submit" class="btn btn-primary font-weight-bold mt-3">Login</button>
+                <p class="text-secondary text-center mt-4">Don't have an account? <a class="text-primary text-decoration-none" type="button" id="opensignupModal" data-bs-dismiss="modal">Sign Up</a></p>  
+            </fieldset>
+        </form>
+    </div>
+    </div>
+</div>
+</div>
+
+<!-- Register Modal -->
+<div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="signupModalLabel"
+aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
         <div class="modal-header text-center">
             <img src="img/logo-black.png" width="70px" class="modal-title"/>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
             <form action="#">
-                <h4 class="modal-title text-center" id="signupModalLabel">Login Now!</h4>
+                <h4 class="modal-title text-center" id="signupModalLabel">Sign Up Now!</h4>
                 <fieldset class="p-4">
-                    <label for="l_email" class="form-label">SMU Email Address</label>
-                    <input id="l_email" class="form-control mb-3" type="text" placeholder="abc@xxx.smu.edu.sg / abc@smu.edu.sg" required>
+                    <label for="r_email" class="form-label">SMU Email Address</label>
+                    <input id="r_email" class="form-control mb-3" type="email" placeholder="abc@xxx.smu.edu.sg / abc@smu.edu.sg" required>
 
-                    <label for="l_pwd" class="form-label">Password</label>
-                    <input id="l_pwd" class="form-control mb-3" type="password" placeholder="Password" required>
+                    <label for="r_pwd" class="form-label">Password</label>
+                    <input id="r_pwd" class="form-control mb-3" type="password" placeholder="Password" required>
 
-                    <button type="submit" class="btn btn-primary font-weight-bold mt-3">Login</button>
-                    <p class="text-secondary text-center mt-4">Don't have an account? <a class="text-primary text-decoration-none" type="button" id="opensignupModal" data-bs-dismiss="modal">Sign Up</a></p>  
+                    <label for="r_c_pwd" class="form-label">Confirm Password</label>
+                    <input id="r_c_pwd" class="form-control mb-3" type="password" placeholder="Password" required>
+
+                    <button type="submit" class="btn btn-primary font-weight-bold mt-3">Sign Up</button>
+                    <p class="text-secondary text-center mt-4">Already have an account? <a class="text-primary text-decoration-none" type="button" id="openLoginModal" data-bs-dismiss="modal">Login</a></p>  
                 </fieldset>
             </form>
         </div>
-        </div>
     </div>
-    </div>
+</div>
+</div>
 
-    <!-- Register Modal -->
-    <div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="signupModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header text-center">
-                <img src="img/logo-black.png" width="70px" class="modal-title"/>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="#">
-                    <h4 class="modal-title text-center" id="signupModalLabel">Sign Up Now!</h4>
-                    <fieldset class="p-4">
-                        <label for="r_email" class="form-label">SMU Email Address</label>
-                        <input id="r_email" class="form-control mb-3" type="email" placeholder="abc@xxx.smu.edu.sg / abc@smu.edu.sg" required>
+<!-- Bundled Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" 
+integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" 
+crossorigin="anonymous"></script>
 
-                        <label for="r_pwd" class="form-label">Password</label>
-                        <input id="r_pwd" class="form-control mb-3" type="password" placeholder="Password" required>
+<!-- login and sign up modal when onclick-->
+<script>
+document.getElementById('login').addEventListener('click', function () {
+    var myModal = new bootstrap.Modal(document.getElementById('loginModal'));
+    myModal.show();
+});
 
-                        <label for="r_c_pwd" class="form-label">Confirm Password</label>
-                        <input id="r_c_pwd" class="form-control mb-3" type="password" placeholder="Password" required>
+document.getElementById('signup').addEventListener('click', function () {
+    var myModal = new bootstrap.Modal(document.getElementById('signupModal'));
+    myModal.show();
+});
 
-                        <button type="submit" class="btn btn-primary font-weight-bold mt-3">Sign Up</button>
-                        <p class="text-secondary text-center mt-4">Already have an account? <a class="text-primary text-decoration-none" type="button" id="openLoginModal" data-bs-dismiss="modal">Login</a></p>  
-                    </fieldset>
-                </form>
-            </div>
-        </div>
-    </div>
-    </div>
-
-    <!-- Bundled Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" 
-    integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" 
-    crossorigin="anonymous"></script>
-
-    <!-- login and sign up modal when onclick-->
-    <script>
-    document.getElementById('login').addEventListener('click', function () {
-        var myModal = new bootstrap.Modal(document.getElementById('loginModal'));
-        myModal.show();
-    });
-
-    document.getElementById('signup').addEventListener('click', function () {
-        var myModal = new bootstrap.Modal(document.getElementById('signupModal'));
-        myModal.show();
-    });
-
-    document.getElementById('opensignupModal').addEventListener('click', function () {    
-        var signupModal = new bootstrap.Modal(document.getElementById('signupModal'));
-        signupModal.show();
-    });
-    document.getElementById('openLoginModal').addEventListener('click', function () {    
-        var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
-        loginModal.show();
-    });
-    </script>
+document.getElementById('opensignupModal').addEventListener('click', function () {    
+    var signupModal = new bootstrap.Modal(document.getElementById('signupModal'));
+    signupModal.show();
+});
+document.getElementById('openLoginModal').addEventListener('click', function () {    
+    var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+    loginModal.show();
+});
+</script>
 
 </body>
 
 </html>
+
+
