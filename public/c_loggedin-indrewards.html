@@ -1,0 +1,195 @@
+<!--
+	Template: Themefisher Classified Marketplace Template v1.0 (https://themefisher.com/products/classimax-bootstrap)
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<!-- ** Basic Page Needs ** -->
+	<meta charset="utf-8">
+	<title>Edit Profile</title>
+
+	<!-- ** Mobile Specific Metas ** -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+
+	<!-- Page icon -->
+	<link href="img/logo-white.png" rel="shortcut icon">
+
+	<!-- Stylesheets -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+
+	<link href="css/navbar.css" rel="stylesheet">
+	<link href="css/profile.css" rel="stylesheet">
+
+</head>
+
+<body class="body-wrapper">
+	<!-- Nav Bar -->
+	<header>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<nav class="navbar navbar-expand-lg navbar-light navigation">
+						<a class="navbar-brand" href="home.html">
+							<img src="img/logo-black.png" alt="" style="max-height: 60px;">
+						</a>
+						<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+							aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+							<span class="navbar-toggler-icon"></span>
+						</button>
+						<div class="collapse navbar-collapse" id="navbarSupportedContent">
+							<ul class="navbar-nav ms-auto main-nav">
+								<li class="nav-item">
+									<a class="nav-link" href="home.html">Home</a>
+								</li>
+								<li class="nav-item dropdown dropdown-slide">
+									<a class="nav-link dropdown-toggle" href="#!" role="button" data-bs-toggle="dropdown">
+										Listings <span><i class="fa fa-angle-down"></i></span>
+									</a>
+					
+									<!-- Dropdown list -->
+									<ul class="dropdown-menu">
+										<li><a class="dropdown-item" href="food-listings.html">Food Listings</a></li>
+										<li><a class="dropdown-item" href="my-listings.html">My Listings</a></li>
+										<li><a class="dropdown-item" href="accepted-listings.html">Accepted Listings</a></li>
+									</ul>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="rewards.html">Rewards</a>
+								</li>
+							</ul>
+							<ul class="navbar-nav ms-auto mt-2">
+								<li class="nav-item">
+									<a class="nav-link text-white create-button" href="create-listing.html"><i class="fa fa-plus-circle"></i> Create Listing</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link profile-button" href="user-profile.html">
+										<span class="fa-stack">
+											<i class="fa-regular fa-circle fa-stack-2x"></i>
+											<i class="fa-solid fa-user fa-stack-1x"></i>
+										</span>
+										Samanta Doe
+									</a>
+								</li>
+							</ul>
+						</div>
+					</nav>					
+				</div>
+			</div>
+		</div>
+	</header>
+	
+
+    <!-- Return To Rewards Button -->
+    <a href="c_loggedin-rewards.html">
+        <button class="btn btn-transparent" style="margin-left: 10%; background-color: rgb(77, 77, 158); color: white">Return To Rewards</button>
+    </a>
+
+    <!-- Card Info Section -->
+    <div id="card-info">
+       
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+    <!-- Axios -->
+    <script src='https://unpkg.com/axios/dist/axios.min.js'></script>
+    <!-- Vue 3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+   
+<!-- EDITTED & CLEANED-->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    
+		const cardInfo = {
+            'smu-shop': {
+                title: '$5 Smu Shop Voucher',
+                points: 500,
+                imageUrl: 'https://t.ly/CJrf3',
+                description: 'The SMU Shop is our very own concept store stocking a wide range of exclusive university merchandise, memorabilia and limited edition items celebrating the SMU Brand. In line with our sustainability framework, we are moving towards responsible sourcing and production with the inclusion of more eco-friendly products. We also embrace the enterprising spirit of our SMU students by diversifying our offerings to include products from their business ventures. More than just a shop, The SMU Shop is the representation of SMU\'s identity, spirit, and pride.',
+                progress: 40,
+                userPoints: 200,
+            },
+            'popular-voucher': {
+                title: '$10 Popular Voucher',
+                points: 1000,
+                imageUrl: 'https://shorturl.at/gDI23',
+                description: 'POPULAR Online is a one-stop station that provides a comprehensive range of books, educational peripherals, stationery, gadgets & IT products, and more.',
+                progress: 20,
+                userPoints: 200,
+            },
+            'gong-cha': {
+                title: '10% Gongcha Voucher',
+                points: 500,
+                imageUrl: 'https://t.ly/R4Cg7',
+                description: 'The essence of Gong Cha, or Tribute Tea, originated from the provision of the most premium and refined teas to the Emperor of China. It represents the highest quality and expectations of beverages. Established in Taiwan in 2006, Gong Cha has become deeply appreciated by its customers, gaining global renown by word of mouth and a uniquely customized service.',
+                progress: 40,
+                userPoints: 200,
+            },
+        };
+	
+        var cardInfoElement = document.getElementById('card-info');
+
+        // Parse the URL query parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        var selectedCard = urlParams.get('card');
+
+        function generateCardHTML(selectedCard) {
+            //Generating the card HTML
+			const card = cardInfo[selectedCard];
+					if (card) {
+                return `
+                    <div class="container-fluid">
+                        <h2 style="text-align: center">${card.title}</h2>
+                        <h5 style="text-align: center; margin-top: 10px;">${card.points} points</h5>
+                
+                        <div class="row">
+                            <div class="col-xl-4">
+                                <div class="card-container mx-auto" style="width: 18rem;">
+                                    <img class="card-img-top" src="${card.imageUrl}" alt="Title" style="max-width: 100%; max-height: 200px;">
+                                    <div class="card-body">
+                                        <p class="card-text" style="text-align: center; font-style: italic; margin-top: 10px;">${card.title}</p>
+                                    </div>
+                                </div>
+                                <h3 class="mt-5 mx-5" style="text-decoration: underline;">Information </h3>
+                            </div>
+                    
+                            <div class="col-xl-8">
+                                <span style="display: flex; justify-content: space-between; margin-top: 50px;">
+                                    <p>Progress</p>
+                                    <p>Your points: ${card.userPoints}</p>
+                                </span>
+                                <div style="width: 100%; height: 20px; background-color: white; border: 1px solid #ccc; position: relative;">
+                                    <div style="width: ${card.progress}%; height: 100%; background-color: #4CAF50; color: white; position: absolute; top: 0; left: 0; display: flex; align-items: center; justify-content: center;">${card.progress}%</div>
+                                </div>
+                                <button class="btn btn-transparent mt-5" style="background-color: green; color: white">Redeem Reward</button>
+                            </div>
+                        </div>
+                        <div class="fade-in">
+                            <p class="mx-5" style="text-align: justify; max-width: 2000px;">
+                                ${card.description}
+                            </p>
+                        </div>
+                    </div>
+                `;
+                } else {
+                    return '<p>Card not found</p>';
+                }
+            }
+        
+
+        // Call the function to generate the card HTML based on the user's selection
+        if (selectedCard && cardInfo[selectedCard]) {
+            cardInfoElement.innerHTML = generateCardHTML(selectedCard);
+        } else {
+            cardInfoElement.innerHTML = '<p>Card not found</p>';
+        }
+    });
+</script>
