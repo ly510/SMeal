@@ -64,8 +64,7 @@
         </div>
       </section>
 </body>
-<br>
-<br>
+
   <!-- About the platform -->
   <main id="about">
 
@@ -107,6 +106,7 @@
                                             Helping your peers pays off. You get to enjoy exclusive perks and discounts with the points earned.</p>
           </div>
         </div>
+        <button class="scroll-top" id="scroll-top">↑</button>
       </div>
     </section>
 
@@ -198,6 +198,18 @@ openLoginModel.forEach(function(element) {
         var signupModal = new bootstrap.Modal(document.getElementById('signupModal'));
         signupModal.hide();  
     });
+});
+
+var scrollUpButton = document.getElementById('scroll-top');
+scrollUpButton.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+window.addEventListener('scroll', function () {
+    if (window.pageYOffset > 0) {
+      scrollUpButton.style.display = 'block';
+    } else {
+      scrollUpButton.style.display = 'none';
+    }
 });
 </script>
 

@@ -1,4 +1,4 @@
-  #header-title {
+#header-title {
     margin-bottom: 10px;
   }
   
@@ -16,27 +16,12 @@
     margin-left: 30px;
   }
 
-  #createListing-btn {
-    margin-left: 30px;
-    margin-bottom: 50px;
-  }
-
   .search-btn {
     width: 80px;
   }
 
   .form-select {
     width: 200px;
-  }
-  
-  .createListing {
-    height: 40px;
-    padding: 0 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #007bff;
-    color: #fff;
-    cursor: pointer;
   }
 
   .listing-container {
