@@ -1,7 +1,7 @@
 "use strict";
 
 class Listing{
-constructor(listingID, userID, title, description, location, restaurantName, lat, long, paymentType, datePosted, fulfillerId, status){
+constructor(listingID, userID, title, description, location, restaurantName, lat, lng, paymentType, datePosted, fulfillerId, status){
     this.listingID = listingID;
     this.userID = userID;
     this.title = title;
@@ -9,7 +9,7 @@ constructor(listingID, userID, title, description, location, restaurantName, lat
     this.location = location;
     this.restaurantName = restaurantName;
     this.lat = lat;
-    this.long = long;
+    this.lng = lng;
     this.paymentType = paymentType;
     this.datePosted = datePosted;
     this.fulfillerId = fulfillerId;
@@ -44,8 +44,8 @@ getLat(){
     return this.lat;
 }
 
-getLong(){
-    return this.long;
+getLng(){
+    return this.lng;
 }
 
 getPaymentType(){
@@ -93,8 +93,8 @@ setLat(lat){
     this.lat = lat;
 }
 
-setLong(long){
-    this.long = long;
+setLng(lng){
+    this.lng = lng;
 }
 
 setPaymentType(paymentType){
