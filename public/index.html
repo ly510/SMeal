@@ -11,7 +11,7 @@
     crossorigin="anonymous">
 
     <title>Welcome to SMeal</title>
-    <link rel="stylesheet" href="css/index.css">
+    <!-- <link rel="stylesheet" href="css/index.css"> -->
     <link rel="stylesheet" href="css/navbar.css">
 </head>
 <body class="body-wrapper">
@@ -31,15 +31,15 @@
 						<div class="collapse navbar-collapse" id="navbarSupportedContent">
 							<ul class="navbar-nav ms-auto main-nav">
 								<li class="nav-item">
-									<a class="nav-link" href="#" id="login">Login</a>
+									<a class="nav-link" href="#" name="openLoginModel">Login</a>
 								</li>
-                                <li class="nav-item">
-									<a class="nav-link" href="#" id="signup">Sign Up</a>
+                <li class="nav-item">
+									<a class="nav-link" href="#" name="openSignupModel">Sign Up</a>
 								</li>
-                                <li class="nav-item">
+                <li class="nav-item">
 									<a class="nav-link" href="#about-href" id="about">About</a>
 								</li>
-                            </ul>
+              </ul>
 						</div>
 					</nav>					
 				</div>
@@ -54,8 +54,8 @@
               <h1 class="display-3 fw-bolder mb-3">A <mark class="bsb-tpl-highlight"><span class="bsb-tpl-font-hw display-2 text-accent fw-normal">better way</span><br></mark> to never miss a meal again.</h1>
               <p class="fs-4 mb-5">Our campus, your deliveries - join SMU's exclusive Intra-School Delivery Platform</p>
               <div class="d-grid gap-2 d-sm-flex">
-                <button type="button" class="btn btn-primary bsb-btn-3xl rounded-pill" id="opensignupModal">Create Account</button>
-                <button type="button" class="btn btn-outline-primary bsb-btn-3xl rounded-pill" id="openLoginModal">Log In</button>
+                <button type="button" class="btn btn-primary bsb-btn-3xl rounded-pill" name="openSignupModel">Create Account</button>
+                <button type="button" class="btn btn-outline-primary bsb-btn-3xl rounded-pill" name="openLoginModel">Log In</button>
               </div>
             </div>
             <div class="col-12 col-lg-5 text-center">
@@ -131,7 +131,9 @@ aria-hidden="true">
                 <input id="l_pwd" class="form-control mb-3" type="password" placeholder="Password" required>
 
                 <button type="submit" class="btn btn-primary font-weight-bold mt-3">Login</button>
-                <p class="text-secondary text-center mt-4">Don't have an account? <a class="text-primary text-decoration-none" type="button" id="opensignupModal" data-bs-dismiss="modal">Sign Up</a></p>  
+                <p class="text-secondary text-center mt-4">Don't have an account? 
+                  <a class="text-primary text-decoration-none" name="openSignupModel" data-bs-dismiss="modal" type="button">Sign Up</a>
+                </p>
             </fieldset>
         </form>
     </div>
@@ -162,7 +164,9 @@ aria-hidden="true">
                     <input id="r_c_pwd" class="form-control mb-3" type="password" placeholder="Password" required>
 
                     <button type="submit" class="btn btn-primary font-weight-bold mt-3">Sign Up</button>
-                    <p class="text-secondary text-center mt-4">Already have an account? <a class="text-primary text-decoration-none" type="button" id="openLoginModal" data-bs-dismiss="modal">Login</a></p>  
+                    <p class="text-secondary text-center mt-4">Already have an account? 
+                      <a class="text-primary text-decoration-none" name="openLoginModel" data-bs-dismiss="modal" type="button">Login</a>
+                    </p>
                 </fieldset>
             </form>
         </div>
@@ -177,24 +181,27 @@ crossorigin="anonymous"></script>
 
 <!-- login and sign up modal when onclick-->
 <script>
-document.getElementById('login').addEventListener('click', function () {
-    var myModal = new bootstrap.Modal(document.getElementById('loginModal'));
-    myModal.show();
+var openSignupModel = document.getElementsByName('openSignupModel');
+var openLoginModel = document.getElementsByName('openLoginModel');
+
+openSignupModel.forEach(function(element) {
+    element.addEventListener('click', function () {
+        var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+        loginModal.hide();
+        var signupModal = new bootstrap.Modal(document.getElementById('signupModal'));
+        signupModal.show();
+    });
 });
 
-document.getElementById('signup').addEventListener('click', function () {
-    var myModal = new bootstrap.Modal(document.getElementById('signupModal'));
-    myModal.show();
+openLoginModel.forEach(function(element) {
+    element.addEventListener('click', function () {
+        var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+        loginModal.show();  
+        var signupModal = new bootstrap.Modal(document.getElementById('signupModal'));
+        signupModal.hide();  
+    });
 });
 
-document.getElementById('opensignupModal').addEventListener('click', function () {    
-    var signupModal = new bootstrap.Modal(document.getElementById('signupModal'));
-    signupModal.show();
-});
-document.getElementById('openLoginModal').addEventListener('click', function () {    
-    var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
-    loginModal.show();
-});
 </script>
 
 </body>
