@@ -13,6 +13,9 @@
     <title>Welcome to SMeal</title>
     <link rel="stylesheet" href="css/navbar.css">
     <link rel="stylesheet" href="css/index.css">
+
+    <!-- Script js-->
+    <script src="./js/account.js"></script>
 </head>
 <body class="body-wrapper">
     <!-- Nav Bar -->
@@ -31,15 +34,15 @@
 						<div class="collapse navbar-collapse" id="navbarSupportedContent">
 							<ul class="navbar-nav ms-auto main-nav">
 								<li class="nav-item">
-									<a class="nav-link" href="#" name="openLoginModel">Login</a>
+									<a class="nav-link" type="button" name="openLoginModel">Login</a>
 								</li>
-                <li class="nav-item">
-									<a class="nav-link" href="#" name="openSignupModel">Sign Up</a>
+                				<li class="nav-item">
+									<a class="nav-link" type="button" name="openSignupModel">Sign Up</a>
 								</li>
-                <li class="nav-item">
+                				<li class="nav-item">
 									<a class="nav-link" href="#about-href" id="about">About</a>
 								</li>
-              </ul>
+              				</ul>
 						</div>
 					</nav>					
 				</div>
@@ -121,7 +124,7 @@ aria-hidden="true">
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body">
-        <form action="#">
+        <form id="signinForm">
             <h4 class="modal-title text-center" id="signupModalLabel">Login Now!</h4>
             <fieldset class="p-4">
                 <label for="l_email" class="form-label">SMU Email Address</label>
@@ -151,7 +154,9 @@ aria-hidden="true">
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <form action="#">
+            <form id="createAccountForm">
+				<div class="alert alert-danger d-none" id="errorMsg" role="alert">
+				</div>
                 <h4 class="modal-title text-center" id="signupModalLabel">Sign Up Now!</h4>
                 <fieldset class="p-4">
                     <label for="r_email" class="form-label">SMU Email Address</label>
@@ -163,7 +168,7 @@ aria-hidden="true">
                     <label for="r_c_pwd" class="form-label">Confirm Password</label>
                     <input id="r_c_pwd" class="form-control mb-3" type="password" placeholder="Password" required>
 
-                    <div class="d-flex justify-content-end"><button type="submit" class="btn btn-primary font-weight-bold mt-3">Sign Up</button></div>
+                    <div class="d-flex justify-content-end"><button id="signupButton" type="submit" class="btn btn-primary font-weight-bold mt-3">Sign Up</button></div>
                     <p class="text-secondary text-center mt-4">Already have an account? 
                       <a class="text-primary text-decoration-none" name="openLoginModel" data-bs-dismiss="modal" type="button">Login</a>
                     </p>
@@ -181,37 +186,25 @@ crossorigin="anonymous"></script>
 
 <!-- login and sign up modal when onclick-->
 <script>
-var openSignupModel = document.getElementsByName('openSignupModel');
-var openLoginModel = document.getElementsByName('openLoginModel');
+    initializeModals();
+</script>
 
-openSignupModel.forEach(function(element) {
-    element.addEventListener('click', function () {
-        var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
-        loginModal.hide();
-        var signupModal = new bootstrap.Modal(document.getElementById('signupModal'));
-        signupModal.show();
-    });
-});
-openLoginModel.forEach(function(element) {
-    element.addEventListener('click', function () {
-        var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
-        loginModal.show();  
-        var signupModal = new bootstrap.Modal(document.getElementById('signupModal'));
-        signupModal.hide();  
-    });
-});
+<!-- Create Account -->
+<script>
+    const signupForm = document.getElementById('createAccountForm');
+	const errorMsg = document.getElementById('errorMsg');
+	const signupButton = document.getElementById('signupButton');
 
-var scrollUpButton = document.getElementById('scroll-top');
-scrollUpButton.addEventListener('click', function () {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-});
-window.addEventListener('scroll', function () {
-    if (window.pageYOffset > 0) {
-      scrollUpButton.style.display = 'block';
-    } else {
-      scrollUpButton.style.display = 'none';
-    }
-});
+	signupButton.addEventListener('click', function (event) {
+		event.preventDefault()
+		var result = createAccount(); // Call createAccount function
+		if (result) {
+			const signupModal = document.getElementById('signupModal');
+			var closeModal = bootstrap.Modal.getInstance(signupModal);
+			closeModal.hide(); // Close modal
+			signupForm.reset(); // Reset form
+		}
+	})
 </script>
 
 </body>
