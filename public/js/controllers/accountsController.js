@@ -120,4 +120,4 @@ function deleteAccount(request, respond)
     });
 }
 
-module.exports = { authenticate, authenticateByDB, getAllAccounts, createAccount, updateAccountProfile, deleteAccount };
+module.exports = { authenticate, getAllAccounts, createAccount, updateAccountProfile, deleteAccount };
