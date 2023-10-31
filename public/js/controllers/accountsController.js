@@ -1,7 +1,11 @@
 "use strict";
 
+const req = require('express/lib/request');
 const Accounts = require('../models/Accounts');
 const AccountsDB = require('../models/AccountsDB');
+
+const fs = require('fs');
+const path = require('path');
 
 var accountsDB = new AccountsDB();
 
@@ -79,6 +83,22 @@ function getAllAccounts(request, respond){
     });
 }
 
+//This function get the current user's details.
+function getCurrentAccount(request, respond){
+    // var userId = request.session.userId;
+    var userId = 4; // test
+    
+    if (userId) {
+        accountsDB.getCurrentAccount(userId, function(error, result){
+            if(error) {
+                respond.json(error);
+            } else {
+                respond.json(result);
+            }
+        });
+    }
+}
+
 //This function creates a user
 function createAccount(request, respond) {
     var users = new Accounts(null, request.body.name, request.body.email, request.body.password, null, null);
@@ -94,17 +114,66 @@ function createAccount(request, respond) {
 }
 
 //This function updates the users details except email and password and userId
-function updateAccountProfile(request, respond){
-    var users = new Accounts(null, request.body.name, request.body.email, request.body.password, request.body.gender, request.body.birthday, request.body.email);
+function updateAccountProfile(request, respond) {
+    // var userId = request.session.userId;
+    var userId = 4; // test
+    const updateType = request.query.type;
 
-    accountsDB.updateAccountProfile(users, function(error, result)
-    {
-        if(error){
-            respond.json(error);
+    if (updateType == "profile") {
+        const imageBase64 = request.body.img; // Assuming request.body.img contains the base64 image data
+        if (imageBase64) {
+            const matches = imageBase64.match(/^data:image\/([A-Za-z-+\/]+);base64,(.+)$/);
+            if (matches && matches.length === 3) {
+                const imageType = matches[1];
+                const imageBuffer = Buffer.from(matches[2], 'base64');
+
+                // Set your desired file name
+                const fileName = 'profile-pic-' + userId; // Change 'custom_image_name' to your desired file name
+                const folderPath = path.resolve('public/img');
+                const imagePath = path.join(folderPath, `${fileName}.${imageType}`);
+
+                // Save the image
+                fs.writeFileSync(imagePath, imageBuffer, 'base64');
+                console.log('Image saved successfully!');
+
+                // Proceed with the database update
+                var newProfile = new Accounts(
+                    null,
+                    request.body.name,
+                    null,
+                    null,
+                    request.body.phoneNo,
+                    "/img/" + fileName + "." + imageType,
+                    null
+                );
+
+                // Simulated asynchronous function for database update
+                accountsDB.updateAccountProfile(userId, newProfile, function (error, result) {
+                    if (error) {
+                        respond.json(error);
+                    } else {
+                        respond.json(result);
+                    }
+                });
+            } else {
+                respond.json({ error: "Invalid image data" });
+            }
         } else {
-            respond.json(result);
+            respond.json({ error: "Image data not found in the request" });
         }
-    });
+    }
+    else if (updateType == "password") {
+        var newPass = new Accounts(null, null, null, request.body.password, null, null, null);
+
+        accountsDB.updateAccountPassword(userId, newPass, function(error, result)
+        {
+            if(error){
+                respond.json(error);
+            } else {
+                respond.json(result);
+            }
+        });
+    }
 }
 
 //This function is to delete user profile.
@@ -120,4 +189,4 @@ function deleteAccount(request, respond)
     });
 }
 
-module.exports = { authenticate, getAllAccounts, createAccount, updateAccountProfile, deleteAccount };
+module.exports = { authenticate, getAllAccounts, getCurrentAccount, createAccount, updateAccountProfile, deleteAccount };

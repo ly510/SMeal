@@ -28,177 +28,184 @@
 </head>
 
 <body class="body-wrapper">
-	<!-- Nav Bar -->
-	<header>
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
-					<nav class="navbar navbar-expand-lg navbar-light navigation">
-						<a class="navbar-brand" href="home.html">
-							<img src="img/logo-black.png" alt="" style="max-height: 60px;">
-						</a>
-						<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-							data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-							aria-expanded="false" aria-label="Toggle navigation">
-							<span class="navbar-toggler-icon"></span>
-						</button>
-						<div class="collapse navbar-collapse" id="navbarSupportedContent">
-							<ul class="navbar-nav ms-auto main-nav">
-								<li class="nav-item">
-									<a class="nav-link" href="home.html">Home</a>
-								</li>
-								<li class="nav-item dropdown dropdown-slide">
-									<a class="nav-link dropdown-toggle" href="#!" role="button"
-										data-bs-toggle="dropdown">
-										Listings <span><i class="fa fa-angle-down"></i></span>
-									</a>
+	<div id="app">
+		<!-- Nav Bar -->
+		<header>
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<nav class="navbar navbar-expand-lg navbar-light navigation">
+							<a class="navbar-brand" href="home.html">
+								<img src="img/logo-black.png" alt="" style="max-height: 60px;">
+							</a>
+							<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+								data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+								aria-expanded="false" aria-label="Toggle navigation">
+								<span class="navbar-toggler-icon"></span>
+							</button>
+							<div class="collapse navbar-collapse" id="navbarSupportedContent">
+								<ul class="navbar-nav ms-auto main-nav">
+									<li class="nav-item">
+										<a class="nav-link" href="home.html">Home</a>
+									</li>
+									<li class="nav-item dropdown dropdown-slide">
+										<a class="nav-link dropdown-toggle" href="#!" role="button"
+											data-bs-toggle="dropdown">
+											Listings <span><i class="fa fa-angle-down"></i></span>
+										</a>
 
-									<!-- Dropdown list -->
-									<ul class="dropdown-menu">
-										<li><a class="dropdown-item" href="food-listings.html">Food Listings</a></li>
-										<li><a class="dropdown-item" href="my-listings.html">My Listings</a></li>
-										<li><a class="dropdown-item" href="accepted-listings.html">Accepted Listings</a></li>
-									</ul>
-								</li>
-								<li class="nav-item">
-									<a class="nav-link" href="rewards.html">Rewards</a>
-								</li>
-							</ul>
-							<ul class="navbar-nav ms-auto mt-2">
-								<li class="nav-item">
-									<a class="nav-link text-white create-button" href="create-listing.html"><i
-											class="fa fa-plus-circle"></i> Create Listing</a>
-								</li>
-								<li class="nav-item">
-									<a class="nav-link profile-button" href="user-profile.html">
-										<span class="fa-stack">
-											<i class="fa-regular fa-circle fa-stack-2x"></i>
-											<i class="fa-solid fa-user fa-stack-1x"></i>
-										</span>
-										Samanta Doe
-									</a>
-								</li>
-							</ul>
-						</div>
-					</nav>
+										<!-- Dropdown list -->
+										<ul class="dropdown-menu">
+											<li><a class="dropdown-item" href="food-listings.html">Food Listings</a>
+											</li>
+											<li><a class="dropdown-item" href="my-listings.html">My Listings</a></li>
+											<li><a class="dropdown-item" href="accepted-listings.html">Accepted
+													Listings</a></li>
+										</ul>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="rewards.html">Rewards</a>
+									</li>
+								</ul>
+								<ul class="navbar-nav ms-auto mt-2">
+									<li class="nav-item">
+										<a class="nav-link text-white create-button" href="create-listing.html"><i
+												class="fa fa-plus-circle"></i> Create Listing</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link profile-button" href="user-profile.html">
+											<span class="fa-stack">
+												<i class="fa-regular fa-circle fa-stack-2x"></i>
+												<i class="fa-solid fa-user fa-stack-1x"></i>
+											</span>
+											Samanta Doe
+										</a>
+									</li>
+								</ul>
+							</div>
+						</nav>
+					</div>
 				</div>
 			</div>
-		</div>
-	</header>
-	
-	<!-- User Profile -->
-	<section class="user-profile section">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-4">
-					<div class="sidebar">
-						<!-- User Widget -->
-						<div class="widget user">
-							<!-- User Image -->
-							<div class="image d-flex justify-content-center">
-								<!-- to check if user has image else display the following -->
-								<span class="fa-stack fa-4x">
-									<i class="fa-regular fa-circle fa-stack-2x"></i>
-									<i class="fa-solid fa-user fa-stack-1x"></i>
-								</span>
-								<!-- <img src="images/user/user-thumb.jpg" alt="" class=""> -->
-							</div>
-							<!-- User Name -->
-							<h5 class="text-center">Samanta Doe</h5>
-						</div>
-						<!-- Dashboard Links -->
-						<div class="widget user-dashboard-menu text-center">
-							<h2>Total Points: 20</h2>
-							<a href="#" data-bs-toggle="modal" data-bs-target="#pointHistoryModal">View Points History</a>
+		</header>
 
-							<!-- Modal -->
-							<div class="modal fade" id="pointHistoryModal" tabindex="-1"
-								aria-labelledby="pointHistoryModalLabel" aria-hidden="true">
-								<div class="modal-dialog">
-									<div class="modal-content">
-										<div class="modal-header">
-											<h1 class="modal-title fs-5" id="pointHistoryModalLabel">Points History</h1>
-											<button type="button" class="btn-close" data-bs-dismiss="modal"
-												aria-label="Close"></button>
-										</div>
-										<div class="modal-body">
-											<table class="table table-bordered">
-												<thead>
-													<tr>
-														<th scope="col">Requestor</th>
-														<th scope="col">Date and Time</th>
-														<th scope="col">Points</th>
+		<!-- User Profile -->
+		<section class="user-profile section">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-4">
+						<div class="sidebar">
+							<!-- User Widget -->
+							<div class="widget user">
+								<!-- User Image -->
+								<div class="image d-flex justify-content-center">
+									<!-- to check if user has image else display the following -->
+									<img :src="img" class="profilePic" v-if="hasProfilePic">
+									<span class="fa-stack fa-4x" v-else="hasProfilePic">
+										<i class="fa-regular fa-circle fa-stack-2x"></i>
+										<i class="fa-solid fa-user fa-stack-1x"></i>
+									</span>
+								</div>
+								<!-- User Name -->
+								<h5 class="text-center">{{ name }}</h5>
+							</div>
+							<!-- Dashboard Links -->
+							<div class="widget user-dashboard-menu text-center">
+								<h2>Total Points: {{ points }}</h2>
+								<a href="#" data-bs-toggle="modal" data-bs-target="#pointHistoryModal"
+									v-if="hasHistory">View Points History</a>
+
+								<!-- Modal -->
+								<div class="modal fade" id="pointHistoryModal" tabindex="-1"
+									aria-labelledby="pointHistoryModalLabel" aria-hidden="true">
+									<div class="modal-dialog">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h1 class="modal-title fs-5" id="pointHistoryModalLabel">Points History
+												</h1>
+												<button type="button" class="btn-close" data-bs-dismiss="modal"
+													aria-label="Close"></button>
+											</div>
+											<div class="modal-body">
+												<table class="table table-bordered">
+													<thead>
+														<tr>
+															<th scope="col">Requestor</th>
+															<th scope="col">Date and Time</th>
+															<th scope="col">Points</th>
+														</tr>
+													</thead>
+													<tr v-for="entry in pointHistory">
+														<td>{{ entry.fulfiller }}</td>
+														<td>{{ entry.dateTime }}</td>
+														<td>{{ entry.points }}</td>
 													</tr>
-												</thead>
-												<tbody>
-													<tr>
-														<td>John Doe</td>
-														<td>25/09/2023 11:49AM</td>
-														<td>30</td>
-													</tr>
-													<tr>
-														<td>Ben</td>
-														<td>26/09/2023 08:13AM</td>
-														<td>10</td>
-													</tr>
-												</tbody>
-											</table>
-										</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-secondary"
-												data-bs-dismiss="modal">Close</button>
+												</table>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-secondary"
+													data-bs-dismiss="modal">Close</button>
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="col-lg-8">
-					<!-- User Profile Welcome Text -->
-					<div class="widget welcome-message d-flex justify-content-between align-items-center">
-						<h2 class="mb-0">My Profile</h2>
-						<a href="edit-profile.html" class="btn btn-transparent">Edit Profile</a>
-					</div>
-					<!-- User Personal Info -->
-					<div class="row">
-						<div class="col-lg-12 col-md-12">
-							<div class="widget personal-info">
-								<h3 class="widget-header user">Personal Information</h3>
-								<form action="#">
-									<!-- Email -->
-									<div class="form-group">
-										<label for="email">Email</label>
-										<input type="email" class="form-control" id="email" disabled>
-									</div>
-									<!-- Phone Number -->
-									<div class="form-group">
-										<label for="phone-no">Phone Number</label>
-										<input type="text" class="form-control" id="phone-no" disabled>
-									</div>
-								</form>
-							</div>
+					<div class="col-lg-8">
+						<!-- User Profile Welcome Text -->
+						<div class="widget welcome-message d-flex justify-content-between align-items-center">
+							<h2 class="mb-0">My Profile</h2>
+							<a href="edit-profile.html" class="btn btn-transparent">Edit Profile</a>
 						</div>
-						<hr>
-						<div class="col-lg-12 col-md-12">
-							<div class="widget rewards">
-								<h3 class="widget-header user">Rewards Redeemed</h3>
-								<!-- BS card: Start -->
-								<div class="card text-center" style="width: 18rem; padding: 10px 10px 0 10px;">
-									<img src="img/SMU-Shop.png" class="card-img-top" alt="The SMU Shop">
-									<div class="card-body">
-										<h5 class="card-title">The SMU Shop Voucher</h5>
-										<p class="card-text">20 Points</p>
-									</div>
+						<!-- User Personal Info -->
+						<div class="row">
+							<div class="col-lg-12 col-md-12">
+								<div class="widget personal-info">
+									<h3 class="widget-header user">Personal Information</h3>
+									<form action="#">
+										<!-- Email -->
+										<div class="form-group">
+											<label for="email">Email</label>
+											<input type="email" class="form-control" id="email" v-model="email"
+												disabled>
+										</div>
+										<!-- Phone Number -->
+										<div class="form-group">
+											<label for="phone-no">Phone Number</label>
+											<input type="text" class="form-control" id="phone-no" v-model="phoneNo"
+												disabled>
+										</div>
+									</form>
 								</div>
-								<!-- BS card: End -->
+							</div>
+							<hr>
+							<div class="col-lg-12 col-md-12">
+								<div class="widget rewards">
+									<h3 class="widget-header user">Rewards Redeemed</h3>
+									<div class="row" v-if="redeemed">
+										<div class="col-md-4" v-for="reward in rewards">
+											<!-- BS card: Start -->
+											<div class="card text-center" style="margin-bottom:20px">
+												<img :src="'img/' + reward.img + '.png'" class="card-img-top"
+													:alt=reward.img style="padding: 10px 10px 0 10px; ">
+												<div class="card-body">
+													<h5 class="card-title">{{ reward.name }}</h5>
+													<p class="card-text">{{ reward.pointsReq }} Points</p>
+												</div>
+											</div>
+											<!-- BS card: End -->
+										</div>
+									</div>
+									<h3 class="text-center" v-else="redeemed">No rewards found!</h3>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</section>
+		</section>
+	</div>
 
 	<!-- Scripts -->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
@@ -208,6 +215,15 @@
 	<script src='https://unpkg.com/axios/dist/axios.min.js'></script>
 	<!-- Vue 3 -->
 	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+	<script src="./js/app.js"></script>
+	<script src="./js/user-profile.js"></script>
+<!-- 
+	<script>
+		function load() {
+			var userId = sessionStorage.getItem("userId");
+		}
+	</script> -->
 
 </body>
 

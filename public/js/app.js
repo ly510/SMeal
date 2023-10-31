@@ -4,3 +4,11 @@ var listing_url = "/listing";
 var listing_array = [] //This creates an empty listing array
 var listingCount = 0;
 var addlisting_url = "/addListing";
+
+// For user profile
+var userProfile_url = "/user-profile";
+var userProfile_array = []
+
+// For edit profile
+var editProfile_url = "/edit-profile";
+var editProfile_array = []

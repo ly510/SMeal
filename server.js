@@ -3,6 +3,7 @@
 const express = require("express");
 
 const routeListing = require('./public/js/routes/routeListing.js');
+const routeProfile = require('./public/js/routes/routeProfile.js');
 const createAccount = require('./public/js/routes/routeAccount.js');
 
 const bodyParser = require("body-parser");
@@ -17,6 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 routeListing.routeListing(app);
+routeProfile.routeProfile(app);
 createAccount.routeAccount(app);
 
 function gotoIndex(req, res) {
