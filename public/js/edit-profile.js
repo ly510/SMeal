@@ -145,7 +145,6 @@ const profile = Vue.createApp({
                 reader.onload = () => {
                     // Convert file to data URL
                     this.img = reader.result;
-                    console.log(this.img);
                 };
                 // Read the file as data URL
                 reader.readAsDataURL(file);

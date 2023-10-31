@@ -120,23 +120,22 @@ function updateAccountProfile(request, respond) {
     const updateType = request.query.type;
 
     if (updateType == "profile") {
-        const imageBase64 = request.body.img; // Assuming request.body.img contains the base64 image data
+        const imageBase64 = request.body.img;
         if (imageBase64) {
             const matches = imageBase64.match(/^data:image\/([A-Za-z-+\/]+);base64,(.+)$/);
             if (matches && matches.length === 3) {
                 const imageType = matches[1];
                 const imageBuffer = Buffer.from(matches[2], 'base64');
 
-                // Set your desired file name
-                const fileName = 'profile-pic-' + userId; // Change 'custom_image_name' to your desired file name
-                const folderPath = path.resolve('public/img');
-                const imagePath = path.join(folderPath, `${fileName}.${imageType}`);
+                // Set file name
+                const fileName = 'profile-pic-' + userId;
+                const imagePath = path.join('public/img', `${fileName}.${imageType}`);
 
                 // Save the image
                 fs.writeFileSync(imagePath, imageBuffer, 'base64');
                 console.log('Image saved successfully!');
 
-                // Proceed with the database update
+                // Update DB
                 var newProfile = new Accounts(
                     null,
                     request.body.name,
@@ -147,7 +146,6 @@ function updateAccountProfile(request, respond) {
                     null
                 );
 
-                // Simulated asynchronous function for database update
                 accountsDB.updateAccountProfile(userId, newProfile, function (error, result) {
                     if (error) {
                         respond.json(error);
