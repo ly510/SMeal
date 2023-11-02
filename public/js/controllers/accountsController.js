@@ -9,67 +9,71 @@ const path = require('path');
 
 var accountsDB = new AccountsDB();
 
-//This function authenticates by comparing the input password and pass from the database.
-function authenticate(request, respond) 
-{
-    var input_email = request.body.email; //email from user input
-    var input_password = request.body.pw;
-    var msg = "";
+//This function creates a user
+function createAccount(request, respond) {
+    var users = new Accounts(null, request.body.name, request.body.email, request.body.password, null, null);
 
-    //Call the getLoginCredentials function from AccountsDB
-    accountsDB.getLoginCredentials(input_email, function(error, result){
-        if(error) {
+    accountsDB.createAccount(users, function(error, result)
+    {
+        if(error){
             respond.json(error);
         } else {
-            //If user can be found, result has one record
-            if (result.length > 0) {
-                if (input_password == result[0].password) {
-                    msg = "1"; // "Success!";
-                    console.log(msg);
-                } else {
-                    msg = "Login Fail!";
-                    console.log(msg);
-                }
-            } else { 
-            // If user not found, result has no record
-                msg ="Account not found!";
-            }
-
-                respond.json(prepareMessage(msg));
+            respond.json(result);
         }
     });
 }
 
-//This function creates a custom message to be sent back to the client
-function prepareMessage(msg) {
-    var obj = {"message" : msg };
+//Login function which will check if account found and password match
+function login(request, respond){
+    var email = request.body.email.trim().toLowerCase();
+    var pw = request.body.pw.trim().toLowerCase();
+    var msg = "";
 
-    return obj;
+    //check if all fields fillled
+    if (email == "" || pw == ""){
+        msg = "Please fill in all fields";
+        console.log(msg);
+        respond.json(prepMessage(msg));
+    }
+    
+    if (email) {
+        accountsDB.login(email, function(error, result){
+            if(error) {
+                respond.json(error);
+            } else {
+                if (result.length > 0){
+                    if (pw == result[0].password){
+                        msg = 1; // "Success!";
+                        console.log(msg);
+                        // Include user information in the response
+                        const userInfo = {
+                            id: result[0].id,
+                            email: result[0].email
+                        };
+                        respond.json(prepMessage(msg, userInfo));
+                    } else{
+                        msg = "Incorrect Password!";
+                        console.log(msg);
+                        respond.json(prepMessage(msg));
+                    }
+                } else{
+                    // If user not found, result has no record
+                    msg ="Account not found!";
+                    respond.json(prepMessage(msg));
+                }
+            }
+        });
+    }
 }
 
-// //This function authenticates by using the database to look for the
-// // requested email and password.
-// function authenticateByDB(request, respond) {
-//     var input_email = request.body.email;
-//     var input_password = request.body.pw;
-//     var msg = "";
-
-//     accountsDB.authenticateByDB(request.body.email, request.body.pw, function(error, result){
-//         if(error) {
-//             respond.json(error);
-//         } else {
-//             //If the record can be found, the result will have one item
-//             // else it will have no item.
-//             if (result.length > 0) {
-//                 msg = "Success";
-//             } else {!
-//                 msg = "Fail!";
-//             }
-
-//             respond.json(prepareMessage(msg));
-//         }
-//     });
-// }
+//This function creates a custom message to be sent back to the client
+function prepMessage(msg, userInfo = {}) {
+    var obj = {
+        "message" : msg,
+        data: userInfo
+    };
+    return obj;
+}
 
 //This function get all users details.
 function getAllAccounts(request, respond){
@@ -97,20 +101,6 @@ function getCurrentAccount(request, respond){
             }
         });
     }
-}
-
-//This function creates a user
-function createAccount(request, respond) {
-    var users = new Accounts(null, request.body.name, request.body.email, request.body.password, null, null);
-
-    accountsDB.createAccount(users, function(error, result)
-    {
-        if(error){
-            respond.json(error);
-        } else {
-            respond.json(result);
-        }
-    });
 }
 
 //This function updates the users details except email and password and userId
@@ -187,4 +177,5 @@ function deleteAccount(request, respond)
     });
 }
 
-module.exports = { authenticate, getAllAccounts, getCurrentAccount, createAccount, updateAccountProfile, deleteAccount };
+
+module.exports = { createAccount, login, getAllAccounts, getCurrentAccount, updateAccountProfile, deleteAccount};

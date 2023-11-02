@@ -3,6 +3,7 @@
 var db = require('../../../db-connection'); //reference of db-connection.js
 
 class AccountsDB {
+    
     createAccount(accountData, callback) {
         var sql = "INSERT into Accounts (email, password) VALUES(?, ?)";
 
@@ -10,6 +11,37 @@ class AccountsDB {
             accountData.email,
             accountData.password
         ], callback);
+    }
+
+    login(email, callback) {
+        const sql = `SELECT * FROM smeal.Accounts WHERE email = ?`;
+
+        // Use the promise-based query method to execute the SQL query
+        db.query(sql, [email])
+            .then(([rows, fields]) => {
+                callback(null, rows);
+            })
+            .catch((error) => {
+                callback(error, null);
+            });
+    }
+
+    updateAccountProfile(userId, newProfile, callback) {
+        const sql = `UPDATE smeal.Accounts 
+    SET name = ?, phoneNo = ?, img = ?
+    WHERE id = ?`;
+
+        // Values that need to be updated
+        const { name, phoneNo, img } = newProfile;
+
+        // Use the promise-based query method to execute the SQL query
+        db.query(sql, [name, phoneNo, img, userId])
+            .then(([rows, fields]) => {
+                callback(null, rows);
+            })
+            .catch((error) => {
+                callback(error, null);
+            });
     }
 
     getCurrentAccount(userId, callback) {

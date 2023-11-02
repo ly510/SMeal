@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="css/index.css">
 
     <!-- Script js-->
-    <script src="./js/account.js"></script>
+    <script src="js/account.js"></script>
 </head>
 <body class="body-wrapper">
     <!-- Nav Bar -->
@@ -125,6 +125,8 @@ aria-hidden="true">
     </div>
     <div class="modal-body">
         <form id="signinForm">
+			<div class="alert alert-danger d-none" id="l_errorMsg" role="alert">
+			</div>
             <h4 class="modal-title text-center" id="signupModalLabel">Login Now!</h4>
             <fieldset class="p-4">
                 <label for="l_email" class="form-label">SMU Email Address</label>
@@ -133,7 +135,7 @@ aria-hidden="true">
                 <label for="l_pwd" class="form-label">Password</label>
                 <input id="l_pwd" class="form-control mb-3" type="password" placeholder="Password" required>
 
-                <div class="d-flex justify-content-end"><button type="submit" class="btn btn-primary font-weight-bold mt-3">Login</button></div>
+                <div class="d-flex justify-content-end"><button id="signinButton" type="submit" class="btn btn-primary font-weight-bold mt-3">Login</button></div>
                 <p class="text-secondary text-center mt-4">Don't have an account? 
                   <a class="text-primary text-decoration-none" name="openSignupModel" data-bs-dismiss="modal" type="button">Sign Up</a>
                 </p>
@@ -155,7 +157,7 @@ aria-hidden="true">
         </div>
         <div class="modal-body">
             <form id="createAccountForm">
-				<div class="alert alert-danger d-none" id="errorMsg" role="alert">
+				<div class="alert alert-danger d-none" id="r_errorMsg" role="alert">
 				</div>
                 <h4 class="modal-title text-center" id="signupModalLabel">Sign Up Now!</h4>
                 <fieldset class="p-4">
@@ -187,12 +189,10 @@ crossorigin="anonymous"></script>
 <!-- login and sign up modal when onclick-->
 <script>
     initializeModals();
-</script>
 
-<!-- Create Account -->
-<script>
-    const signupForm = document.getElementById('createAccountForm');
-	const errorMsg = document.getElementById('errorMsg');
+	// Create Account
+  	const signupForm = document.getElementById('createAccountForm');
+	const r_errorMsg = document.getElementById('r_errorMsg');
 	const signupButton = document.getElementById('signupButton');
 
 	signupButton.addEventListener('click', function (event) {
@@ -203,8 +203,39 @@ crossorigin="anonymous"></script>
 			var closeModal = bootstrap.Modal.getInstance(signupModal);
 			closeModal.hide(); // Close modal
 			signupForm.reset(); // Reset form
+
+      // Redirect to home.html
+			window.location.href = 'home.html';
 		}
-	})
+	});
+	
+	// Login
+	const signinForm = document.getElementById('signinForm');
+	const l_errorMsg = document.getElementById('l_errorMsg');
+	const signinButton = document.getElementById('signinButton');
+	
+	signinButton.addEventListener('click', function (event) {
+		event.preventDefault();
+		login().then((result) => {
+			const loginModal = document.getElementById('loginModal');
+			var closeModal = bootstrap.Modal.getInstance(loginModal);
+			closeModal.hide(); // Close modal
+			signinForm.reset(); // Reset form
+
+			sessionStorage.setItem('userId', result.id);
+      sessionStorage.setItem('userEmail', result.email);
+
+			console.log(result.id);
+			console.log(result.email);
+
+			// Redirect to home.html
+			window.location.href = 'home.html';
+			
+		}).catch((err) => {
+			console.log(err);
+		}); // Call login function
+	});
+
 </script>
 
 </body>
