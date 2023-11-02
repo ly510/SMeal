@@ -152,15 +152,19 @@ function login(){
 
 // Logout on click
 window.addEventListener('load', function () {
-    if (sessionStorage.getItem('userId') !== null){
-        const logoutBtn = document.getElementById("logout");
-        logoutBtn.addEventListener('click', function () {
-            logout();
-        });
-    }
+    const logoutBtn = document.getElementById("logout");
+    logoutBtn.addEventListener('click', function () {
+        logout();
+    });
 });
+
 function logout() {
     console.log("Logout function called");
     sessionStorage.clear();
     window.location.href = 'index.html';
 }
+
+var userId = sessionStorage.getItem("userId");
+var userEmail = sessionStorage.getItem("userEmail");
+console.log("userId:", userId);
+console.log("userEmail:", userEmail);
