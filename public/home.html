@@ -20,10 +20,13 @@
 
 	<link href="css/navbar.css" rel="stylesheet">
     <link href="css/home.css" rel="stylesheet">
+
+	<script src="js/account.js"></script>
 	
     <!-- CHANGE TO GET ACCEPTED LISTINGS -->
     <!-- <script src="./js/listing.js"></script>
 	<script src="./js/app.js"></script>
+	
 
 	<script>
         function load(){
@@ -68,14 +71,19 @@
 								</li>
 							</ul>
 							<ul class="navbar-nav ms-auto mt-2">
-								<li class="nav-item">
-									<a class="nav-link profile-button" href="user-profile.html">
+								<li class="nav-item dropdown dropdown-slide">
+									<a class="nav-link" href="#!" role="button" data-bs-toggle="dropdown">
 										<span class="fa-stack">
 											<i class="fa-regular fa-circle fa-stack-2x"></i>
 											<i class="fa-solid fa-user fa-stack-1x"></i>
 										</span>
-										Samanta Doe
+										Samanta Doe <span><i class="fa fa-angle-down"></i></span>
 									</a>
+									<!-- Dropdown list -->
+									<ul class="dropdown-menu">
+										<li><a class="dropdown-item" href="user-profile.html">Profile</a></li>
+										<li><a class="dropdown-item" type="button" id="logout">Logout</a></li>
+									</ul>
 								</li>
 							</ul>
 						</div>
@@ -124,9 +132,11 @@ crossorigin="anonymous"></script>
     // Redirect to food-listings.html
     window.location.href = 'food-listings.html';
 	});
+	
+	// Showing session for user is retrieved
+	console.log("userId:",sessionStorage.getItem('userId'));
+	console.log("userEmail:",sessionStorage.getItem('userEmail'));
 </script>
-
-
 
 </body>
 </html>
