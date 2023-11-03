@@ -39,11 +39,25 @@ function editProfile() {
     request.send(JSON.stringify(data));
 }
 
-function updateProfile() {
+function updateProfile(event) {
+    // Prevent refresh
+    event.preventDefault();
+
+    var profileAlert = document.getElementById("profileAlert");
+    var successAlert = document.getElementById("successAlert");
+    
+    // Remove alert
+    profileAlert.innerText = "";
+    profileAlert.classList.add('d-none');
+
+    successAlert.innerText = "";
+    successAlert.classList.add('d-none');
+
     var request = new XMLHttpRequest();
 
     if (vmProfile.phoneNo.length != 8) {
-        alert("Please enter a valid phone number!");
+        profileAlert.innerText = "Please enter a valid phone number!";
+        profileAlert.classList.remove('d-none');
         return;
     }
 
@@ -57,7 +71,8 @@ function updateProfile() {
             if (compressedBase64) {
                 initiateRequest(compressedBase64);
             } else {
-                alert('Error compressing image');
+                profileAlert.innerText = "Error occurred. Please try again.";
+                profileAlert.classList.remove('d-none');
             }
         });
     } else {
@@ -79,7 +94,13 @@ function updateProfile() {
             if (request.status === 200) {
                 vmProfile.display = vmProfile.name.trim();
                 vmProfile.name = vmProfile.name.trim();
-                alert("Profile successfully updated!");
+
+                // Display success alert
+                successAlert.innerText = "Profile successfully updated!";
+                successAlert.classList.remove('d-none');
+
+                // For navbar
+                sessionStorage.setItem("name", vmProfile.name.trim());
             }
         };
 
@@ -134,19 +155,34 @@ function compressImage(base64Data, maxWidth, maxHeight, quality, callback) {
     img.src = base64Data;
 }
 
-function updatePassword() {
+function updatePassword(event) {
+    event.preventDefault();
+
+    var passwordAlert = document.getElementById("passwordAlert");
+    var successAlert = document.getElementById("successAlert");
+    
+    // Remove alert
+    passwordAlert.innerText = "";
+    passwordAlert.classList.add('d-none');
+
+    successAlert.innerText = "";
+    successAlert.classList.add('d-none');
+    
     var request = new XMLHttpRequest();
 
     if (vmProfile.currPass === "" || vmProfile.newPass === "" || vmProfile.confirmPass === "") {
-        alert("Please fill in all the password fields!");
+        passwordAlert.innerText = "Please fill in all the password fields!";
+        passwordAlert.classList.remove('d-none');
         return;
     }
     else if (vmProfile.currPass != vmProfile.typedPass) {
-        alert("Current password is incorrect!");
+        passwordAlert.innerText = "Current password is incorrect!";
+        passwordAlert.classList.remove('d-none');        
         return;
     }
     else if (vmProfile.newPass != vmProfile.confirmPass) {
-        alert("New password does not match!");
+        passwordAlert.innerText = "New password does not match!";
+        passwordAlert.classList.remove('d-none');        
         return;
     }
     else {
@@ -165,7 +201,10 @@ function updatePassword() {
                 vmProfile.typedPass = "";
                 vmProfile.newPass = "";
                 vmProfile.confirmPass = "";
-                alert("Password successfully updated!");
+
+                // Display success alert
+                successAlert.innerText = "Password successfully updated!";
+                successAlert.classList.remove('d-none');
             }
         }
     
