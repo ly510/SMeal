@@ -149,8 +149,3 @@ function login(){
         request.send(JSON.stringify(data));
     });
 }
-
-var userId = sessionStorage.getItem("userId");
-var userEmail = sessionStorage.getItem("userEmail");
-console.log("userId:", userId);
-console.log("userEmail:", userEmail);

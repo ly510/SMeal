@@ -48,7 +48,9 @@ function login(request, respond){
                         // Include user information in the response
                         const userInfo = {
                             id: result[0].id,
-                            email: result[0].email
+                            email: result[0].email,
+                            name: result[0].name,
+                            img: result[0].img,
                         };
                         respond.json(prepMessage(msg, userInfo));
                     } else{
