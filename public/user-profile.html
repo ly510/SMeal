@@ -137,17 +137,16 @@
 									<h3 class="widget-header user">Rewards Redeemed</h3>
 									<div class="row" v-if="rewards && rewards.length > 0">
 										<div class="col-md-4" v-for="reward in rewards">
-											<!-- BS card: Start -->
-											<div class="card text-center" style="margin-bottom:20px">
-												<img :src="'img/' + reward.img + '.png'" class="card-img-top" :alt=reward.img style="padding: 10px 10px 0 10px; ">
+											<div class="card text-center" style="margin-bottom: 20px;">
+												<img :src="reward.img" id="card-img" class="card-img-top img-fluid" :alt="reward.img">
 												<div class="card-body">
 													<h5 class="card-title">{{ reward.name }}</h5>
 													<p class="card-text">{{ reward.pointsReq }} Points</p>
 												</div>
 											</div>
-											<!-- BS card: End -->
 										</div>
 									</div>
+									
 									<h3 class="text-center" v-else>No rewards found!</h3>
 								</div>
 							</div>

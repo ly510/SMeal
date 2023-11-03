@@ -64,7 +64,8 @@ function processResults(result) {
                 id: row.rewardId,
                 name: row.rewardName,
                 description: row.rewardDesc,
-                pointsReq: row.rewardPointsReq
+                pointsReq: row.rewardPointsReq,
+                img: row.rewardImg
             };
 
             userProfile[row.userId].rewards.push(reward);

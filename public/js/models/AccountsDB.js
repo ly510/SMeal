@@ -56,7 +56,8 @@ class AccountsDB {
             R.id AS rewardId, 
             R.name AS rewardName, 
             R.description AS rewardDesc, 
-            R.pointsReq AS rewardPointsReq
+            R.pointsReq AS rewardPointsReq,
+            R.img AS rewardImg
         FROM 
             smeal.Accounts AS A
         LEFT JOIN 

@@ -140,3 +140,10 @@ label {
     margin-top: 5px;
     margin-bottom: 10px;
 }
+
+#card-img {
+    padding: 10px 10px 0 10px; 
+    height: 200px; 
+    width: 100%; 
+    object-fit: contain;
+}
