@@ -56,4 +56,20 @@ window.addEventListener('load', function(){
 
     `;
 
+	// Logout on click
+	const logoutBtn = document.getElementById("logout");
+	console.log(logoutBtn);
+	console.log("ffff");
+
+	if (logoutBtn != null) {
+        logoutBtn.addEventListener('click', function () {
+            logout();
+        });
+    }
 });
+
+function logout() {
+    console.log("Logout function called");
+    sessionStorage.clear();
+    window.location.href = 'index.html';
+}
