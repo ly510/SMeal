@@ -241,6 +241,19 @@ crossorigin="anonymous"></script>
 		}); // Call login function
 	});
 
+    // Added scroll-up button to the bottom of the page
+    var scrollUpButton = document.getElementById('scroll-top');
+    scrollUpButton.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    window.addEventListener('scroll', function () {
+      if (window.pageYOffset > 0) {
+        scrollUpButton.style.display = 'block';
+      } else {
+        scrollUpButton.style.display = 'none';
+      }
+    });
+
 </script>
 
 </body>
