@@ -52,12 +52,13 @@
 								<!-- User Image -->
 								<div class="image d-flex justify-content-center">
 									<!-- to check if user has image else display the following -->
-									<img :src="img" class="profilePic" v-if="img !== ''">
-									<span class="fa-stack fa-4x" v-else>
+									<img :src="img" id="profilePic" v-if="img !== ''">
+									<span class="fa-stack fa-5x" v-else>
 										<i class="fa-regular fa-circle fa-stack-2x"></i>
 										<i class="fa-solid fa-user fa-stack-1x"></i>
 									</span>
 								</div>
+								<a class="d-block text-center mt-2" v-if="img !== ''" @click="removePicture" style="color: red; cursor: pointer;"><i class="fa-solid fa-trash"></i> Remove current picture</a>
 								<!-- User Name -->
 								<h5 class="text-center">{{ display }}</h5>
 							</div>
@@ -95,8 +96,8 @@
 										<!-- Profile Picture -->
 										<div class="form-group profile-pic">
 											<label for="profile-pic">Profile Picture</label>
-											<input type="file" accept="image/*" class="form-control mt-2 pt-1"
-												id="profile-pic" @change="handleImgUpload">
+											<input type="file" accept="image/jpeg, image/png" class="form-control mt-2 pt-1"
+												id="profile-pic" @change="handleImgUpload" max-size="512000">
 										</div>
 										<!-- Submit button -->
 										<button class="btn btn-transparent" onclick="updateProfile()">Save Changes</button>

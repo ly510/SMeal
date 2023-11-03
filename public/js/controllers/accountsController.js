@@ -89,11 +89,10 @@ function getAllAccounts(request, respond){
 
 //This function get the current user's details.
 function getCurrentAccount(request, respond){
-    // var userId = request.session.userId;
-    var userId = 4; // test
+    var email = request.body.email;
     
-    if (userId) {
-        accountsDB.getCurrentAccount(userId, function(error, result){
+    if (email) {
+        accountsDB.getCurrentAccount(email, function(error, result){
             if(error) {
                 respond.json(error);
             } else {
@@ -105,10 +104,10 @@ function getCurrentAccount(request, respond){
 
 //This function updates the users details except email and password and userId
 function updateAccountProfile(request, respond) {
-    // var userId = request.session.userId;
-    var userId = 4; // test
+    var userId = request.body.id;
     const updateType = request.query.type;
 
+    // to change to check if originally no img and update to no img also
     if (updateType == "profile") {
         const imageBase64 = request.body.img;
         if (imageBase64) {
@@ -147,7 +146,24 @@ function updateAccountProfile(request, respond) {
                 respond.json({ error: "Invalid image data" });
             }
         } else {
-            respond.json({ error: "Image data not found in the request" });
+            // Update DB without img
+            var newProfile = new Accounts(
+                null,
+                request.body.name,
+                null,
+                null,
+                request.body.phoneNo,
+                null,
+                null
+            );
+
+            accountsDB.updateAccountProfile(userId, newProfile, function (error, result) {
+                if (error) {
+                    respond.json(error);
+                } else {
+                    respond.json(result);
+                }
+            });
         }
     }
     else if (updateType == "password") {

@@ -15,9 +15,9 @@ a {
 
 a:focus,
 a:hover {
-  text-decoration: none;
-  outline: 0;
-  color: #5672f9;
+    text-decoration: none;
+    outline: 0;
+    color: #5672f9;
 }
 
 li,
@@ -34,6 +34,10 @@ button {
 
 .navigation .navbar-nav {
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
 }
 
 .main-nav .nav-item .nav-link {
@@ -162,4 +166,10 @@ button {
 
 .create-button:hover {
     color: #fff;
+}
+
+.profilePic {
+    max-height: 30px; 
+    max-width: 30px;
+    padding-right: 3px;
 }

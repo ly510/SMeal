@@ -1,6 +1,13 @@
 function editProfile() {
     var request = new XMLHttpRequest();
-    request.open("GET", editProfile_url, true);
+    var email = sessionStorage.getItem("userEmail");
+
+    request.open("POST", editProfile_url, true);
+    request.setRequestHeader("Content-Type", "application/json");
+
+    var data = {
+        email: email,
+    };
 
     // This function will be called when data returns from the web API
     request.onload = function () {
@@ -9,6 +16,7 @@ function editProfile() {
             editProfile_array = JSON.parse(request.responseText);
 
             // Assign the retrieved data to the Vue app's properties
+            vmProfile.id = editProfile_array[0].userId;
             vmProfile.display = editProfile_array[0].userName;
             vmProfile.name = editProfile_array[0].userName;
             vmProfile.email = editProfile_array[0].userEmail;
@@ -17,41 +25,8 @@ function editProfile() {
             vmProfile.points = editProfile_array[0].userPoints;
             
             if (editProfile_array[0].userImg != null) {
-                vmProfile.hasProfilePic = true;
                 vmProfile.img = editProfile_array[0].userImg;
             }
-            else
-                vmProfile.hasProfilePic = false;
-        }
-    }
-
-    request.onerror = function () {
-        // Handle network errors
-        console.error('Network error while fetching user profile data');
-    }
-
-    // This command starts the calling of the web API
-    request.send();
-}
-
-function updateProfile() {
-    var request = new XMLHttpRequest();
-
-    var data = {
-        name: vmProfile.name.trim(),
-        phoneNo: vmProfile.phoneNo,
-        img: vmProfile.img === '' ? null : vmProfile.img,
-    };
-
-    request.open("PUT", editProfile_url + "?type=profile", true);
-    request.setRequestHeader("Content-Type", "application/json");
-
-    // This function will be called when data returns from the web API
-    request.onload = function () {
-        if (request.status === 200) {
-            vmProfile.display = vmProfile.name.trim();
-            vmProfile.name = vmProfile.name.trim();
-            alert("Profile successfully updated!");
         }
     }
 
@@ -62,6 +37,101 @@ function updateProfile() {
 
     // This command starts the calling of the web API
     request.send(JSON.stringify(data));
+}
+
+function updateProfile() {
+    var request = new XMLHttpRequest();
+
+    if (vmProfile.phoneNo.length != 8) {
+        alert("Please enter a valid phone number!");
+        return;
+    }
+
+    if (vmProfile.img != "" && vmProfile.img != null) {
+        const maxWidth = 800;
+        const maxHeight = 600;
+        const quality = 0.7;
+
+        // Compress image if exists
+        compressImage(vmProfile.img, maxWidth, maxHeight, quality, function(compressedBase64) {
+            if (compressedBase64) {
+                initiateRequest(compressedBase64);
+            } else {
+                alert('Error compressing image');
+            }
+        });
+    } else {
+        initiateRequest(vmProfile.img);
+    }
+
+    function initiateRequest(compressedImage) {
+        var data = {
+            id: vmProfile.id,
+            name: vmProfile.name.trim(),
+            phoneNo: vmProfile.phoneNo,
+            img: vmProfile.img === '' ? null : compressedImage,
+        };
+
+        request.open("PUT", editProfile_url + "?type=profile", true);
+        request.setRequestHeader("Content-Type", "application/json");
+
+        request.onload = function () {
+            if (request.status === 200) {
+                vmProfile.display = vmProfile.name.trim();
+                vmProfile.name = vmProfile.name.trim();
+                alert("Profile successfully updated!");
+            }
+        };
+
+        request.onerror = function () {
+            console.error('Network error while fetching user profile data');
+        };
+
+        request.send(JSON.stringify(data));
+    }
+}
+
+
+// Function to compress an image
+function compressImage(base64Data, maxWidth, maxHeight, quality, callback) {
+    let img = new Image();
+
+    img.onload = function () {
+        let canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+
+        // Calculate new dimensions based on maxWidth and maxHeight
+        if (width > height) {
+            if (width > maxWidth) {
+                height *= maxWidth / width;
+                width = maxWidth;
+            }
+        } else {
+            if (height > maxHeight) {
+                width *= maxHeight / height;
+                height = maxHeight;
+            }
+        }
+
+        // Resize the image on the canvas
+        canvas.width = width;
+        canvas.height = height;
+        let ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        // Convert the canvas content to a base64 data URL
+        const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
+
+        // Execute the callback with the compressedBase64 data
+        callback(compressedBase64);
+    };
+
+    img.onerror = function () {
+        callback(null); // Indicate error by passing null to the callback
+    };
+
+    img.src = base64Data;
 }
 
 function updatePassword() {
@@ -81,7 +151,8 @@ function updatePassword() {
     }
     else {
         var data = {
-            password: vmProfile.newPass,
+            id: vmProfile.id,
+            password: vmProfile.newPass,    
         };
     
         request.open("PUT", editProfile_url + "?type=password", true);
@@ -111,7 +182,8 @@ function updatePassword() {
 const profile = Vue.createApp({
     data() {
         return {
-            // User Details
+            // User Details\
+            id: "",
             display: "", // for display
             name: "",
             email: "",
@@ -137,17 +209,27 @@ const profile = Vue.createApp({
         editProfile();
     },
     methods: {
+        removePicture() {
+            // Remove current profile picture
+            this.img = "";
+        },
         handleImgUpload(event) {
             // Get uploaded file
             const file = event.target.files[0];
             if (file) {
-                const reader = new FileReader();
-                reader.onload = () => {
-                    // Convert file to data URL
-                    this.img = reader.result;
-                };
-                // Read the file as data URL
-                reader.readAsDataURL(file);
+                if (file.size > 512000) {
+                    alert('File size exceeds the limit.');
+                    event.target.value = '';
+                }
+                else {
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                        // Convert file to data URL
+                        this.img = reader.result;
+                    };
+                    // Read the file as data URL
+                    reader.readAsDataURL(file);
+                }
             }
             else {
                 // If cancelled

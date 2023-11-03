@@ -44,7 +44,7 @@ class AccountsDB {
             });
     }
 
-    getCurrentAccount(userId, callback) {
+    getCurrentAccount(email, callback) {
         const sql = `SELECT 
             A.id AS userId, 
             A.name AS userName, 
@@ -64,10 +64,10 @@ class AccountsDB {
         LEFT JOIN 
             smeal.Rewards AS R ON MR.rewardId = R.id
         WHERE 
-            A.id = ?`;
+            A.email = ?`;
 
         // Use the promise-based query method to execute the SQL query
-        db.query(sql, [userId])
+        db.query(sql, [email])
             .then(([rows, fields]) => {
                 callback(null, rows);
             })

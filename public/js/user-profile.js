@@ -1,29 +1,33 @@
 function userProfile() {
     var request = new XMLHttpRequest();
-    request.open("GET", userProfile_url, true);
+    var email = sessionStorage.getItem("userEmail");
+
+    request.open("POST", userProfile_url, true);
+    request.setRequestHeader("Content-Type", "application/json");
+
+    var data = {
+        email: email,
+    };
 
     // This function will be called when data returns from the web API
     request.onload = function () {
         if (request.status === 200) {
             // Get current profile
             userProfile_array = processResults(JSON.parse(request.responseText));
-
+            
             // Assign the retrieved data to the Vue app's properties
             vmProfile.name = userProfile_array[0].userName;
             vmProfile.email = userProfile_array[0].userEmail;
             vmProfile.phoneNo = userProfile_array[0].userPhone;
             
             if (userProfile_array[0].userImg != null) {
-                vmProfile.hasProfilePic = true;
                 vmProfile.img = userProfile_array[0].userImg;
             }
-            else
-                vmProfile.hasProfilePic = false;
 
             vmProfile.points = userProfile_array[0].userPoints;
-
-            if (userProfile_array[0].rewards.length > 0) {
-                vmProfile.redeemed = true;
+            
+            // Check if have rewards
+            if ("rewards" in userProfile_array[0]) {
                 vmProfile.rewards = userProfile_array[0].rewards;
             }
         }
@@ -35,7 +39,7 @@ function userProfile() {
     }
 
     // This command starts the calling of the web API
-    request.send();
+    request.send(JSON.stringify(data));
 }
 
 function processResults(result) {
@@ -70,6 +74,7 @@ function processResults(result) {
 
         return usersArray
     }
+    // if no rewards
     return result
 }
 
@@ -81,7 +86,6 @@ const profile = Vue.createApp({
             email: "",
             phoneNo: "",
             img: "",
-            hasProfilePic: false,
             points: 0,
 
             // Points History
@@ -100,7 +104,6 @@ const profile = Vue.createApp({
             ],
 
             // Rewards redeemed
-            redeemed: false,
             rewards: [],
         };
     }, // data

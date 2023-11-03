@@ -5,10 +5,10 @@ const profileController = require('../controllers/accountsController');
 function routeProfile(app) {
 
     app.route('/user-profile')
-        .get(profileController.getCurrentAccount);
+        .post(profileController.getCurrentAccount);
 
     app.route('/edit-profile')
-        .get(profileController.getCurrentAccount)
+        .post(profileController.getCurrentAccount)
         .put(profileController.updateAccountProfile);
 }
 
