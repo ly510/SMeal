@@ -1,3 +1,11 @@
+const userId = sessionStorage.getItem("userId");
+const userEmail = sessionStorage.getItem("userEmail");
+const user_name = sessionStorage.getItem("name");
+const img_url = sessionStorage.getItem("img");
+
+console.log("userId:", userId);
+console.log("userEmail:", userEmail);
+
 // Navigation Bar
 window.addEventListener('load', function(){
 	var navBar = document.getElementById("navBar");
