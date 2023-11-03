@@ -6,6 +6,7 @@ const img_url = sessionStorage.getItem("img");
 console.log("userId:", userId);
 console.log("userEmail:", userEmail);
 
+
 // Navigation Bar
 window.addEventListener('load', function(){
 	var navBar = document.getElementById("navBar");
@@ -47,10 +48,11 @@ window.addEventListener('load', function(){
 					<li class="nav-item dropdown dropdown-slide">
 						<a class="nav-link" href="#!" role="button" data-bs-toggle="dropdown">
 							<span class="fa-stack">
-								<i class="fa-regular fa-circle fa-stack-2x"></i>
-								<i class="fa-solid fa-user fa-stack-1x"></i>
+								<img src="../` + img_url + `" alt="Create Listing" class="bi img-fluid">
 							</span>
-							Samanta Doe <span><i class="fa fa-angle-down"></i></span>
+							`
+							+ user_name +
+							` <span><i class="fa fa-angle-down"></i></span>
 						</a>
 						<!-- Dropdown list -->
 						<ul class="dropdown-menu">
@@ -66,9 +68,6 @@ window.addEventListener('load', function(){
 
 	// Logout on click
 	const logoutBtn = document.getElementById("logout");
-	console.log(logoutBtn);
-	console.log("ffff");
-
 	if (logoutBtn != null) {
         logoutBtn.addEventListener('click', function () {
             logout();
