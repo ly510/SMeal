@@ -51,6 +51,7 @@ function login(request, respond){
                             email: result[0].email,
                             name: result[0].name,
                             img: result[0].img,
+                            phoneNo: result[0].phoneNo
                         };
                         respond.json(prepMessage(msg, userInfo));
                     } else{
