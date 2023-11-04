@@ -24,12 +24,6 @@ function initializeModals() {
 
 // Create an account
 function createAccount() {
-
-
-
-console.log(sessionStorage.getItem("invalidPhoneNo"));
-console.log("eqwe");
-
     const createAccount_url = '/createAccount';
     var request = new XMLHttpRequest();
     request.open('POST', createAccount_url, true);
@@ -69,25 +63,34 @@ console.log("eqwe");
         phoneNo: p_num,
     };
 
-    request.onload = function () {
-        if (request.status === 200) {
-            console.log('Account created successfully:', request.responseText);
-        } else {
-            console.error('Failed to create account:', request.responseText);
+    // Check if email in the database already
+    existingAccount(email, function(result) {
+        if (result.length > 0){
+            r_errorMsg.textContent = 'Account already created! You may go to login.';
+            r_errorMsg.classList.remove('d-none');
+            return
         }
-    };
+        else{
+            request.onload = function () {
+                if (request.status === 200) {
+                    console.log('Account created successfully:', request.responseText);
+                } else {
+                    console.error('Failed to create account:', request.responseText);
+                }
+            };
+            request.onerror = function () {
+                console.error('Network error while creating account');
+            };
+            request.send(JSON.stringify(accountData)); // Convert to JSON and send the request
 
-    request.onerror = function () {
-        console.error('Network error while creating account');
-    };
-
-    request.send(JSON.stringify(accountData)); // Convert to JSON and send the request
-
-    sessionStorage.setItem('name', name); 
-    sessionStorage.setItem('userEmail', email); 
-    sessionStorage.setItem('img', "null");
-
-    return true;
+            sessionStorage.setItem('name', name); 
+            sessionStorage.setItem('userEmail', email); 
+            sessionStorage.setItem('img', "null");
+            
+            // Redirect to home.html
+			window.location.href = 'home.html';
+        }
+    });
 }
 
 // Check if email is SMU
@@ -128,6 +131,32 @@ function passwordNotMatch(password, password_cfm) {
     }
 }
 
+function existingAccount(email, callback) {
+    var request = new XMLHttpRequest();
+    var email = email;
+    request.open("POST", "/user-profile", true);
+    request.setRequestHeader("Content-Type", "application/json");
+    var data = {
+        email: email,
+    };
+    // This function will be called when data returns from the web API
+    request.onload = function () {
+        if (request.status === 200) {
+            // Get data
+            var result = JSON.parse(request.responseText);
+            // Call the callback function with the result
+            callback(result);
+        }
+    };
+    request.onerror = function () {
+        // Handle network errors
+        console.error('Network error while fetching user profile data');
+    };
+    // This command starts the calling of the web API
+    request.send(JSON.stringify(data));
+}
+
+// Login
 function login(){
     const login_url = '/login';
     var request = new XMLHttpRequest();
@@ -199,3 +228,4 @@ document.addEventListener('DOMContentLoaded', function () {
         sessionStorage.setItem("invalidPhoneNo", isValid);
     });
 });
+

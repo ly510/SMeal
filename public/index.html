@@ -215,15 +215,12 @@ crossorigin="anonymous"></script>
 
 	signupButton.addEventListener('click', function (event) {
 		event.preventDefault()
-		var result = createAccount(); // Call createAccount function
+		createAccount(); // Call createAccount function
 		if (result) {
 			const signupModal = document.getElementById('signupModal');
 			var closeModal = bootstrap.Modal.getInstance(signupModal);
 			closeModal.hide(); // Close modal
 			signupForm.reset(); // Reset form
-
-      // Redirect to home.html
-			window.location.href = 'home.html';
 		}
 	});
 	
