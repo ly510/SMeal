@@ -33,8 +33,8 @@ function createAccount() {
     var email = document.getElementById('r_email').value.trim().toLowerCase();
     var r_pwd = document.getElementById('r_pwd').value;
     var r_c_pwd = document.getElementById('r_c_pwd').value;
-    // var p_num = document.getElementById('p_num').value;
-    var p_num = "+44 22222";
+    var p_num = sessionStorage.getItem("phoneNo");
+    // var p_num = "+44 22222";
     var name = email.split('@')[0];
 
     // Check if empty
@@ -172,18 +172,24 @@ function login(){
 }
 
 
+// Phone Number Function
 document.addEventListener('DOMContentLoaded', function () {
     var input = document.getElementById('phoneNumber');
-    
     // Initialize intlTelInput
     var iti = window.intlTelInput(input, {
-        separateDialCode: true,
-        initialCountry: "SG",
+      separateDialCode: true,
+      initialCountry: "SG",
+    });
+    // Get the selected country code
+    input.addEventListener('countrychange', function () {
+      var selectedCountry = iti.getSelectedCountryData();
+      console.log('Selected Country Code:', selectedCountry.dialCode);
+    });
+    // Store full phone number in sessionStorage
+    input.addEventListener('input', function () {
+      var fullPhoneNumber = iti.getNumber().trim();
+      sessionStorage.setItem("phoneNo", fullPhoneNumber);
     });
 
-    // Example: Get the selected country code
-    input.addEventListener('countrychange', function () {
-        var selectedCountry = iti.getSelectedCountryData();
-        console.log('Selected Country Code:', selectedCountry.dialCode);
-    });
-});
+
+  });
