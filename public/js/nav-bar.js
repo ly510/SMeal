@@ -3,9 +3,20 @@ const userEmail = sessionStorage.getItem("userEmail");
 const user_name = sessionStorage.getItem("name");
 const img_url = sessionStorage.getItem("img");
 
+var htmlImg = ``;
+if (img_url == "null"){
+	htmlImg = `
+	<i class="fa-regular fa-circle fa-stack-2x"></i>
+	<i class="fa-solid fa-user fa-stack-1x"></i>`
+}
+else{
+	htmlImg = `<img src="../` + img_url + `" alt="Create Listing" class="bi img-fluid">`
+}
+
 console.log("userId:", userId);
 console.log("userEmail:", userEmail);
-
+console.log("userName:", user_name);
+console.log("img_url:", img_url);
 
 // Navigation Bar
 window.addEventListener('load', function(){
@@ -47,8 +58,9 @@ window.addEventListener('load', function(){
 					</li>
 					<li class="nav-item dropdown dropdown-slide">
 						<a class="nav-link" href="#!" role="button" data-bs-toggle="dropdown">
-							<span class="fa-stack">
-								<img src="../` + img_url + `" alt="Create Listing" class="bi img-fluid">
+							<span class="fa-stack">` 
+							+ htmlImg + 
+							`
 							</span>
 							`
 							+ user_name +
