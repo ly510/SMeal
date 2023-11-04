@@ -236,14 +236,7 @@ const profile = Vue.createApp({
             newPass: "",
             confirmPass: "",
         };
-    }, // data
-    // computed: { 
-    //     derivedProperty() {
-    //         return false;
-    //     }  
-    // }, // computed
-    // created() { 
-    // },
+    },
     mounted() {
         editProfile();
     },

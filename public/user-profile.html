@@ -64,43 +64,6 @@
 							<!-- Dashboard Links -->
 							<div class="widget user-dashboard-menu text-center">
 								<h2>Total Points: {{ points }}</h2>
-								<a href="#" data-bs-toggle="modal" data-bs-target="#pointHistoryModal"
-									v-if="hasHistory">View Points History</a>
-
-								<!-- Modal -->
-								<div class="modal fade" id="pointHistoryModal" tabindex="-1"
-									aria-labelledby="pointHistoryModalLabel" aria-hidden="true">
-									<div class="modal-dialog">
-										<div class="modal-content">
-											<div class="modal-header">
-												<h1 class="modal-title fs-5" id="pointHistoryModalLabel">Points History
-												</h1>
-												<button type="button" class="btn-close" data-bs-dismiss="modal"
-													aria-label="Close"></button>
-											</div>
-											<div class="modal-body">
-												<table class="table table-bordered">
-													<thead>
-														<tr>
-															<th scope="col">Requestor</th>
-															<th scope="col">Date and Time</th>
-															<th scope="col">Points</th>
-														</tr>
-													</thead>
-													<tr v-for="entry in pointHistory">
-														<td>{{ entry.fulfiller }}</td>
-														<td>{{ entry.dateTime }}</td>
-														<td>{{ entry.points }}</td>
-													</tr>
-												</table>
-											</div>
-											<div class="modal-footer">
-												<button type="button" class="btn btn-secondary"
-													data-bs-dismiss="modal">Close</button>
-											</div>
-										</div>
-									</div>
-								</div>
 							</div>
 						</div>
 					</div>

@@ -92,3 +92,35 @@ function addListing(){
     });
     
 }
+
+function getNearbyRestaurants() {
+    var selectedLocation = document.getElementById("user-location").value;
+    var request = new XMLHttpRequest();
+
+    request.open("POST", restaurant_url, true);
+    request.setRequestHeader("Content-Type", "application/json");
+
+    var data = {
+        location: "SMU%20" + selectedLocation,
+    };
+
+    // This function will be called when data returns from the web API
+    request.onload = function() {
+        if (request.status === 200) {
+            // Get all listing records into our listing_array
+            console.log(request.responseText);
+            // Decide how to display
+            // To display obtained photos: https://developers.google.com/maps/documentation/places/web-service/place-photos (to rmb to check for null photos)
+        } else {
+            // Handle errors, e.g., display an error message
+            console.error('Failed to retrieve restaurant data');
+        }
+    };
+
+    request.onerror = function() {
+        // Handle network errors
+        console.error('Network error while fetching restaurant data');
+    }
+
+    request.send(JSON.stringify(data));
+}

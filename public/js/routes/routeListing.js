@@ -9,6 +9,8 @@ function routeListing(app) {
         .get(listingController.getAllListing)
     app.route('/addListing')
         .post(listingController.addListing);
+    app.route('/restaurant')
+        .post(listingController.getRestaurants);
 }
 
 module.exports = { routeListing };
