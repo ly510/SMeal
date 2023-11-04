@@ -32,7 +32,6 @@
         function load(){
             getAllListing();
 			getListingByUserID(sessionStorage.getItem('userId'));
-			addListing();
         }
     </script>
 	
@@ -97,14 +96,35 @@ crossorigin="anonymous"></script>
 <!-- Open create listing modal on click-->
 <script>
 // Enable the submit button when the create button is clicked
-document.getElementById('createListing-btn').addEventListener('click', function() {
-    document.getElementById('submitListing').disabled = false;
-});
-
 document.getElementById('createListing-btn').addEventListener('click', function () {
 	var myModal = new bootstrap.Modal(document.getElementById('createModal'));
 	myModal.show();
+	var submitBtn = document.getElementById('submitListing');
+	if (submitBtn){
+		document.getElementById('submitListing').addEventListener('click', function(e) {
+			e.preventDefault();
+			addListing();
+		});
+	}
 });
+
+var cancelButton = document.getElementById('cancelButton');
+if (cancelButton){
+	cancelButton.addEventListener('click', function(event) {
+		e.preventDefault();
+		cancelListing();
+	});
+}
+
+var deleteButton = document.getElementById('deleteButton');
+if (deleteButton){
+	deleteButton.addEventListener('click', function(event) {
+		e.preventDefault();
+		deleteListing();
+	});
+}
+
+
 </script>
 
 <script src="js/w3.js"></script>

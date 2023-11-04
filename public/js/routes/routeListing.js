@@ -10,7 +10,9 @@ function routeListing(app) {
     app.route('/foodlisting/:userId')
         .get(listingController.getListingNotByUserID);
     app.route('/listing/:userId')
-        .get(listingController.getListingByUserID);
+        .get(listingController.getListingByUserID)
+    app.route('/listing/:listingID')
+        .put(listingController.cancelListing);
     app.route('/addListing')
         .post(listingController.addListing);
     app.route('/deleteListing/:listingID')

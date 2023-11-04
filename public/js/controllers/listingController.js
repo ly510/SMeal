@@ -21,7 +21,7 @@ function getAllListing(request, respond)
 function addListing(request, respond)
 {
     var now = new Date();
-    var listing = new Listing(parseInt(request.body.listingID),parseInt(request.body.userId), request.body.title, request.body.description, request.body.location, request.body.restaurantName, request.body.paymentType, request.body.lat, request.body.lng, formatDate(now), null, request.body.status);
+    var listing = new Listing(null, parseInt(request.body.userId), request.body.title, request.body.description, request.body.location, request.body.room, request.body.restaurantName, request.body.paymentType, request.body.lat, request.body.lng, formatDate(now), null, request.body.status);
     
     listingDB.addListing(listing, function(error, result)
     {
@@ -47,7 +47,6 @@ function formatDate(date) {
 
 function getListingByUserID(request, respond){
     var userId = parseInt(request.params.userId);
-    console.log(userId);
 
     listingDB.getListingByUserID(userId, function(error, result){
         if(error){
@@ -60,9 +59,20 @@ function getListingByUserID(request, respond){
 
 function getListingNotByUserID(request, respond){
     var userId = parseInt(request.params.userId);
-    console.log(userId);
 
     listingDB.getListingNotByUserID(userId, function(error, result){
+        if(error){
+            respond.json(error);
+        } else {
+            respond.json(result);
+        }
+    });
+}
+
+function cancelListing(request, respond){
+    var status = "Cancelled";
+    var tocancel = new Listing(parseInt(request.params.listingID),null, null, null, null, null, null, null, null, null, null, null, status);
+    listingDB.cancelListing(tocancel, function(error, result){
         if(error){
             respond.json(error);
         } else {
@@ -75,6 +85,7 @@ function deleteListing(request, respond)
 {
     var listingID = parseInt(request.params.listingID);
 
+
     listingDB.deleteListing(listingID, function(error, result)
     {
         if(error){
@@ -85,4 +96,4 @@ function deleteListing(request, respond)
     });
 }
 
-module.exports = { getAllListing, addListing, getListingByUserID, getListingNotByUserID, deleteListing };
+module.exports = { getAllListing, addListing, getListingByUserID, getListingNotByUserID, cancelListing, deleteListing };

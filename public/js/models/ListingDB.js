@@ -48,24 +48,24 @@ class ListingDB
   // This function is for my listing page where user creates a new listing
   addListing(listing, callback)
   {
-    var sql = "INSERT into Listing (listingID, userId, title, description, location, room, restaurantName, paymentType, lat, lng, datePosted, fulfillerId, status) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    var sql = "INSERT into Listing (userId, title, description, location, room, restaurantName, paymentType, lat, lng, datePosted, fulfillerId, status) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
 
     var values = [
-      listing.getListingID(),
       listing.getUserID(),
       listing.getTitle(),
       listing.getDescription(),
       listing.getLocation(),
       listing.getRoom(),
       listing.getRestaurantName(),
+      listing.getPaymentType(),
       listing.getLat(),
       listing.getLng(),
-      listing.getPaymentType(),
       new Date(),
       listing.getFulfillerId(),
       "Awaiting Acceptance",
     ];
   
+    console.log(values);
     db.query(sql, values)
     .then(([rows, fields]) => {
       callback(null, rows);
@@ -76,20 +76,19 @@ class ListingDB
   }
 
   
-  // updateListing(Listing, callback)
-  // {
-  //     var sql = "UPDATE Listing SET title = ?, description = ?, location = ?, restaurantName = ?, paymentType = ?, datePosted = ? WHERE listingID = ?";
-
-  //     return db.query(sql, [
-  //         Listing.getTitle(),
-  //         Listing.getDescription(),
-  //         Listing.getLocation(),
-  //         Listing.getRestaurantName(),
-  //         Listing.getPaymentType(),
-  //         Listing.getDatePosted(),
-  //         Listing.getListingId()
-  //     ], callback);
-  // }
+  cancelListing(tocancel, callback)
+  {
+    var sql = "UPDATE Listing SET status = ? WHERE listingID = ?";
+    
+    db.query(sql, [tocancel.getStatus(),tocancel.listingID])
+    .then(([rows, fields]) => {
+      callback(null, rows);
+    })
+    .catch((error) => {
+      callback(error, null);
+    });
+  }
+  
   
   deleteListing(listingID, callback)
   {
@@ -103,7 +102,7 @@ class ListingDB
         callback(error, null);
       });
     }
+  }
   
-}
 
 module.exports = ListingDB;

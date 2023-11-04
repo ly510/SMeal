@@ -86,7 +86,7 @@ function displayListing(listings) {
 function addListing(){
     
     newListing = new Object();
-    newListing.listingID = listingCount + 1;
+
     newListing.userId = parseInt(sessionStorage.getItem("userId"));
     newListing.title = document.getElementById("listing-title").value;
     newListing.description = document.getElementById("listing-desc").value;
@@ -96,29 +96,31 @@ function addListing(){
     newListing.lat = document.getElementById("lat").value;
     newListing.lng = document.getElementById("lng").value;
     newListing.paymentType = document.getElementById("payment-type").value;
+
+    // // Check if any value is null
+    // for (var key in newListing) {
+    //     if (newListing[key] === null || newListing[key] === "") {
+    //         return; // If any value is null or empty, return early and don't add the listing
+    //     }
+    // }
+
     newListing.fulfillerId = null;
     newListing.status = "Awaiting Acceptance";
-    console.log(newListing);
 
     var request = new XMLHttpRequest();
     request.open("POST", addlisting_url, true);
     request.setRequestHeader("Content-Type", "application/json");
 
     request.send(JSON.stringify(newListing));
-    document.getElementById('submitListing').addEventListener('click', function(e) {
-        e.preventDefault();
-        addListing();
 
-        Swal.fire({
-            icon: 'success',
-            title: "New Food Listing Added",
-            showConfirmButton: false,
-            timer: 2300
-          }).then(function() {
-            window.location.href = "/my-listings.html";
-          });
-    });
-    
+    Swal.fire({
+        icon: 'success',
+        title: "New Food Listing Added",
+        showConfirmButton: false,
+        timer: 2300
+        }).then(function() {
+        window.location.href = "/my-listings.html";
+        });
 }
 
 function getListingByUserID(){
@@ -131,7 +133,6 @@ function getListingByUserID(){
         if (request.status === 200) {
             // Get all listing records into our listing_array
             mylisting_array = JSON.parse(request.responseText);
-            console.log(mylisting_array);
             mylistingCount = mylisting_array.length;
             displayListingByUserID(mylisting_array); // Pass the listing_array to the display function
         } else {
@@ -163,6 +164,7 @@ function displayListingByUserID(listings) {
         var location = listings[count].location;
         var room = listings[count].room;
         var status = listings[count].status;
+        var listingID = listings[count].listingID;
 
         if(status == "Awaiting Acceptance"){
             status = 1;
@@ -172,9 +174,11 @@ function displayListingByUserID(listings) {
             status = 3;
         }else if(status == "Listing Completed"){
             status = 4;
+        }else if(status == "Cancelled"){
+            status = 0;
         }
 
-        var cell = '<div class="listing">' +
+        var cell = '<div class="listing px-2">' +
                 '<div class="listing-container row">' +
                     '<div class="col-md-5">' +
                         '<div class="listing-header">' +
@@ -204,7 +208,8 @@ function displayListingByUserID(listings) {
                         '</div>' +
                     '</div>' +
                     '<div class="col-md-1 text-end">' +
-                        (status >= 2 ? '<button class="btn btn-success payment-button" id="paymentButton">Pay</button>': '<button class="btn btn-danger payment-button" id="cancelButton">Cancel</button>') +
+                        (status == 0 ? '<button class="btn btn-secondary float-end my-2 mx-1" disabled>Cancelled</button>'+ '<button id="deleteButton" class="btn btn-danger float-end my-2 mx-1" onclick="deleteListing('+listingID+')" value="'+listingID+'"">Delete</button>' :
+                        (status >= 2 ? '<button class="btn btn-success payment-button" id="paymentButton">Pay</button>': '<button class="btn btn-danger payment-button" id="cancelButton" onclick="cancelListing('+listingID+')" value="'+listingID+'">Cancel</button>')) +
                     '</div>' +
                     // '<div class="col-md-1 text-end">' +
                     //     (status >= 4 ? '<button class="btn btn-success delete-button" id="deleteButton" @click=deleteListing()>X</button>': '<button class="btn btn-success payment-button disabled" id="deleteButton" @click=deleteListing()>X</button>') +
@@ -213,15 +218,57 @@ function displayListingByUserID(listings) {
             '</div>';
 
         table.insertAdjacentHTML('beforeend', cell);
+        // Add event listener to cancelButton
     }
-
+    
     message = mylistingCount + " Listings";
     document.getElementById("summary").textContent = message;
 }
 
+function cancelListing(listingID){
+    var response = confirm("Are you sure you want to cancel this request?");
+    var listingID = parseInt(document.getElementById("cancelButton").value);
 
+    var request = new XMLHttpRequest();
+    request.open("PUT", listing_url+"/"+listingID, true);
+    request.setRequestHeader("Content-Type", "application/json");
 
-function storeListingDetails(){
-    sessionStorage.setItem("listingID", this.id);
-    window.location.href = "/listing-details.html";
+    request.send();
+    document.getElementById('cancelButton').addEventListener('click', function(e) {
+        e.preventDefault();
+        cancelListing();
+
+        Swal.fire({
+            icon: 'success',
+            title: "Listing Cancelled",
+            showConfirmButton: false,
+            timer: 2300
+          }).then(function() {
+            window.location.href = "/my-listings.html";
+          });
+    });
+}
+
+function deleteListing(listingID){
+    var response = confirm("Are you sure you want to delete this request?");
+    var listingID = parseInt(document.getElementById("deleteButton").value);
+
+    var request = new XMLHttpRequest();
+    request.open("DELETE", deleteListing_url+listingID, true);
+    request.setRequestHeader("Content-Type", "application/json");
+
+    request.send();
+    document.getElementById('deleteButton').addEventListener('click', function(e) {
+        e.preventDefault();
+        deleteListing();
+
+        Swal.fire({
+            icon: 'success',
+            title: "Listing Deleted",
+            showConfirmButton: false,
+            timer: 2300
+          }).then(function() {
+            window.location.href = "/my-listings.html";
+          });
+    });
 }
