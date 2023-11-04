@@ -15,7 +15,7 @@ else{
 
 console.log("userId:", userId);
 console.log("userEmail:", userEmail);
-console.log("userName:", user_name);
+console.log("name:", user_name);
 console.log("img_url:", img_url);
 
 // Navigation Bar

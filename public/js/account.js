@@ -30,9 +30,12 @@ function createAccount() {
     request.setRequestHeader('Content-Type', 'application/json');
 
     // Get values from the form
-    var email = document.getElementById('r_email').value;
+    var email = document.getElementById('r_email').value.trim().toLowerCase();
     var r_pwd = document.getElementById('r_pwd').value;
     var r_c_pwd = document.getElementById('r_c_pwd').value;
+    // var p_num = document.getElementById('p_num').value;
+    var p_num = "+44 22222";
+    var name = email.split('@')[0];
 
     // Check if empty
     if (email == "" || r_pwd == "" || r_c_pwd == "") {
@@ -40,6 +43,9 @@ function createAccount() {
         r_errorMsg.classList.remove('d-none');
         return;
     }
+
+    // // Check if phone number is valid
+    // if (phoneNumberInvalid(p_num)) return;
     
     // Check if email is valid
     if (emailInvalid(email)) return;
@@ -48,8 +54,10 @@ function createAccount() {
     if (passwordNotMatch(r_pwd, r_c_pwd)) return;
 
     var accountData = {
+        name : name,
         email: email,
-        password: r_pwd
+        password: r_pwd,
+        phoneNo: p_num,
     };
 
     request.onload = function () {
@@ -66,9 +74,22 @@ function createAccount() {
 
     request.send(JSON.stringify(accountData)); // Convert to JSON and send the request
 
-    sessionStorage.setItem('userEmail', email); // Store email in session storage
+    sessionStorage.setItem('name', name); 
+    sessionStorage.setItem('userEmail', email); 
+    sessionStorage.setItem('img', "null");
 
     return true;
+}
+
+// Check if phone number all number exclude the country code
+function phoneNumberInvalid(p_num){
+    if (p_num.toString().length != 8 ){
+        console.log(p_num);
+        console.log(p_num.length);
+        r_errorMsg.innerHTML = "Please enter a valid phone number (+65)";
+        r_errorMsg.classList.remove('d-none');
+        return true
+    }
 }
 
 // Check if email is SMU
@@ -149,3 +170,20 @@ function login(){
         request.send(JSON.stringify(data));
     });
 }
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    var input = document.getElementById('phoneNumber');
+    
+    // Initialize intlTelInput
+    var iti = window.intlTelInput(input, {
+        separateDialCode: true,
+        initialCountry: "SG",
+    });
+
+    // Example: Get the selected country code
+    input.addEventListener('countrychange', function () {
+        var selectedCountry = iti.getSelectedCountryData();
+        console.log('Selected Country Code:', selectedCountry.dialCode);
+    });
+});

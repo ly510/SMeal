@@ -11,7 +11,7 @@ var accountsDB = new AccountsDB();
 
 //This function creates a user
 function createAccount(request, respond) {
-    var users = new Accounts(null, request.body.name, request.body.email, request.body.password, null, null);
+    var users = new Accounts(null, request.body.name, request.body.email, request.body.password, request.body.phoneNo, null);
 
     accountsDB.createAccount(users, function(error, result)
     {
@@ -26,7 +26,7 @@ function createAccount(request, respond) {
 //Login function which will check if account found and password match
 function login(request, respond){
     var email = request.body.email.trim().toLowerCase();
-    var pw = request.body.pw.trim().toLowerCase();
+    var pw = request.body.pw;
     var msg = "";
 
     //check if all fields fillled
