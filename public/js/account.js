@@ -24,6 +24,12 @@ function initializeModals() {
 
 // Create an account
 function createAccount() {
+
+
+
+console.log(sessionStorage.getItem("invalidPhoneNo"));
+console.log("eqwe");
+
     const createAccount_url = '/createAccount';
     var request = new XMLHttpRequest();
     request.open('POST', createAccount_url, true);
@@ -34,7 +40,6 @@ function createAccount() {
     var r_pwd = document.getElementById('r_pwd').value;
     var r_c_pwd = document.getElementById('r_c_pwd').value;
     var p_num = sessionStorage.getItem("phoneNo");
-    // var p_num = "+44 22222";
     var name = email.split('@')[0];
 
     // Check if empty
@@ -46,6 +51,13 @@ function createAccount() {
     
     // Check if email is valid
     if (emailInvalid(email)) return;
+
+    // Check if phone number is valid according to the country code
+    if (sessionStorage.getItem("invalidPhoneNo") ===  'false') {
+        r_errorMsg.textContent = 'Please fill in a valid phone number based on the country code you have selected';
+        r_errorMsg.classList.remove('d-none');
+        return
+    }
 
     // Check if passwords match
     if (passwordNotMatch(r_pwd, r_c_pwd)) return;
@@ -160,20 +172,30 @@ function login(){
 
 // Phone Number Function
 document.addEventListener('DOMContentLoaded', function () {
+    var selectedCountry = "";
     var input = document.getElementById('phoneNumber');
     // Initialize intlTelInput
     var iti = window.intlTelInput(input, {
-      separateDialCode: true,
-      initialCountry: "SG",
+        separateDialCode: true,
+        initialCountry: "SG",
     });
     // Get the selected country code
     input.addEventListener('countrychange', function () {
-      var selectedCountry = iti.getSelectedCountryData();
-      console.log('Selected Country Code:', selectedCountry.dialCode);
+        selectedCountry = iti.getSelectedCountryData();
     });
     // Store full phone number in sessionStorage
     input.addEventListener('input', function () {
-      var fullPhoneNumber = iti.getNumber().trim();
-      sessionStorage.setItem("phoneNo", fullPhoneNumber);
+        var fullPhoneNumber = iti.getNumber().trim();
+        sessionStorage.setItem("phoneNo", fullPhoneNumber);
+
+        // Check if the phone number is valid
+        var isValid = iti.isValidNumber();
+
+        //Check if phone number is empty
+        var isEmpty = !fullPhoneNumber.trim();
+        if (isEmpty) isValid = false;
+
+        console.log("Phone Number Valid? :", isValid);
+        sessionStorage.setItem("invalidPhoneNo", isValid);
     });
 });
