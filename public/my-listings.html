@@ -107,8 +107,10 @@ aria-hidden="true">
 
 				<!-- Restaurant -->
 				<label for="restaurant" class="form-label">Restaurant: </label>
-				<input id="restaurant" class="form-control mb-3" type="text" placeholder="Search for restaurants nearby" value="THAI GOLD FOOD" required><button type="button" class="btn btn-primary font-weight-bold mt-3" id="nearbyRestaurant" onclick="getNearbyRestaurants()">Search</button>	
-
+				<div class="input-group mb-3">
+					<input id="restaurant" class="form-control" type="text" placeholder="Click Search to find available restaurants" value="" required disabled>
+					<button type="button" class="btn btn-primary font-weight-bold" id="nearbyRestaurant-btn" onclick="getNearbyRestaurants()">Search</button>
+				</div>
 				<input id="lat" class="form-control mb-3" type="text" value="1.3004113685595007" disabled>
 				<input id="lng" class="form-control mb-3" type="text" value="103.85194077717043" disabled>
 
@@ -129,6 +131,24 @@ aria-hidden="true">
 </div>
 </div>
 
+<!-- Display Nearby Restaurants Modal -->
+<div class="modal fade" id="nearbyRestaurantModal" tabindex="-1" role="dialog" aria-labelledby="nearbyRestaurantModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabel">Nearby Restaurants</h5>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		  </div>
+		  <div class="modal-body">
+			...
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-primary">Confirm Selection</button>
+		  </div>
+		</div>
+	  </div>
+</div>
 
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
@@ -157,6 +177,16 @@ document.getElementById('createListing-btn').addEventListener('click', function(
 document.getElementById('createListing-btn').addEventListener('click', function () {
 	var myModal = new bootstrap.Modal(document.getElementById('createModal'));
 	myModal.show();
+});
+
+document.getElementById('nearbyRestaurant-btn').addEventListener('click', function () {
+	if (document.getElementById("user-location").value !== "Select your school") {
+		// not working properly yet
+		var createModal = new bootstrap.Modal(document.getElementById('createModal'));
+		var restaurantModal = new bootstrap.Modal(document.getElementById('nearbyRestaurantModal'));
+		createModal.hide();
+		restaurantModal.show();
+	}
 });
 
 </script>

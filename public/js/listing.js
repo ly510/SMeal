@@ -95,6 +95,13 @@ function addListing(){
 
 function getNearbyRestaurants() {
     var selectedLocation = document.getElementById("user-location").value;
+
+    // to set proper alert here, if user did not select their current location
+    if (selectedLocation == "Select your school") {
+        alert("Please enter a location!");
+        return;
+    }
+
     var request = new XMLHttpRequest();
 
     request.open("POST", restaurant_url, true);

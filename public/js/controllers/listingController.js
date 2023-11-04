@@ -61,7 +61,7 @@ async function getRestaurants(request, respond) {
                         "latitude": latLng[0],
                         "longitude": latLng[1]
                     },
-                    "radius": 1000.0
+                    "radius": 2000.0
                 }
             }
         };
@@ -101,9 +101,6 @@ async function getRestaurants(request, respond) {
 async function getLatLng(location) {
     try {
         const query = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?fields=formatted_address%2Cname%2Cgeometry&input=${location}&inputtype=textquery&key=` + process.env.GOOGLE_API_KEY;
-        const lat = 0;
-        const lng = 0;
-
         const response = await axios.post(query, null, {
             headers: {
                 'Content-Type': 'application/json',
