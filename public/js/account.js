@@ -43,9 +43,6 @@ function createAccount() {
         r_errorMsg.classList.remove('d-none');
         return;
     }
-
-    // // Check if phone number is valid
-    // if (phoneNumberInvalid(p_num)) return;
     
     // Check if email is valid
     if (emailInvalid(email)) return;
@@ -79,17 +76,6 @@ function createAccount() {
     sessionStorage.setItem('img', "null");
 
     return true;
-}
-
-// Check if phone number all number exclude the country code
-function phoneNumberInvalid(p_num){
-    if (p_num.toString().length != 8 ){
-        console.log(p_num);
-        console.log(p_num.length);
-        r_errorMsg.innerHTML = "Please enter a valid phone number (+65)";
-        r_errorMsg.classList.remove('d-none');
-        return true
-    }
 }
 
 // Check if email is SMU
@@ -190,6 +176,4 @@ document.addEventListener('DOMContentLoaded', function () {
       var fullPhoneNumber = iti.getNumber().trim();
       sessionStorage.setItem("phoneNo", fullPhoneNumber);
     });
-
-
-  });
+});
