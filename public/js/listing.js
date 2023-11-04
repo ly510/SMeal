@@ -64,12 +64,14 @@ function displayListing(listings) {
         var date = listings[count].datePosted;
         var date = date.substring(0, 10);
 
-        var cell = '<div class="col-md-3">' +
+        var cell = '<div class="col-md-3 col-sm-4">' +
             '<div class="card">' +
                 '<img src="img/food2.jpg" class="card-img-top" alt="Food image">' +
                 '<div class="card-body">' +
                     '<h5 class="card-title">' + title + '</h5>' +
                     '<h6 class="card-subtitle mb-2 text-muted">' + date + '</h6>' +
+                    '<button class="btn btn-info my-2">View More</button>' +
+                    '<button class="btn btn-success mx-2 my-2 float-end">Accept</button>' +
                 '</div>' +
             '</div>' +
         '</div>';
