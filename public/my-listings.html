@@ -20,6 +20,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<link href="css/navbar.css" rel="stylesheet">
+	<link href="css/progress-bar.css" rel="stylesheet">
     <link href="css/my-listings.css" rel="stylesheet">
 	<script src="./js/listing.js"></script>
 	<script src="./js/app.js"></script>
@@ -30,9 +31,11 @@
 	<script>
         function load(){
             getAllListing();
+			getListingByUserID(sessionStorage.getItem('userId'));
 			addListing();
         }
     </script>
+	
 </head>
 
 <body class="body-wrapper" onload="load()">
@@ -67,67 +70,14 @@
 		<div class="wrapper" >
 		<!--This is the heading showing how many listings there are-->
 			<h5 id="summary" style="color: lightslategray; margin-left: 30px; font-weight: 400;"></h5>
-			<div id="listingZone" class="row" style="margin-left:20px;"></div> 
+			<div id="listingZone" class="row" style="margin-top: 20px;"></div> 
 		</div>
 
 	</section>
 </div>
 
 <!-- Create Listing Modal -->
-<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel"
-aria-hidden="true">
-<div class="modal-dialog modal-dialog-centered" role="document">
-	<div class="modal-content">
-	<div class="modal-header text-center">
-		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-	</div>
-	<div class="modal-body">
-		<form action="#">
-			<h4 class="modal-title text-center" id="createModalLabel">Create a New Listing!</h4>
-			<fieldset class="p-4">
-				<!-- Title -->
-				<label for="listing-title" class="form-label">Food Listing Title: </label>
-				<input id="listing-title" class="form-control mb-3" type="text" placeholder="Enter your listing title" required>
-
-				<!-- Description -->
-				<label for="listing-desc" class="form-label">Description: </label>
-				<input id="listing-desc" class="form-control mb-3" type="text" placeholder="Enter a short description">
-
-				<!-- User Location -->
-				<label for="user-location" class="form-label">User Location: </label>
-				<select class="form-select mb-3" id="user-location" required>
-					<option selected disabled>Select your school</option>
-					<option value="SOSS/CIS">College of Integrative Studies (CIS)</option>
-					<option value="SOA">School of Accountancy (SOA)</option>
-					<option value="SOE">School of Economics (SOE) / SCIS2</option>
-					<option value="SOL">Yong Pung How School of Law (SOL)</option>
-					<option value="SOB">Lee Kong Chian School of Business (SOB)</option>
-					<option value="SCIS">School of Computing & Information Systems (SCIS)</option>
-				</select>
-
-				<!-- Restaurant -->
-				<label for="restaurant" class="form-label">Restaurant: </label>
-				<input id="restaurant" class="form-control mb-3" type="text" placeholder="Search for restaurants nearby" value="THAI GOLD FOOD" required>
-
-				<input id="lat" class="form-control mb-3" type="text" value="1.3004113685595007" disabled>
-				<input id="lng" class="form-control mb-3" type="text" value="103.85194077717043" disabled>
-
-				<!-- Payment Type -->
-				<label for="payment-type" class="form-label">Select Payment Type: </label>
-				<select class="form-select mb-3" id="payment-type">
-					<option selected disabled>Select payment type</option>
-					<option value="cash">Cash on Delivery</option>
-					<option value="card">Credit/Debit Card</option>
-					<option value="Paynow">PayNow</option>
-				</select>
-
-				<button type="submit" class="btn btn-primary font-weight-bold mt-3" id="submitListing" @click="addListing()">Confirm Listing</button>
-			</fieldset>
-		</form>
-	</div>
-	</div>
-</div>
-</div>
+<div w3-include-html="create-listing-modal.html"></div>
 
 
 <!-- Scripts -->
@@ -146,9 +96,6 @@ crossorigin="anonymous"></script>
 
 <!-- Open create listing modal on click-->
 <script>
-// Initially disable the submit button
-document.getElementById('submitListing').disabled = true;
-
 // Enable the submit button when the create button is clicked
 document.getElementById('createListing-btn').addEventListener('click', function() {
     document.getElementById('submitListing').disabled = false;
@@ -158,12 +105,13 @@ document.getElementById('createListing-btn').addEventListener('click', function 
 	var myModal = new bootstrap.Modal(document.getElementById('createModal'));
 	myModal.show();
 });
-
 </script>
 
+<script src="js/w3.js"></script>
 <script>
-
+    w3.includeHTML();
 </script>
+
 
 </body>
 </html>

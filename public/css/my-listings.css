@@ -26,11 +26,13 @@
   }
 
   .form-select {
-    width: 200px;
+    width: auto;
+    padding: auto;
   }
   
   .createListing {
     height: 40px;
+    width: auto;
     padding: 0 10px;
     border: none;
     border-radius: 5px;

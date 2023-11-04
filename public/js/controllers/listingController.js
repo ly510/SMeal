@@ -21,7 +21,7 @@ function getAllListing(request, respond)
 function addListing(request, respond)
 {
     var now = new Date();
-    var listing = new Listing(parseInt(request.body.listingID),parseInt(request.body.userID), request.body.title, request.body.description, request.body.location, request.body.restaurantName, request.body.paymentType, request.body.lat, request.body.lng, formatDate(now), null, request.body.status);
+    var listing = new Listing(parseInt(request.body.listingID),parseInt(request.body.userId), request.body.title, request.body.description, request.body.location, request.body.restaurantName, request.body.paymentType, request.body.lat, request.body.lng, formatDate(now), null, request.body.status);
     
     listingDB.addListing(listing, function(error, result)
     {
@@ -45,6 +45,44 @@ function formatDate(date) {
     return year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
 }
 
+function getListingByUserID(request, respond){
+    var userId = parseInt(request.params.userId);
+    console.log(userId);
 
+    listingDB.getListingByUserID(userId, function(error, result){
+        if(error){
+            respond.json(error);
+        } else {
+            respond.json(result);
+        }
+    });
+}
 
-module.exports = { getAllListing, addListing };
+function getListingNotByUserID(request, respond){
+    var userId = parseInt(request.params.userId);
+    console.log(userId);
+
+    listingDB.getListingByUserID(userId, function(error, result){
+        if(error){
+            respond.json(error);
+        } else {
+            respond.json(result);
+        }
+    });
+}
+
+function deleteListing(request, respond)
+{
+    var listingID = parseInt(request.params.listingID);
+
+    listingDB.deleteListing(listingID, function(error, result)
+    {
+        if(error){
+            respond.json(error);
+        } else {
+            respond.json(result);
+        }
+    });
+}
+
+module.exports = { getAllListing, addListing, getListingByUserID, getListingNotByUserID, deleteListing };

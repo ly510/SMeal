@@ -1,12 +1,13 @@
 "use strict";
 
 class Listing{
-constructor(listingID, userID, title, description, location, restaurantName, lat, lng, paymentType, datePosted, fulfillerId, status){
+constructor(listingID, userId, title, description, location, room, restaurantName, lat, lng, paymentType, datePosted, fulfillerId, status){
     this.listingID = listingID;
-    this.userID = userID;
+    this.userId = userId;
     this.title = title;
     this.description = description;
     this.location = location;
+    this.room = room;
     this.restaurantName = restaurantName;
     this.lat = lat;
     this.lng = lng;
@@ -21,7 +22,7 @@ getListingID(){
 }
 
 getUserID(){
-    return this.userID;
+    return this.userId; 
 }
 
 getTitle(){
@@ -34,6 +35,10 @@ getDescription(){
 
 getLocation(){
     return this.location;
+}
+
+getRoom(){
+    return this.room;
 }
 
 getRestaurantName(){
@@ -68,8 +73,8 @@ setListingID(listingID){
     this.listingID = listingID;
 }
 
-setUserID(userID){
-    this.userID = userID;
+setUserID(userId){
+    this.userId = userId;
 }
 
 
@@ -83,6 +88,10 @@ setDescription(description){
 
 setLocation(location){
     this.location = location;
+}
+
+setRoom(room){
+    this.room = room;
 }
 
 setRestaurantName(restaurantName){

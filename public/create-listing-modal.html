@@ -1,0 +1,75 @@
+<!-- Create Listing Modal -->
+
+
+<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel"
+aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered" role="document">
+	<div class="modal-content">
+	<div class="modal-header text-center">
+		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	</div>
+	<div class="modal-body">
+		<form action="#">
+			<h4 class="modal-title text-center" id="createModalLabel">Create a New Listing!</h4>
+			<fieldset class="p-4">
+				<!-- Title -->
+				<label for="listing-title" class="form-label">Food Listing Title: </label>
+				<input id="listing-title" class="form-control mb-3" type="text" placeholder="Enter your listing title" required>
+
+				<!-- Description -->
+				<label for="listing-desc" class="form-label">Description: </label>
+				<input id="listing-desc" class="form-control mb-3" type="text" placeholder="Enter a short description (e.g., Iced Vanilla Latte from Starbucks)">
+
+				<!-- User Location -->
+				<label for="user-location" class="form-label">Delivery Location: </label>
+				<select class="form-select mb-3" id="user-location" required>
+					<option selected disabled>Select your school</option>
+					<option value="SOSS/CIS">College of Integrative Studies (CIS)</option>
+					<option value="SOB">Lee Kong Chian School of Business (SOB)</option>
+					<option value="SOA">School of Accountancy (SOA)</option>
+					<option value="SCIS1">School of Computing & Information Systems (SCIS1)</option>
+					<option value="SOE/SCIS2">School of Economics (SOE/SCIS2)</option>
+					<option value="SOL">Yong Pung How School of Law (SOL)</option>
+				</select>
+
+				<!-- GSR/SR/Classroom/Others -->
+				<label for="user-room" class="form-label">GSR/SR/Classroom/Others </label>
+				<input id="user-room" class="form-control mb-3" type="text" placeholder="e.g. GSR 3-1 / SR 3-6 / Classroom 4-3..." required>
+
+				<!-- Restaurant -->
+				<label for="restaurant" class="form-label">Restaurant: </label>
+				<input id="restaurant" class="form-control mb-3" type="text" placeholder="Search for restaurants nearby" value="THAI GOLD FOOD" required>
+
+				<input id="lat" class="form-control mb-3" type="text" value="1.3004113685595007" disabled>
+				<input id="lng" class="form-control mb-3" type="text" value="103.85194077717043" disabled>
+
+				<!-- Payment Type -->
+				<label for="payment-type" class="form-label">Select Payment Type: </label>
+				<select class="form-select mb-3" id="payment-type">
+					<option selected disabled>Payment Type</option>
+					<option value="Credit/Debit">Credit/Debit Card</option>
+					<option value="PayNow">PayNow</option>
+				</select>
+
+				<button type="submit" class="btn btn-primary font-weight-bold mt-3" id="submitListing" @click="addListing()">Confirm Listing</button>
+			</fieldset>
+		</form>
+	</div>
+	</div>
+</div>
+</div>
+
+
+
+<script>
+	// Initially disable the submit button
+	document.getElementById('submitListing').disabled = true;
+
+	var userLocationSelect = document.getElementById('user-location');
+	var selectedOption = userLocationSelect.options[userLocationSelect.selectedIndex].value;
+
+	if (selectedOption === 'Select your school') {
+		alert('Please select your school.');
+		return;
+	}
+</script>	
