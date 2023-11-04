@@ -150,6 +150,26 @@ function getListingByUserID(){
     request.send();
 }
 
+function getListingDetails(listingID) {
+    var request = new XMLHttpRequest();
+    request.open("GET", listing_url + "/" + listingID, true);
+
+    request.onload = function() {
+        if (request.status === 200) {
+            var listingDetails = JSON.parse(request.responseText);
+            // Do something with listingDetails
+        } else {
+            console.error('Failed to retrieve listing details');
+        }
+    };
+
+    request.onerror = function() {
+        console.error('Network error while fetching listing details');
+    }
+
+    request.send();
+}
+
 function displayListingByUserID(listings) {
 
     var table = document.getElementById("listingZone");
@@ -158,6 +178,8 @@ function displayListingByUserID(listings) {
     table.innerHTML = "";
 
     for (var count = 0; count < listings.length; count++) {
+        var listingID = listings[count].listingID;
+        getListingDetails(listingID);
         var title = listings[count].title;
         var description = listings[count].description;
         var restaurant = listings[count].restaurantName;
@@ -209,7 +231,12 @@ function displayListingByUserID(listings) {
                     '</div>' +
                     '<div class="col-md-1 text-end">' +
                         (status == 0 ? '<button class="btn btn-secondary float-end my-2 mx-1" disabled>Cancelled</button>'+ '<button id="deleteButton" class="btn btn-danger float-end my-2 mx-1" onclick="deleteListing('+listingID+')" value="'+listingID+'"">Delete</button>' :
-                        (status >= 2 ? '<button class="btn btn-success payment-button" id="paymentButton">Pay</button>': '<button class="btn btn-danger payment-button" id="cancelButton" onclick="cancelListing('+listingID+')" value="'+listingID+'">Cancel</button>')) +
+                        (status >= 2 ? 
+                        '<form action="/api/stripe/create-checkout-session" method="POST">' +
+                            '<button type="submit" class="btn btn-success payment-button paymentButton" id="checkout" value="' + listingID + '">Pay</button>' +
+                        '</form>' 
+                        : 
+                            '<button class="btn btn-danger payment-button" id="cancelButton" onclick="cancelListing('+listingID+')" value="'+listingID+'">Cancel</button>')) +
                     '</div>' +
                     // '<div class="col-md-1 text-end">' +
                     //     (status >= 4 ? '<button class="btn btn-success delete-button" id="deleteButton" @click=deleteListing()>X</button>': '<button class="btn btn-success payment-button disabled" id="deleteButton" @click=deleteListing()>X</button>') +
@@ -219,6 +246,36 @@ function displayListingByUserID(listings) {
 
         table.insertAdjacentHTML('beforeend', cell);
         // Add event listener to cancelButton
+
+        // Get all elements with the class "paymentButton"
+        var paymentButtons = document.querySelectorAll('.paymentButton');
+
+        // Add an event listener to each button
+        paymentButtons.forEach((paymentButton) => {
+            paymentButton.addEventListener('click', async (event) => {
+                event.preventDefault();
+                // get listing ID from button value + parse before comparing
+                const listingID = parseInt(event.target.value);
+                // find the listing with this listingID              
+                const listing = listings.find(listing => listing.listingID === listingID);
+                if (!listing) {
+                    console.error('Listing not found');
+                    return;
+                }
+                const description = listing.description;
+                const response = await fetch('/api/stripe/create-checkout-session', { 
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        description: description
+                    })
+                });
+                const data = await response.json();
+                window.location.href = data.url;
+            });
+        });
     }
     
     message = mylistingCount + " Listings";
