@@ -24,17 +24,18 @@
 	<!-- Nav Bar js-->
 	<script src="js/nav-bar.js"></script>
 	
-	<!-- <script src="./js/listing.js"></script>
+	<script src="./js/listing.js"></script>
 	<script src="./js/app.js"></script>
 
 	<script>
         function load(){
-            getAllListing();
+			getAllListing();
+            getListingByNotUserID(sessionStorage.getItem("userId"));
         }
-    </script> -->
+    </script>
 </head>
 
-<body class="body-wrapper">
+<body class="body-wrapper" onload="load();">
 	<!-- Nav Bar -->
 	<header>
 		<div class="container">
@@ -59,21 +60,10 @@
 	</form>
 </div>
 
+<h4 id="numListings" style="margin-left: 30px; margin-bottom: 20px;"></h4>
 <div class="food-list-container">
     <div class="row">
-        <!-- To insert code based on listings in DB > generate 1 card for each listing -->
-        <div class="col-md-3">
-            <div class="card">
-                <img src="img/food2.jpg" class="card-img-top" alt="Food image">
-                <div class="card-body">
-                    <h5 class="card-title">Listing Title</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Date</h6>
-                    <!-- <a href="#" class="card-link">Card link</a>
-                    <a href="#" class="card-link">Another link</a> -->
-                </div>
-            </div>
-        </div>
-        <!-- End of generated part -->
+		<!-- based on  listings.js -->
     </div>
 </div>
 <!-- Scripts -->

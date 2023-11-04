@@ -1,3 +1,4 @@
+
 function getAllListing() {
     var request = new XMLHttpRequest();
     request.open("GET", listing_url, true);
@@ -24,39 +25,60 @@ function getAllListing() {
     request.send();
 }
 
-function displayListing(listings) {
 
-    var table = document.getElementById("listingZone");
+function getListingByNotUserID() {
+    var request = new XMLHttpRequest();
+    request.open("GET", foodlisting_url+sessionStorage.getItem("userId"), true);
+
+    // This function will be called when data returns from the web API
+    request.onload = function() {
+        if (request.status === 200) {
+            // Get all listing records into our listing_array
+            foodlisting_array = JSON.parse(request.responseText);
+            foodListingCount = foodlisting_array.length;
+            displayListing(foodlisting_array);
+        } else {
+            // Handle errors, e.g., display an error message
+            console.error('Failed to retrieve listing data');
+        }
+    };
+
+    request.onerror = function() {
+        // Handle network errors
+        console.error('Network error while fetching listing data');
+    }
+
+    // This command starts the calling of the web API
+    request.send();
+}
+
+function displayListing(listings) {
+    var container = document.querySelector('.food-list-container .row');
+
     var message = "";
 
-    table.innerHTML = "";
+    container.innerHTML = "";
 
     for (var count = 0; count < listings.length; count++) {
         var title = listings[count].title;
-        var description = listings[count].description;
-        var restaurant = listings[count].restaurantName;
-        var location = listings[count].location;
-        var room = listings[count].room;
+        var date = listings[count].datePosted;
+        var date = date.substring(0, 10);
 
-        var cell = '<div class="listing">' +
-                    '<div class="listing-container">' +
-                        '<div class="listing-header">' +
-                            '<h5 class="listing-title">' + title + '</h5>' +
-                        '</div>' +
-                        '<div class="listing-body">' +
-                        '<p class="user-room"> Room: ' + room + '</p>' +
-                        '<p class="user-location" style="font-weight:bold; color: #28a745"> User Location: ' + location + '</p>' +
-                        '<p class="listing-restaurant">Restaurant: ' + restaurant + '</p>' +
-                        '<p class="listing-description">Description: ' + description + '</p>' +
-                            
-                        '</div>' +
-                    '</div>';
+        var cell = '<div class="col-md-3">' +
+            '<div class="card">' +
+                '<img src="img/food2.jpg" class="card-img-top" alt="Food image">' +
+                '<div class="card-body">' +
+                    '<h5 class="card-title">' + title + '</h5>' +
+                    '<h6 class="card-subtitle mb-2 text-muted">' + date + '</h6>' +
+                '</div>' +
+            '</div>' +
+        '</div>';
 
-        table.insertAdjacentHTML('beforeend', cell);
+        container.insertAdjacentHTML('beforeend', cell);
     }
 
     message = listings.length + " Listings";
-    document.getElementById("summary").textContent = message;
+    document.getElementById("numListings").textContent = message;
 }
 
 function addListing(){
@@ -81,19 +103,19 @@ function addListing(){
     request.setRequestHeader("Content-Type", "application/json");
 
     request.send(JSON.stringify(newListing));
-    // document.getElementById('submitListing').addEventListener('click', function(e) {
-    //     e.preventDefault();
-    //     addListing();
+    document.getElementById('submitListing').addEventListener('click', function(e) {
+        e.preventDefault();
+        addListing();
 
-    //     Swal.fire({
-    //         icon: 'success',
-    //         title: "New Food Listing Added",
-    //         showConfirmButton: false,
-    //         timer: 2300
-    //       }).then(function() {
-    //         window.location.href = "/my-listings.html";
-    //       });
-    // });
+        Swal.fire({
+            icon: 'success',
+            title: "New Food Listing Added",
+            showConfirmButton: false,
+            timer: 2300
+          }).then(function() {
+            window.location.href = "/my-listings.html";
+          });
+    });
     
 }
 

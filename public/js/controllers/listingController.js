@@ -62,7 +62,7 @@ function getListingNotByUserID(request, respond){
     var userId = parseInt(request.params.userId);
     console.log(userId);
 
-    listingDB.getListingByUserID(userId, function(error, result){
+    listingDB.getListingNotByUserID(userId, function(error, result){
         if(error){
             respond.json(error);
         } else {
