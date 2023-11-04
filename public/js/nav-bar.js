@@ -94,3 +94,31 @@ function logout() {
     sessionStorage.clear();
     window.location.href = 'index.html';
 }
+
+if (sessionStorage.getItem("userId") === null) userIdAfterCreateAcc();
+
+function userIdAfterCreateAcc() {
+    var request = new XMLHttpRequest();
+    var email = sessionStorage.getItem("userEmail");
+    request.open("POST", "/user-profile", true);
+    request.setRequestHeader("Content-Type", "application/json");
+
+    var data = {
+        email: email,
+    };
+
+    // This function will be called when data returns from the web API
+    request.onload = function () {
+        if (request.status === 200) {
+            // Get current profile
+            result = JSON.parse(request.responseText);
+            sessionStorage.setItem('userId', result[0].userId);    
+        }
+    }
+    request.onerror = function () {
+        // Handle network errors
+        console.error('Network error while fetching user profile data');
+    }
+    // This command starts the calling of the web API
+    request.send(JSON.stringify(data));
+}
