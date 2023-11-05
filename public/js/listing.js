@@ -89,7 +89,6 @@ function displayListing(listings) {
     acceptButtons.forEach(function(button) {
         button.addEventListener('click', function() {
             var listingID = this.getAttribute('data-listing-id');
-            console.log("Accept Button Clicked - Listing ID: " + listingID);
             // Prompt the user for confirmation
             var confirmationModal = new bootstrap.Modal(document.getElementsByName('confirmationModal')[0]);
             confirmationModal.show();
@@ -484,14 +483,43 @@ function updateModalContent(details) {
         room = "-No Room Specified-";
         document.getElementById('modalListingRoom').style.color = 'grey';
     }
-    document.getElementById('modalListingRoom').textContent = room
+    document.getElementById('modalListingRoom').textContent = room;
     document.getElementById('modalListingTitle').textContent = details[0].title;
     document.getElementById('modalListingDesc').textContent = details[0].description;
+    document.getElementById('modalListingRName').textContent = details[0].restaurantName;
     document.getElementById('modalListingLat').textContent = details[0].lat;
     document.getElementById('modalListingLng').textContent = details[0].lng;
 
     sessionStorage.setItem("currentListingID", details[0].listingID);
+
+    // Display Google Map
+    var lat = parseFloat(details[0].lat);
+    var lng = parseFloat(details[0].lng);
+    displayMap(lat, lng, details[0].restaurantName);
+    
 }
+
+function displayMap(lat, lng, name) {
+    const myLatlng = { lat: lat, lng: lng };
+    const map = new google.maps.Map(document.getElementById("modalMap"), {
+      zoom: 15,
+      center: myLatlng,
+    });
+    // Create a marker on the map with a name
+    const marker = new google.maps.Marker({
+        position: myLatlng,
+        map: map,
+        title: name, // Add the name to the marker
+    });
+    // Create an InfoWindow with the details
+    const infoWindow = new google.maps.InfoWindow({
+      position: myLatlng,
+      content: `Restraunt: ${name}`, // Display the name in the content
+    });
+    // Open the InfoWindow
+    infoWindow.open(map);
+}
+
 
 // Click on accept listing button
 document.addEventListener('DOMContentLoaded', function () {

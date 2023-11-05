@@ -125,7 +125,6 @@ class ListingDB
 
 changeListingStatus(listing, callback) {
     var sql;
-    
     // Check if the status is "Listing Accepted"
     if (listing.getStatus() === "Listing Accepted") {
         sql = "UPDATE Listing SET status = ?, fulfillerId = ? WHERE listingID = ?";
@@ -149,7 +148,6 @@ changeListingStatus(listing, callback) {
         });
     }
 }
-
 
 }
   

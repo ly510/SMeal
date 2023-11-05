@@ -70,7 +70,7 @@
 
 <!-- Modal -->
 <div class="modal fade" id="listingModal" tabindex="-1" aria-labelledby="listingModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <div class="modal-header bg-light">
                 <h5 class="modal-title" id="listingModalLabel" data-bs-dismiss="modal">
@@ -82,21 +82,23 @@
                 <!-- You can add content for listing details here -->
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <img id="modalListingImage" src="" alt="listing image" class="img-fluid rounded mb-3">
                             <p class="fs-6 text-muted">Created by @<span id="modalListingName"></span></p>
-                            <h4 class="mb-2">User Location:</h4>
+							<button class="btn btn-success w-100" name="acceptListingButton" data-bs-dismiss="modal">Accept</button>
+                            <h4 class="my-2 mt-4">User Location:</h4>
                             <p> <span id="modalListingUserLocation" style="font-weight:bold; color: #28a745"></span>, ROOM: <span id="modalListingRoom"></span></p>
-                            <button class="btn btn-success" name="acceptListingButton" data-bs-dismiss="modal">Accept</button>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-8">
                             <h4 class="mb-2">Description:</h4>
                             <p id="modalListingDesc"></p>
-                            <h4 class="mb-2">Restaurant Address:</h4>
-                            <p id="modalListingLat"></p>
-                            <p id="modalListingLng"></p>
+                            <h4 class="mb-2">Restaurant:</h4>
+							<p>Name: <span id="modalListingRName"></span></p>
+							<div id="modalMap" style="height: 450px;"></div>
+                            Lat: <span id="modalListingLat"></span>, 
+                            Lng: <span id="modalListingLng"></span>
                         </div>
-                    </div>
+                    </div>	
                 </div>
             </div>
             <div class="modal-footer">
@@ -135,5 +137,12 @@ crossorigin="anonymous"></script>
 <script src='https://unpkg.com/axios/dist/axios.min.js'></script>
 <!-- Vue 3 -->
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<!-- Google Maps -->
+<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD16-5UR_uPSLvoTx6BJronXsho-r_S3Zo"></script> -->
+<!-- <script src="./js/routes/map.js"></script> -->
+<script>
+	loadGoogleMapsScript();
+</script>
+
 </body>
 </html>

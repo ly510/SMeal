@@ -227,7 +227,7 @@ function changeListingStatus(request, respond) {
     if (status === "Listing Accepted") {
         fulfillerId = request.body.fulfillerId;
     }
-    var toChangeStatus = new Listing(listingID, null, null, null, null, null, null, null, null, null, null, fulfillerId, status);
+    var toChangeStatus = new Listing(listingID, null, null, null, null, null, null, null, null, null, null, null, fulfillerId, status);
     listingDB.changeListingStatus(toChangeStatus, function (error, result) {
         if (error) {
             respond.json(error);
