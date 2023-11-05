@@ -1,59 +1,90 @@
-  #header-title {
-    margin-bottom: 10px;
+#header-title {
+  margin-bottom: 10px;
+}
+
+.search-bar, .search-btn, .form-select {
+  height: 40px;
+  padding: 0 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.search-bar {
+  width: 500px;
+  margin-left: 30px;
+}
+
+#createListing-btn {
+  margin-left: 30px;
+  margin-bottom: 50px;
+}
+
+.search-btn {
+  width: 80px;
+}
+
+.form-select {
+  width: auto;
+  padding: auto;
+}
+
+.createListing {
+  height: 40px;
+  width: auto;
+  padding: 0 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+}
+
+.listing-container {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-left: 30px;
+  margin-right: 30px;
+}
+
+.listing-description, .listing-restaurant {
+  color: grey;
+  margin-bottom: 2px;
+}
+
+#restaurantImg {
+  object-fit: cover;
+  max-height: 150px;
+}
+
+/* For loading spinner */
+.loader {
+  transform: translateZ(1px);
+}
+.loader:after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 60px;
+  background: url('/img/cover-plate.png') no-repeat center center;
+  background-size: cover;
+  animation: coin-flip 4s infinite;
+}
+@keyframes coin-flip {
+  0%, 100% {
+    animation-timing-function: cubic-bezier(0.5, 0, 1, 0.5);
   }
+  0% {
+    transform: rotateY(0deg);
+  }
+  50% {
+    transform: rotateY(1800deg);
+    animation-timing-function: cubic-bezier(0, 0.5, 0.5, 1);
+  }
+  100% {
+    transform: rotateY(3600deg);
+  }
+}
+      
   
-  .search-bar, .search-btn, .form-select {
-    height: 40px;
-    padding: 0 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-  }
-
-  .search-bar {
-    width: 500px;
-    margin-left: 30px;
-  }
-
-  #createListing-btn {
-    margin-left: 30px;
-    margin-bottom: 50px;
-  }
-
-  .search-btn {
-    width: 80px;
-  }
-
-  .form-select {
-    width: auto;
-    padding: auto;
-  }
-  
-  .createListing {
-    height: 40px;
-    width: auto;
-    padding: 0 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #007bff;
-    color: #fff;
-    cursor: pointer;
-  }
-
-  .listing-container {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-left: 30px;
-    margin-right: 30px;
-  }
-
-  .listing-description, .listing-restaurant {
-    color: grey;
-    margin-bottom: 2px;
-  }
-
-  #restaurantImg {
-    object-fit: cover;
-    max-height: 150px;
-  }

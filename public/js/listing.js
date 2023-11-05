@@ -4,7 +4,7 @@ function getAllListing() {
     request.open("GET", listing_url, true);
 
     // This function will be called when data returns from the web API
-    request.onload = function() {
+    request.onload = function () {
         if (request.status === 200) {
             // Get all listing records into our listing_array
             listing_array = JSON.parse(request.responseText);
@@ -16,7 +16,7 @@ function getAllListing() {
         }
     };
 
-    request.onerror = function() {
+    request.onerror = function () {
         // Handle network errors
         console.error('Network error while fetching listing data');
     }
@@ -28,10 +28,10 @@ function getAllListing() {
 
 function getListingByNotUserID() {
     var request = new XMLHttpRequest();
-    request.open("GET", foodlisting_url+sessionStorage.getItem("userId"), true);
+    request.open("GET", foodlisting_url + sessionStorage.getItem("userId"), true);
 
     // This function will be called when data returns from the web API
-    request.onload = function() {
+    request.onload = function () {
         if (request.status === 200) {
             // Get all listing records into our listing_array
             foodlisting_array = JSON.parse(request.responseText);
@@ -43,7 +43,7 @@ function getListingByNotUserID() {
         }
     };
 
-    request.onerror = function() {
+    request.onerror = function () {
         // Handle network errors
         console.error('Network error while fetching listing data');
     }
@@ -68,15 +68,15 @@ function displayListing(listings) {
 
         var cell = '<div class="col-md-3 col-sm-4">' +
             '<div class="card">' +
-                '<img src="'+ image_url +'" class="card-img-top" alt="Food image">' +
-                '<div class="card-body">' +
-                    '<h5 class="card-title">' + title + '</h5>' +
-                    '<h6 class="card-subtitle mb-2 text-muted">' + date + '</h6>' +
-                    '<button class="btn btn-info my-2" data-listing-id="'+ listingID +'">View More</button>' +
-                    '<button class="btn btn-success mx-2 my-2 float-end accept-btn" data-listing-id="'+ listingID +'">Accept</button>' +
-                '</div>' +
+            '<img src="' + image_url + '" class="card-img-top" alt="Food image">' +
+            '<div class="card-body">' +
+            '<h5 class="card-title">' + title + '</h5>' +
+            '<h6 class="card-subtitle mb-2 text-muted">' + date + '</h6>' +
+            '<button class="btn btn-info my-2" data-listing-id="' + listingID + '">View More</button>' +
+            '<button class="btn btn-success mx-2 my-2 float-end accept-btn" data-listing-id="' + listingID + '">Accept</button>' +
             '</div>' +
-        '</div>';
+            '</div>' +
+            '</div>';
 
         container.insertAdjacentHTML('beforeend', cell);
     }
@@ -86,8 +86,8 @@ function displayListing(listings) {
 
     // Add click event listener to accept button
     var acceptButtons = document.querySelectorAll('.accept-btn');
-    acceptButtons.forEach(function(button) {
-        button.addEventListener('click', function() {
+    acceptButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
             var listingID = this.getAttribute('data-listing-id');
             // Prompt the user for confirmation
             var confirmationModal = new bootstrap.Modal(document.getElementsByName('confirmationModal')[0]);
@@ -103,8 +103,8 @@ function displayListing(listings) {
 }
 
 
-function addListing(){
-    
+function addListing() {
+
     newListing = new Object();
 
     newListing.userId = parseInt(sessionStorage.getItem("userId"));
@@ -117,7 +117,7 @@ function addListing(){
     newListing.lng = sessionStorage.getItem("lng");
     newListing.img = sessionStorage.getItem("restaurantImg");
     newListing.paymentType = document.getElementById("payment-type").value;
-    
+
     // Check if any value is null
     for (var key in newListing) {
         if (newListing[key] === null || newListing[key] === "") {
@@ -140,18 +140,18 @@ function addListing(){
         title: "New Food Listing Added",
         showConfirmButton: false,
         timer: 2300
-        }).then(function() {
+    }).then(function () {
         window.location.href = "/my-listings.html";
-        });
+    });
 }
 
-function getListingByUserID(){
+function getListingByUserID() {
 
     var request = new XMLHttpRequest();
-    request.open("GET", listing_url+"/"+sessionStorage.getItem("userId"), true);
+    request.open("GET", listing_url + "/" + sessionStorage.getItem("userId"), true);
 
     // This function will be called when data returns from the web API
-    request.onload = function() {
+    request.onload = function () {
         if (request.status === 200) {
             // Get all listing records into our listing_array
             mylisting_array = JSON.parse(request.responseText);
@@ -163,7 +163,7 @@ function getListingByUserID(){
         }
     };
 
-    request.onerror = function() {
+    request.onerror = function () {
         // Handle network errors
         console.error('Network error while fetching listing data');
     }
@@ -176,7 +176,7 @@ function getListingDetails(listingID) {
     var request = new XMLHttpRequest();
     request.open("GET", listing_url + "/" + listingID, true);
 
-    request.onload = function() {
+    request.onload = function () {
         if (request.status === 200) {
             var listingDetails = JSON.parse(request.responseText);
             // Do something with listingDetails
@@ -185,7 +185,7 @@ function getListingDetails(listingID) {
         }
     };
 
-    request.onerror = function() {
+    request.onerror = function () {
         console.error('Network error while fetching listing details');
     }
 
@@ -210,60 +210,60 @@ function displayListingByUserID(listings) {
         var status = listings[count].status;
         var listingID = listings[count].listingID;
 
-        if(status == "Awaiting Acceptance"){
+        if (status == "Awaiting Acceptance") {
             status = 1;
-        }else if(status == "Listing Accepted"){
+        } else if (status == "Listing Accepted") {
             status = 2;
-        }else if (status == "On the Way"){
+        } else if (status == "On the Way") {
             status = 3;
-        }else if(status == "Listing Completed"){
+        } else if (status == "Listing Completed") {
             status = 4;
-        }else if(status == "Cancelled"){
+        } else if (status == "Cancelled") {
             status = 0;
         }
 
         var cell = '<div class="listing px-2">' +
-                '<div class="listing-container row">' +
-                    '<div class="col-md-5">' +
-                        '<div class="listing-header">' +
-                            '<h5 class="listing-title">' + title + '</h5>' +
-                        '</div>' +
-                        '<div class="listing-body">' +
-                            '<p class="user-room"> Room: ' + room + '</p>' +
-                            '<p class="user-location" style="font-weight:bold; color: #28a745"> User Location: ' + location + '</p>' +
-                            '<p class="listing-restaurant">Restaurant: ' + restaurant + '</p>' +
-                            '<p class="listing-description">Description: ' + description + '</p>' +
-                        '</div>' +
-                    '</div>' +
-                    '<div class="col-md-6">' +
-                        '<br><div class="listing-status">' +
-                        '<ul id="progressbar-2" class="d-flex justify-content-between mx-0 mt-0 mb-5 px-0 pt-0 pb-2">' +
-                        '<li class="step0 ' + (status >= 1 ? 'active' : '') + ' text-center" id="step1"></li>' +
-                        '<li class="step0 ' + (status >= 2 ? 'active' : '') + ' text-center" id="step2"></li>' +
-                        '<li class="step0 ' + (status >= 3 ? 'active' : '') + ' text-center" id="step3"></li>' +
-                        '<li class="step0 ' + (status >= 4 ? 'active' : '') + ' text-muted text-end" id="step4"></li>' +
-                    '</ul>' +
-                    '<div class="d-flex justify-content-between mx-0 mt-0 mb-5 px-0 pt-0 pb-2">' +
-                        '<p class="text-left">Awaiting Acceptance</p>' +
-                        '<p class="text-center">Listing Accepted</p>' +
-                        '<p class="text-center">On the Way</p>' +
-                        '<p class="text-center">Listing Completed</p>' +
-                    '</div>' +
-                        '</div>' +
-                    '</div>' +
-                    '<div class="col-md-1 text-end">' +
-                        (status == 0 ? '<button class="btn btn-secondary float-end my-2 mx-1" disabled>Cancelled</button>'+ '<button id="deleteButton" class="btn btn-danger float-end my-2 mx-1" onclick="deleteListing('+listingID+')" value="'+listingID+'"">Delete</button>' :
-                        (status >= 2 ? 
-                        '<form action="/api/stripe/create-checkout-session" method="POST">' +
-                            '<button type="submit" class="btn btn-success payment-button paymentButton" id="checkout" value="' + listingID + '">Pay</button>' +
-                        '</form>' 
-                        : 
-                            '<button class="btn btn-danger cancel-button float-end my-2 mx-1" id="cancelButton" onclick="cancelListing('+listingID+')" value="'+listingID+'">Cancel</button>')) +
-                    '</div>' +
-                    // '<div class="col-md-1 text-end">' +
-                    //     (status >= 4 ? '<button class="btn btn-success delete-button" id="deleteButton" @click=deleteListing()>X</button>': '<button class="btn btn-success payment-button disabled" id="deleteButton" @click=deleteListing()>X</button>') +
-                    // '</div>' +
-                '</div>' +
+            '<div class="listing-container row">' +
+            '<div class="col-md-5">' +
+            '<div class="listing-header">' +
+            '<h5 class="listing-title">' + title + '</h5>' +
+            '</div>' +
+            '<div class="listing-body">' +
+            '<p class="user-room"> Room: ' + room + '</p>' +
+            '<p class="user-location" style="font-weight:bold; color: #28a745"> User Location: ' + location + '</p>' +
+            '<p class="listing-restaurant">Restaurant: ' + restaurant + '</p>' +
+            '<p class="listing-description">Description: ' + description + '</p>' +
+            '</div>' +
+            '</div>' +
+            '<div class="col-md-6">' +
+            '<br><div class="listing-status">' +
+            '<ul id="progressbar-2" class="d-flex justify-content-between mx-0 mt-0 mb-5 px-0 pt-0 pb-2">' +
+            '<li class="step0 ' + (status >= 1 ? 'active' : '') + ' text-center" id="step1"></li>' +
+            '<li class="step0 ' + (status >= 2 ? 'active' : '') + ' text-center" id="step2"></li>' +
+            '<li class="step0 ' + (status >= 3 ? 'active' : '') + ' text-center" id="step3"></li>' +
+            '<li class="step0 ' + (status >= 4 ? 'active' : '') + ' text-muted text-end" id="step4"></li>' +
+            '</ul>' +
+            '<div class="d-flex justify-content-between mx-0 mt-0 mb-5 px-0 pt-0 pb-2">' +
+            '<p class="text-left">Awaiting Acceptance</p>' +
+            '<p class="text-center">Listing Accepted</p>' +
+            '<p class="text-center">On the Way</p>' +
+            '<p class="text-center">Listing Completed</p>' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '<div class="col-md-1 text-end">' +
+            (status == 0 ? '<button class="btn btn-secondary float-end my-2 mx-1" disabled>Cancelled</button>' + '<button id="deleteButton" class="btn btn-danger float-end my-2 mx-1" onclick="deleteListing(' + listingID + ')" value="' + listingID + '"">Delete</button>' :
+                (status >= 2 ?
+                    '<form action="/api/stripe/create-checkout-session" method="POST">' +
+                    '<button type="submit" class="btn btn-success payment-button paymentButton" id="checkout" value="' + listingID + '">Pay</button>' +
+                    '</form>'
+                    :
+                    '<button class="btn btn-danger cancel-button float-end my-2 mx-1" id="cancelButton" onclick="cancelListing(' + listingID + ')" value="' + listingID + '">Cancel</button>')) +
+            '</div>' +
+            // '<div class="col-md-1 text-end">' +
+            //     (status >= 4 ? '<button class="btn btn-success delete-button" id="deleteButton" @click=deleteListing()>X</button>': '<button class="btn btn-success payment-button disabled" id="deleteButton" @click=deleteListing()>X</button>') +
+            // '</div>' +
+            '</div>' +
             '</div>';
 
         table.insertAdjacentHTML('beforeend', cell);
@@ -285,7 +285,7 @@ function displayListingByUserID(listings) {
                     return;
                 }
                 const description = listing.description;
-                const response = await fetch('/api/stripe/create-checkout-session', { 
+                const response = await fetch('/api/stripe/create-checkout-session', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -299,12 +299,12 @@ function displayListingByUserID(listings) {
             });
         });
     }
-    
+
     message = mylistingCount + " Listings";
     document.getElementById("summary").textContent = message;
 }
 
-function cancelListing(listingID){
+function cancelListing(listingID) {
     var response = confirm("Are you sure you want to cancel this request?");
 
     if (response) {
@@ -315,22 +315,22 @@ function cancelListing(listingID){
     }
 
     var request = new XMLHttpRequest();
-    request.open("PUT", listing_url+"/"+listingID, true);
+    request.open("PUT", listing_url + "/" + listingID, true);
     request.setRequestHeader("Content-Type", "application/json");
 
     request.send();
-    
+
     Swal.fire({
         icon: 'success',
         title: "Listing Cancelled",
         showConfirmButton: false,
         timer: 2300
-        }).then(function() {
+    }).then(function () {
         window.location.href = "/my-listings.html";
-        });
+    });
 }
 
-function deleteListing(listingID){
+function deleteListing(listingID) {
     var response = confirm("Are you sure you want to delete this request?");
 
     if (response) {
@@ -341,111 +341,19 @@ function deleteListing(listingID){
     }
 
     var request = new XMLHttpRequest();
-    request.open("DELETE", deleteListing_url+listingID, true);
+    request.open("DELETE", deleteListing_url + listingID, true);
     request.setRequestHeader("Content-Type", "application/json");
 
     request.send();
-    
+
     Swal.fire({
         icon: 'success',
         title: "Listing Deleted",
         showConfirmButton: false,
         timer: 2300
-        }).then(function() {
+    }).then(function () {
         window.location.href = "/my-listings.html";
-        });
-}
-
-function getNearbyRestaurants() {
-    var restaurantList = document.getElementById("restaurantList");
-    var selectedLocation = document.getElementById("user-location").value;
-    var locationAlert = document.getElementById("locationAlert");
-    var restaurantAlert = document.getElementById("restaurantAlert");
-
-    locationAlert.innerText = "";
-    locationAlert.classList.add('d-none');
-
-    // Alert if user did not select their current location
-    if (selectedLocation == "Select your school") {
-        locationAlert.innerText = "Please select a delivery location!";
-        locationAlert.classList.remove('d-none');
-        return;
-    }
-
-    var request = new XMLHttpRequest();
-
-    request.open("POST", restaurant_url, true);
-    request.setRequestHeader("Content-Type", "application/json");
-
-    if (selectedLocation.includes('/')) {
-        selectedLocation = selectedLocation.split('/')[0];
-    }
-
-    var data = {
-        location: "SMU%20" + selectedLocation,
-    };
-
-    // This function will be called when data returns from the web API
-    request.onload = function() {
-        if (request.status === 200) {
-            // Get all listing records into our listing_array
-            restaurant_array = JSON.parse(request.responseText);
-            if (restaurant_array && restaurant_array.length > 0) {
-                displayRestaurants(restaurant_array);
-            } else {
-                restaurantList.innerHTML = "";
-                restaurantAlert.innerText = "No restaurants found nearby!";
-                restaurantAlert.classList.remove('d-none');
-            }
-        } else {
-            // Handle errors, e.g., display an error message
-            console.error('Failed to retrieve restaurant data');
-        }
-    };
-
-    request.onerror = function() {
-        // Handle network errors
-        console.error('Network error while fetching restaurant data');
-    }
-
-    request.send(JSON.stringify(data));
-}
-
-function displayRestaurants(restaurants) {
-    var displayArea = document.getElementById("restaurantList");
-    var restaurantAlert = document.getElementById("restaurantAlert");
-
-    displayArea.innerHTML = "";
-    restaurantAlert.innerText = "";
-    restaurantAlert.classList.add('d-none');
-
-    var full = "";
-
-    for (var i = 0; i < restaurants.length; i++) {
-        var name = restaurants[i].name;
-        var address = restaurants[i].address;
-        var photo = restaurants[i].photo;
-        var rating = restaurants[i].rating;
-
-        var lat = restaurants[i].lat;
-        var lng = restaurants[i].lng;
-
-        var display = `<div class="row" id="selectedRestaurant" data-lat="${lat}" data-lng="${lng}" data-bs-target="#createModal" data-bs-toggle="modal" data-bs-dismiss="modal">
-                            <div class="col-md-3 py-0">
-                                ${photo !== null ? `<img src="${photo}" class="img-thumbnail w-100 h-auto" id="restaurantImg">` : `<img src="/img/restaurantDefault.png" class="img-thumbnail w-100 h-auto" id="restaurantImg">`}
-                            </div>
-                            <div class="col-md-9">
-                                <h5><b>${name}</b></h5>
-                                <p><b>Address:</b> <span>${address}</span></p>
-                                ${rating !== "No rating available" ? `<p><b>Rating:</b> ${rating} <i class="fa-solid fa-star" style="color: #ffeb14;"></i></p>` : `<p><b>Rating:</b> ${rating}</p>`}
-                            </div>
-                        </div>
-                        <hr>`;
-
-            full += display;
-        }
-
-    displayArea.innerHTML = full;
+    });
 }
 
 // Click on one of the listings to open a modal
@@ -456,7 +364,7 @@ document.addEventListener('DOMContentLoaded', function () {
     container.addEventListener('click', function (event) {
         if (event.target.classList.contains('btn-info')) {
             var listingId = event.target.getAttribute('data-listing-id');
-            
+
             // Call the function to fetch more details based on listingId
             fetchMoreDetails(listingId)
                 .then(function (details) {
@@ -496,7 +404,7 @@ function updateModalContent(details) {
     document.getElementById('modalListingUserLocation').textContent = details[0].location;
     var room = details[0].room;
     console.log(room);
-    if (room.length === 0){
+    if (room.length === 0) {
         room = "-No Room Specified-";
         document.getElementById('modalListingRoom').style.color = 'grey';
     }
@@ -513,14 +421,14 @@ function updateModalContent(details) {
     var lat = parseFloat(details[0].lat);
     var lng = parseFloat(details[0].lng);
     displayMap(lat, lng, details[0].restaurantName);
-    
+
 }
 
 function displayMap(lat, lng, name) {
     const myLatlng = { lat: lat, lng: lng };
     const map = new google.maps.Map(document.getElementById("modalMap"), {
-      zoom: 15,
-      center: myLatlng,
+        zoom: 15,
+        center: myLatlng,
     });
     // Create a marker on the map with a name
     const marker = new google.maps.Marker({
@@ -530,8 +438,8 @@ function displayMap(lat, lng, name) {
     });
     // Create an InfoWindow with the details
     const infoWindow = new google.maps.InfoWindow({
-      position: myLatlng,
-      content: `Restraunt: ${name}`, // Display the name in the content
+        position: myLatlng,
+        content: `Restraunt: ${name}`, // Display the name in the content
     });
     // Open the InfoWindow
     infoWindow.open(map);
@@ -579,10 +487,124 @@ function handleAcceptListing(listingId) {
             // Handle network errors
         };
         request.send(JSON.stringify({ status: 'Listing Accepted', fulfillerId }));
-        
+
     } catch (error) {
         console.error('Error accepting the listing:', error.message);
         // Handle the error, show an alert, or perform other actions
     }
 }
 
+const listing = Vue.createApp({
+    data() {
+        return {
+            restaurants: [],
+            restaurantName: "",
+            restaurantAddress: "",
+        };
+    }, // data
+    // computed: { 
+    //     derivedProperty() {
+    //         return false;
+    //     }  
+    // }, // computed
+    // created() { 
+    // },
+    // mounted() { 
+    // },
+    methods: {
+        clearRestaurant() {
+            var resAddr = document.getElementById('resAddr');
+            var restaurantAddress = document.getElementById('restaurantAddress');
+            
+            resAddr.setAttribute('hidden', true);
+            restaurantAddress.setAttribute('hidden', true);
+
+            this.restaurantName = "";
+            this.restaurantAddress = "";
+        },
+        getNearbyRestaurants() {
+            var restaurantList = document.getElementById("restaurantList");
+            var selectedLocation = document.getElementById("user-location").value;
+            var locationAlert = document.getElementById("locationAlert");
+            var restaurantAlert = document.getElementById("restaurantAlert");
+            var loadingDisplay = document.getElementById("loadingDisplay");
+
+            loadingDisplay.classList.remove('d-none');
+            restaurantList.classList.add('d-none');
+
+            locationAlert.innerText = "";
+            locationAlert.classList.add('d-none');
+
+            restaurantAlert.innerText = "";
+            restaurantAlert.classList.add('d-none');
+
+            // Alert if user did not select their current location
+            if (selectedLocation == "Select your school") {
+                locationAlert.innerText = "Please select a delivery location!";
+                locationAlert.classList.remove('d-none');
+                return;
+            }
+            else {
+                if (selectedLocation.includes('/')) {
+                    selectedLocation = selectedLocation.split('/')[0];
+                }
+
+                var data = {
+                    location: "SMU%20" + selectedLocation,
+                };
+
+                axios.post(restaurant_url, data, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (response.status === 200) {
+                        // Stop displaying loading
+                        loadingDisplay.classList.add('d-none');
+                        
+                        restaurant_array = response.data;
+                        
+                        if (restaurant_array && restaurant_array.length > 0) {
+                            restaurantList.classList.remove('d-none');
+                            this.restaurants = restaurant_array;
+                        } else {
+                            restaurantAlert.innerText = "No restaurants found nearby!";
+                            restaurantAlert.classList.remove('d-none');
+                        }
+                    }
+                })
+                .catch(function (error) {
+                    console.error('Failed to retrieve restaurant data:', error);
+                });
+
+                // Hide first modal and display second
+                var createModal = bootstrap.Modal.getInstance(document.getElementById('createModal'));
+                createModal.hide();
+
+                var restaurantModal = new bootstrap.Modal(document.getElementById('nearbyRestaurantModal'));
+                restaurantModal.show();
+            }
+        },
+        selectedRestaurant(restaurant) {
+            // Store into vue data
+            this.restaurantName = restaurant.name;
+            this.restaurantAddress = restaurant.address;
+
+            // Display address after selection
+            document.getElementById('resAddr').removeAttribute('hidden');
+            document.getElementById('restaurantAddress').removeAttribute('hidden');
+
+            // Store to add listing
+            sessionStorage.setItem('lat', restaurant.lat);
+            sessionStorage.setItem('lng', restaurant.lng);
+            if (restaurant.photo !== null) {
+                sessionStorage.setItem('restaurantImg', restaurant.photo);
+            }
+            else {
+                sessionStorage.setItem('restaurantImg', '/img/restaurantDefault.png');
+            }
+        },
+    } // methods
+});
+const vmListing = listing.mount('#app'); 
