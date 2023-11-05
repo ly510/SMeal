@@ -29,6 +29,18 @@ function addListing(request, respond)
         if(error){
             respond.json(error);
         } else {
+            // Import the sendSMS function
+            const { sendSMS } = require('../whatsapp.js');
+
+            // Define the message body
+            const messageBody = 'Your listing has been created. Please wait for a fulfiller to accept your listing.';
+
+            // Send the SMS message
+            console.log(sessionStorage.getItem('phoneNo'));
+            sendSMS(messageBody, '+6581265472')
+                .then(message => console.log(message.sid))
+                .catch(err => console.error(err));
+
             respond.json(result);
         }
     });
@@ -72,11 +84,22 @@ function getListingNotByUserID(request, respond){
 
 function cancelListing(request, respond){
     var status = "Cancelled";
-    var tocancel = new Listing(parseInt(request.params.listingID),null, null, null, null, null, null, null, null, null, null, null, status);
+    var tocancel = new Listing(parseInt(request.params.listingID),null,null,null,null,null,null,null,null,null,null,null,null,status);
+
     listingDB.cancelListing(tocancel, function(error, result){
         if(error){
             respond.json(error);
         } else {
+            // Import the sendSMS function
+            const { sendSMS } = require('../whatsapp.js');
+
+            // Define the message body
+            const messageBody = 'Your listing has been cancelled.';
+
+            // Send the SMS message
+            sendSMS(messageBody, sessionStorage.getItem('phoneNo'))
+                .then(message => console.log(message.sid))
+                .catch(err => console.error(err));
             respond.json(result);
         }
     });
@@ -86,12 +109,22 @@ function deleteListing(request, respond)
 {
     var listingID = parseInt(request.params.listingID);
 
-
     listingDB.deleteListing(listingID, function(error, result)
     {
         if(error){
             respond.json(error);
         } else {
+            // Import the sendSMS function
+            const { sendSMS } = require('../whatsapp.js');
+
+            // Define the message body
+            const messageBody = 'Your listing has been deleted. Hope to see you with SMEAL again! Have a great day~';
+
+            // Send the SMS message
+            sendSMS(messageBody, sessionStorage.getItem('phoneNo'))
+                .then(message => console.log(message.sid))
+                .catch(err => console.error(err));
+
             respond.json(result);
         }
     });
