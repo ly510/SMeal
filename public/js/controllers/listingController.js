@@ -208,4 +208,4 @@ async function obtainImage(imgName) {
     }
 }
 
-module.exports = { getAllListing, addListing, getListingByUserID, getListingNotByUserID, cancelListing, deleteListing };
+module.exports = { getAllListing, addListing, getListingByUserID, getListingNotByUserID, cancelListing, deleteListing, getRestaurants };
