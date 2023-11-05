@@ -5,11 +5,13 @@ var db = require('../../../db-connection'); //reference of db-connection.js
 class AccountsDB {
     
     createAccount(accountData, callback) {
-        var sql = "INSERT into Accounts (email, password) VALUES(?, ?)";
+        var sql = "INSERT into Accounts (name, email, password, phoneNo) VALUES(?, ?, ?, ?)";
 
         db.query(sql, [
+            accountData.name,
             accountData.email,
-            accountData.password
+            accountData.password,
+            accountData.phoneNo
         ], callback);
     }
 

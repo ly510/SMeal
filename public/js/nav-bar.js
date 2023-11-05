@@ -1,11 +1,27 @@
 const userId = sessionStorage.getItem("userId");
 const userEmail = sessionStorage.getItem("userEmail");
 const user_name = sessionStorage.getItem("name");
+const phoneNo = sessionStorage.getItem("phoneNo");
 const img_url = sessionStorage.getItem("img");
 
+var htmlImg = ``;
+if (img_url == "null"){
+	htmlImg = `
+	<i class="fa-regular fa-circle fa-stack-2x"></i>
+	<i class="fa-solid fa-user fa-stack-1x"></i>`
+}
+else{
+	htmlImg = `<img src="../` + img_url + `" alt="Create Listing" class="bi img-fluid">`
+}
+
+console.log("This are session id you can call:");
+console.log("============================");
 console.log("userId:", userId);
 console.log("userEmail:", userEmail);
-
+console.log("name:", user_name);
+console.log("phoneNo:", phoneNo);
+console.log("img_url:", img_url);
+console.log("============================");
 
 // Navigation Bar
 window.addEventListener('load', function(){
@@ -42,13 +58,11 @@ window.addEventListener('load', function(){
 				</ul>
 				<ul class="navbar-nav ms-auto mt-2">
 					<li class="nav-item">
-					<a class="nav-link text-white create-button" href="create-listing.html"><i
-							class="fa fa-plus-circle"></i> Create Listing</a>
-					</li>
 					<li class="nav-item dropdown dropdown-slide">
 						<a class="nav-link" href="#!" role="button" data-bs-toggle="dropdown">
-							<span class="fa-stack">
-								<img src="../` + img_url + `" alt="Create Listing" class="bi img-fluid">
+							<span class="fa-stack">` 
+							+ htmlImg + 
+							`
 							</span>
 							`
 							+ user_name +
@@ -79,4 +93,32 @@ function logout() {
     console.log("Logout function called");
     sessionStorage.clear();
     window.location.href = 'index.html';
+}
+
+if (sessionStorage.getItem("userId") === null) userIdAfterCreateAcc();
+
+function userIdAfterCreateAcc() {
+    var request = new XMLHttpRequest();
+    var email = sessionStorage.getItem("userEmail");
+    request.open("POST", "/user-profile", true);
+    request.setRequestHeader("Content-Type", "application/json");
+
+    var data = {
+        email: email,
+    };
+
+    // This function will be called when data returns from the web API
+    request.onload = function () {
+        if (request.status === 200) {
+            // Get current profile
+            result = JSON.parse(request.responseText);
+            sessionStorage.setItem('userId', result[0].userId);    
+        }
+    }
+    request.onerror = function () {
+        // Handle network errors
+        console.error('Network error while fetching user profile data');
+    }
+    // This command starts the calling of the web API
+    request.send(JSON.stringify(data));
 }

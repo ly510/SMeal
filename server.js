@@ -5,17 +5,21 @@ const express = require("express");
 const routeListing = require('./public/js/routes/routeListing.js');
 const routeProfile = require('./public/js/routes/routeProfile.js');
 const routeAccount = require('./public/js/routes/routeAccount.js');
+const stripe = require('./public/js/routes/stripe.js');
 
 const bodyParser = require("body-parser");
 var app = express();
 var host = "127.0.0.1";
 var port = 5500;
 
+require("dotenv").config();
+
 var startPage = "public/index.html";
 
 app.use(express.static("./public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use("/api/stripe", stripe);
 
 routeListing.routeListing(app);
 routeProfile.routeProfile(app);

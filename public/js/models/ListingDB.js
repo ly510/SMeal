@@ -18,26 +18,83 @@ class ListingDB
           });
       }
 
-    addListing(listing, callback)
-    {
-      var sql = "INSERT into Listing (listingID, userID, title, description, location, restaurantName, paymentType, lat, lng, datePosted, fulfillerId, status) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+  // This function is for food listing page
+  getListingByUserID(userId, callback)
+  {
+    var sql = "SELECT * FROM smeal.Listing WHERE userId = ?";
 
-      var values = [
-        listing.getListingID(),
-        listing.getUserID(),
-        listing.getTitle(),
-        listing.getDescription(),
-        listing.getLocation(),
-        listing.getRestaurantName(),
-        listing.getLat(),
-        listing.getLng(),
-        listing.getPaymentType(),
-        listing.getDatePosted(),
-        listing.getFulfillerId(),
-        listing.getStatus()
-      ];
+    db.query(sql, [userId])
+    .then(([rows, fields]) => {
+      callback(null, rows);
+    })
+    .catch((error) => {
+      callback(error, null);
+    });
+  }
+
+  getListingNotByUserID(userId, callback)
+  {
+    var sql = "SELECT * FROM smeal.Listing WHERE userId != ?";
+
+    db.query(sql, [userId])
+    .then(([rows, fields]) => {
+      callback(null, rows);
+    })
+    .catch((error) => {
+      callback(error, null);
+    });
+  }
+
+  // This function is for my listing page where user creates a new listing
+  addListing(listing, callback)
+  {
+    var sql = "INSERT into Listing (userId, title, description, location, room, restaurantName, paymentType, lat, lng, datePosted, fulfillerId, status) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+
+    var values = [
+      listing.getUserID(),
+      listing.getTitle(),
+      listing.getDescription(),
+      listing.getLocation(),
+      listing.getRoom(),
+      listing.getRestaurantName(),
+      listing.getPaymentType(),
+      listing.getLat(),
+      listing.getLng(),
+      new Date(),
+      listing.getFulfillerId(),
+      "Awaiting Acceptance",
+    ];
+  
+    console.log(values);
+    db.query(sql, values)
+    .then(([rows, fields]) => {
+      callback(null, rows);
+    })
+    .catch((error) => {
+      callback(error, null);
+    });
+  }
+
+  
+  cancelListing(tocancel, callback)
+  {
+    var sql = "UPDATE Listing SET status = ? WHERE listingID = ?";
     
-      db.query(sql, values)
+    db.query(sql, [tocancel.getStatus(),tocancel.listingID])
+    .then(([rows, fields]) => {
+      callback(null, rows);
+    })
+    .catch((error) => {
+      callback(error, null);
+    });
+  }
+  
+  
+  deleteListing(listingID, callback)
+  {
+      var sql = "DELETE from Listing WHERE listingID = ?";
+      
+      db.query(sql, [listingID])
       .then(([rows, fields]) => {
         callback(null, rows);
       })
@@ -45,29 +102,7 @@ class ListingDB
         callback(error, null);
       });
     }
-
-    // updateListing(Listing, callback)
-    // {
-    //     var sql = "UPDATE Listing SET title = ?, description = ?, location = ?, restaurantName = ?, paymentType = ?, datePosted = ? WHERE listingID = ?";
-
-    //     return db.query(sql, [
-    //         Listing.getTitle(),
-    //         Listing.getDescription(),
-    //         Listing.getLocation(),
-    //         Listing.getRestaurantName(),
-    //         Listing.getPaymentType(),
-    //         Listing.getDatePosted(),
-    //         Listing.getListingId()
-    //     ], callback);
-    // }
-    
-    // deleteListing(ListingID, callback)
-    // {
-    //     var sql = "DELETE from Listing WHERE listingID = ?";
-        
-    //     return db.query(sql, [ListingID], callback);
-    // }
-    
-}
+  }
+  
 
 module.exports = ListingDB;

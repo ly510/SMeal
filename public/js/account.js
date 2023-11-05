@@ -30,9 +30,11 @@ function createAccount() {
     request.setRequestHeader('Content-Type', 'application/json');
 
     // Get values from the form
-    var email = document.getElementById('r_email').value;
+    var email = document.getElementById('r_email').value.trim().toLowerCase();
     var r_pwd = document.getElementById('r_pwd').value;
     var r_c_pwd = document.getElementById('r_c_pwd').value;
+    var p_num = sessionStorage.getItem("phoneNo");
+    var name = email.split('@')[0];
 
     // Check if empty
     if (email == "" || r_pwd == "" || r_c_pwd == "") {
@@ -44,31 +46,51 @@ function createAccount() {
     // Check if email is valid
     if (emailInvalid(email)) return;
 
+    // Check if phone number is valid according to the country code
+    if (sessionStorage.getItem("invalidPhoneNo") ===  'false') {
+        r_errorMsg.textContent = 'Please fill in a valid phone number based on the country code you have selected';
+        r_errorMsg.classList.remove('d-none');
+        return
+    }
+
     // Check if passwords match
     if (passwordNotMatch(r_pwd, r_c_pwd)) return;
 
     var accountData = {
+        name : name,
         email: email,
-        password: r_pwd
+        password: r_pwd,
+        phoneNo: p_num,
     };
 
-    request.onload = function () {
-        if (request.status === 200) {
-            console.log('Account created successfully:', request.responseText);
-        } else {
-            console.error('Failed to create account:', request.responseText);
+    // Check if email in the database already
+    existingAccount(email, function(result) {
+        if (result.length > 0){
+            r_errorMsg.textContent = 'Account already created! You may go to login.';
+            r_errorMsg.classList.remove('d-none');
+            return
         }
-    };
+        else{
+            request.onload = function () {
+                if (request.status === 200) {
+                    console.log('Account created successfully:', request.responseText);
+                } else {
+                    console.error('Failed to create account:', request.responseText);
+                }
+            };
+            request.onerror = function () {
+                console.error('Network error while creating account');
+            };
+            request.send(JSON.stringify(accountData)); // Convert to JSON and send the request
 
-    request.onerror = function () {
-        console.error('Network error while creating account');
-    };
-
-    request.send(JSON.stringify(accountData)); // Convert to JSON and send the request
-
-    sessionStorage.setItem('userEmail', email); // Store email in session storage
-
-    return true;
+            sessionStorage.setItem('name', name); 
+            sessionStorage.setItem('userEmail', email); 
+            sessionStorage.setItem('img', "null");
+            
+            // Redirect to home.html
+			window.location.href = 'home.html';
+        }
+    });
 }
 
 // Check if email is SMU
@@ -109,6 +131,32 @@ function passwordNotMatch(password, password_cfm) {
     }
 }
 
+function existingAccount(email, callback) {
+    var request = new XMLHttpRequest();
+    var email = email;
+    request.open("POST", "/user-profile", true);
+    request.setRequestHeader("Content-Type", "application/json");
+    var data = {
+        email: email,
+    };
+    // This function will be called when data returns from the web API
+    request.onload = function () {
+        if (request.status === 200) {
+            // Get data
+            var result = JSON.parse(request.responseText);
+            // Call the callback function with the result
+            callback(result);
+        }
+    };
+    request.onerror = function () {
+        // Handle network errors
+        console.error('Network error while fetching user profile data');
+    };
+    // This command starts the calling of the web API
+    request.send(JSON.stringify(data));
+}
+
+// Login
 function login(){
     const login_url = '/login';
     var request = new XMLHttpRequest();
@@ -149,3 +197,35 @@ function login(){
         request.send(JSON.stringify(data));
     });
 }
+
+
+// Phone Number Function
+document.addEventListener('DOMContentLoaded', function () {
+    var selectedCountry = "";
+    var input = document.getElementById('phoneNumber');
+    // Initialize intlTelInput
+    var iti = window.intlTelInput(input, {
+        separateDialCode: true,
+        initialCountry: "SG",
+    });
+    // Get the selected country code
+    input.addEventListener('countrychange', function () {
+        selectedCountry = iti.getSelectedCountryData();
+    });
+    // Store full phone number in sessionStorage
+    input.addEventListener('input', function () {
+        var fullPhoneNumber = iti.getNumber().trim();
+        sessionStorage.setItem("phoneNo", fullPhoneNumber);
+
+        // Check if the phone number is valid
+        var isValid = iti.isValidNumber();
+
+        //Check if phone number is empty
+        var isEmpty = !fullPhoneNumber.trim();
+        if (isEmpty) isValid = false;
+
+        console.log("Phone Number Valid? :", isValid);
+        sessionStorage.setItem("invalidPhoneNo", isValid);
+    });
+});
+
