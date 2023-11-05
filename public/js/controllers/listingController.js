@@ -208,4 +208,34 @@ async function obtainImage(imgName) {
     }
 }
 
-module.exports = { getAllListing, addListing, getListingByUserID, getListingNotByUserID, cancelListing, deleteListing, getRestaurants };
+function getListingByListingId(request, respond){
+    var listingID = parseInt(request.params.listingID);
+    listingDB.getListingByListingId(listingID, function(error, result){
+        if(error){
+            respond.json(error);
+        } else {
+            respond.json(result);
+        }
+    });
+}
+
+function changeListingStatus(request, respond) {
+    var listingID = parseInt(request.params.listingID);
+    var status = request.body.status;
+    var fulfillerId = null;
+    // Check if the status is "Listing Accepted"
+    if (status === "Listing Accepted") {
+        fulfillerId = request.body.fulfillerId;
+    }
+    var toChangeStatus = new Listing(listingID, null, null, null, null, null, null, null, null, null, null, fulfillerId, status);
+    listingDB.changeListingStatus(toChangeStatus, function (error, result) {
+        if (error) {
+            respond.json(error);
+        } else {
+            respond.json(result);
+        }
+    });
+}
+
+
+module.exports = { getAllListing, addListing, getListingByUserID, getListingNotByUserID, cancelListing, deleteListing, getRestaurants, getListingByListingId, changeListingStatus};
