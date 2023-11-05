@@ -116,6 +116,7 @@ function addListing(){
     newListing.restaurantName = document.getElementById("restaurant").value;
     newListing.lat = sessionStorage.getItem("lat");
     newListing.lng = sessionStorage.getItem("lng");
+    newListing.img = sessionStorage.getItem("restaurantImg");
     newListing.paymentType = document.getElementById("payment-type").value;
 
     // // Check if any value is null
@@ -364,6 +365,10 @@ function getNearbyRestaurants() {
 
     request.open("POST", restaurant_url, true);
     request.setRequestHeader("Content-Type", "application/json");
+
+    if (selectedLocation.includes('/')) {
+        selectedLocation = selectedLocation.split('/')[0];
+    }
 
     var data = {
         location: "SMU%20" + selectedLocation,
