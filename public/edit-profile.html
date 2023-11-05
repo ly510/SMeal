@@ -111,7 +111,7 @@
 												id="profile-pic" @change="handleImgUpload" max-size="512000">
 										</div>
 										<!-- Submit button -->
-										<button class="btn btn-transparent" onclick="updateProfile(event)">Save Changes</button>
+										<button class="btn btn-transparent" @click="updateProfile($event)">Save Changes</button>
 									</form>
 								</div>
 							</div>
@@ -140,7 +140,7 @@
 												v-model="confirmPass">
 										</div>
 										<!-- Submit Button -->
-										<button class="btn btn-transparent" onclick="updatePassword(event)">Change Password</button>
+										<button class="btn btn-transparent" @click="updatePassword($event)">Change Password</button>
 									</form>
 								</div>
 							</div>
