@@ -255,9 +255,11 @@ function displayListingByUserID(listings) {
                     '<div class="col-md-1 text-end">' +
                         (status == 0 ? '<button class="btn btn-secondary float-end my-2 mx-1" disabled>Cancelled</button>'+ '<button id="deleteButton" class="btn btn-danger float-end my-2 mx-1" onclick="deleteListing('+listingID+')" value="'+listingID+'"">Delete</button>' :
                         (status >= 2 ? 
-                        '<form action="/api/stripe/create-checkout-session" method="POST">' +
-                            '<button type="submit" class="btn btn-success payment-button paymentButton" id="checkout" value="' + listingID + '">Pay</button>' +
-                        '</form>' 
+                            '<form action="/api/stripe/create-checkout-session" method="POST">' +
+                            (sessionStorage.getItem("paymentStatus") == "success" && sessionStorage.getItem("paymentListingId") == listingID
+                            ? '<button type="submit" class="btn btn-success payment-button paymentButton" disabled id="checkout" value="' + listingID + '">Paid</button>'
+                            : '<button type="submit" class="btn btn-success payment-button paymentButton" id="checkout" value="' + listingID + '">Pay</button>') +
+                        '</form>'
                         : 
                             '<button class="btn btn-danger cancel-button float-end my-2 mx-1" id="cancelButton" onclick="cancelListing('+listingID+')" value="'+listingID+'">Cancel</button>')) +
                     '</div>' +
@@ -292,7 +294,8 @@ function displayListingByUserID(listings) {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        description: description
+                        description: description,
+                        listingID: listingID
                     })
                 });
                 const data = await response.json();
@@ -596,3 +599,12 @@ function handleAcceptListing(listingId) {
     }
 }
 
+document.addEventListener("DOMContentLoaded", function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const paymentSuccess = urlParams.get('payment');
+    const listingID = urlParams.get('listingID');
+    console.log('Payment Success:', paymentSuccess);
+    console.log('Listing ID:', listingID);
+    sessionStorage.setItem("paymentStatus",paymentSuccess);
+    sessionStorage.setItem("paymentListingId",listingID);
+});
