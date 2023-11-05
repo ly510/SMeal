@@ -18,29 +18,25 @@ function getAllListing(request, respond)
         }
     });
 }
+// Import the sendSMS function
+const { sendSMS } = require('../notification.js');
 
 function addListing(request, respond)
 {
     var now = new Date();
     var listing = new Listing(null, parseInt(request.body.userId), request.body.title, request.body.description, request.body.location, request.body.room, request.body.restaurantName, request.body.paymentType, request.body.lat, request.body.lng, request.body.img, formatDate(now), null, request.body.status);
-    
+    var phoneNo = request.body.phoneNo;
+
     listingDB.addListing(listing, function(error, result)
     {
         if(error){
             respond.json(error);
         } else {
-            // Import the sendSMS function
-            const { sendSMS } = require('../whatsapp.js');
 
             // Define the message body
             const messageBody = 'Your listing has been created. Please wait for a fulfiller to accept your listing.';
-
             // Send the SMS message
-            console.log(sessionStorage.getItem('phoneNo'));
-            sendSMS(messageBody, '+6581265472')
-                .then(message => console.log(message.sid))
-                .catch(err => console.error(err));
-
+            sendSMS(messageBody, phoneNo);
             respond.json(result);
         }
     });
@@ -85,21 +81,15 @@ function getListingNotByUserID(request, respond){
 function cancelListing(request, respond){
     var status = "Cancelled";
     var tocancel = new Listing(parseInt(request.params.listingID),null,null,null,null,null,null,null,null,null,null,null,null,status);
-
+    var phoneNo = request.body.phoneNo;
     listingDB.cancelListing(tocancel, function(error, result){
         if(error){
             respond.json(error);
         } else {
-            // Import the sendSMS function
-            const { sendSMS } = require('../whatsapp.js');
-
             // Define the message body
-            const messageBody = 'Your listing has been cancelled.';
-
+            const messageBody = 'Your listing has been successfully cancelled.';
             // Send the SMS message
-            sendSMS(messageBody, sessionStorage.getItem('phoneNo'))
-                .then(message => console.log(message.sid))
-                .catch(err => console.error(err));
+            sendSMS(messageBody, phoneNo);
             respond.json(result);
         }
     });
@@ -108,22 +98,17 @@ function cancelListing(request, respond){
 function deleteListing(request, respond)
 {
     var listingID = parseInt(request.params.listingID);
+    var phoneNo = request.body.phoneNo;
 
     listingDB.deleteListing(listingID, function(error, result)
     {
         if(error){
             respond.json(error);
         } else {
-            // Import the sendSMS function
-            const { sendSMS } = require('../whatsapp.js');
-
             // Define the message body
             const messageBody = 'Your listing has been deleted. Hope to see you with SMEAL again! Have a great day~';
-
             // Send the SMS message
-            sendSMS(messageBody, sessionStorage.getItem('phoneNo'))
-                .then(message => console.log(message.sid))
-                .catch(err => console.error(err));
+            sendSMS(messageBody, phoneNo);
 
             respond.json(result);
         }
