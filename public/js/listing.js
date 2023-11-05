@@ -345,6 +345,10 @@ function getNearbyRestaurants() {
     request.open("POST", restaurant_url, true);
     request.setRequestHeader("Content-Type", "application/json");
 
+    if (selectedLocation.includes('/')) {
+        selectedLocation = selectedLocation.split('/')[0];
+    }
+
     var data = {
         location: "SMU%20" + selectedLocation,
     };
