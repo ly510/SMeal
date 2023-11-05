@@ -33,6 +33,7 @@ const app = Vue.createApp({
             const modalElement = document.getElementById('confirmationModal');
             const modal = bootstrap.Modal.getInstance(modalElement);
             modal.hide();
+            window.location.reload();
         },
         
 
