@@ -117,7 +117,8 @@ function addListing(){
     newListing.lng = sessionStorage.getItem("lng");
     newListing.img = sessionStorage.getItem("restaurantImg");
     newListing.paymentType = document.getElementById("payment-type").value;
-    
+    newListing.phoneNo = sessionStorage.getItem("phoneNo");
+
     // Check if any value is null
     for (var key in newListing) {
         if (newListing[key] === null || newListing[key] === "") {
@@ -313,12 +314,15 @@ function cancelListing(listingID){
         // User clicked Cancel, do not proceed
         return;
     }
+    
+    tocancel = new Object();
+    tocancel.phoneNo = sessionStorage.getItem("phoneNo");
 
     var request = new XMLHttpRequest();
     request.open("PUT", listing_url+"/"+listingID, true);
     request.setRequestHeader("Content-Type", "application/json");
 
-    request.send();
+    request.send(JSON.stringify(tocancel));
     
     Swal.fire({
         icon: 'success',
@@ -340,11 +344,14 @@ function deleteListing(listingID){
         return;
     }
 
+    todelete = new Object();
+    todelete.phoneNo = sessionStorage.getItem("phoneNo");
+
     var request = new XMLHttpRequest();
     request.open("DELETE", deleteListing_url+listingID, true);
     request.setRequestHeader("Content-Type", "application/json");
 
-    request.send();
+    request.send(JSON.stringify(todelete));
     
     Swal.fire({
         icon: 'success',
@@ -539,6 +546,8 @@ function displayMap(lat, lng, name) {
 
 
 // Click on accept listing button
+var acceptListingButton = document.getElementById('acceptListingButton');
+if(acceptListingButton){
 document.addEventListener('DOMContentLoaded', function () {
     var acceptListingButton = document.querySelector('[name="acceptListingButton"]');
     acceptListingButton.addEventListener('click', function () {
@@ -556,6 +565,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+}
 function handleAcceptListing(listingId) {
     try {
         var fulfillerId = sessionStorage.getItem("userId");
