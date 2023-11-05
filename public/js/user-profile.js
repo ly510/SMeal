@@ -89,32 +89,10 @@ const profile = Vue.createApp({
             img: "",
             points: 0,
 
-            // Points History
-            hasHistory: false,
-            pointHistory: [
-                // {
-                //     fulfiller: "Winnie",
-                //     dateTime: "25/09/2023 11:49AM",
-                //     points: 30,
-                // },
-                // {
-                //     fulfiller: "Li Ying",
-                //     dateTime: "26/09/2023 08:13AM",
-                //     points: 10,
-                // },
-            ],
-
             // Rewards redeemed
             rewards: [],
         };
-    }, // data
-    // computed: { 
-    //     derivedProperty() {
-    //         return false;
-    //     }  
-    // }, // computed
-    // created() { 
-    // },
+    },
     mounted() {
         userProfile();
     },

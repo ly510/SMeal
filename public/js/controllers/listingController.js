@@ -1,5 +1,6 @@
 "use strict";
 
+const axios = require('axios');
 const ListingDB = require('../models/ListingDB');
 const Listing = require('../models/Listing');
 
@@ -94,6 +95,117 @@ function deleteListing(request, respond)
             respond.json(result);
         }
     });
+}
+
+async function getRestaurants(request, respond) {
+    try {
+        const location = request.body.location;
+        const latLng = await getLatLng(location);
+
+        const query = `https://places.googleapis.com/v1/places:searchNearby?key=` + process.env.GOOGLE_API_KEY;
+        const data = {
+            "includedPrimaryTypes": ["restaurant"],
+            "includedTypes": ["restaurant", "fast_food_restaurant", "cafe", "bakery", "meal_takeaway"],
+            "rankPreference": "DISTANCE",
+            "locationRestriction": {
+                "circle": {
+                    "center": {
+                        "latitude": latLng[0],
+                        "longitude": latLng[1]
+                    },
+                    "radius": 2000.0
+                }
+            }
+        };
+
+        const response = await axios.post(query, data, {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Goog-FieldMask': 'places.formattedAddress,places.location,places.displayName.text,places.currentOpeningHours.openNow,places.photos,places.takeout,places.rating'
+            }
+        });
+
+        if (response.status == 200) {
+            const results = response.data.places;
+            const restaurants = [];
+            var restaurantImg = null;
+            var restaurantRating = null;
+
+            for (let i = 0; i < results.length; i++) {
+                // Check if opened and can takeout
+                if (results[i].currentOpeningHours && results[i].currentOpeningHours.openNow === true && results[i].takeout == true) {
+                    // Set image if any
+                    if (results[i].photos && results[i].photos.length > 0) {
+                        restaurantImg = await obtainImage(results[i].photos[0].name);
+                    }
+                    else {
+                        restaurantImg = null;
+                    }
+
+                    if (results[i].rating) {
+                        restaurantRating = results[i].rating;
+                    } 
+                    else {
+                        restaurantRating = "No rating available";
+                    }
+
+                    const restaurant = {
+                        name: results[i].displayName.text,
+                        address: results[i].formattedAddress,
+                        rating: restaurantRating,
+                        lat: results[i].location.latitude,
+                        lng: results[i].location.longitude,
+                        photo: restaurantImg
+                    };
+
+                    restaurants.push(restaurant);
+                }
+            }
+            respond.json(restaurants);
+        }
+
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+async function getLatLng(location) {
+    try {
+        const query = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?fields=formatted_address%2Cname%2Cgeometry&input=${location}&inputtype=textquery&key=` + process.env.GOOGLE_API_KEY;
+        const response = await axios.post(query, null, {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+        if (response.data.candidates.length >= 1) {
+            const lat = response.data.candidates[0].geometry.location.lat;
+            const lng = response.data.candidates[0].geometry.location.lng;
+            return [lat, lng];
+        }
+    } catch (error) {
+        console.error(error);
+    }
+
+    return;
+}
+
+async function obtainImage(imgName) {
+    try {
+        const query = `https://places.googleapis.com/v1/${imgName}/media?maxHeightPx=400&maxWidthPx=400&key=` + process.env.GOOGLE_API_KEY;
+
+        const response = await axios.get(query)
+
+        if (response.status == 200) {
+            return response.request.res.responseUrl;
+        }
+        else {
+            return null;
+        }
+    }
+    catch (error) {
+        console.error(error);
+    }
 }
 
 module.exports = { getAllListing, addListing, getListingByUserID, getListingNotByUserID, cancelListing, deleteListing };
