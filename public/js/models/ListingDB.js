@@ -149,6 +149,24 @@ changeListingStatus(listing, callback) {
     }
 }
 
+getListingByFulfillerId(fulfillerId, callback) {
+  var sql = `
+    SELECT l.*, a.name
+    FROM smeal.Listing l
+    JOIN smeal.Accounts a ON l.fulfillerId = a.id
+    WHERE l.fulfillerId = ?
+  `;
+
+  db.query(sql, [fulfillerId])
+    .then(([rows, fields]) => {
+      callback(null, rows);
+    })
+    .catch((error) => {
+      callback(error, null);
+    });
+}
+
+
 }
   
   

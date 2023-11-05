@@ -270,5 +270,16 @@ function changeListingStatus(request, respond) {
     });
 }
 
+function getListingByFulfillerId(request, respond){
+    var fulfillerId = parseInt(request.params.fulfillerId);
+    listingDB.getListingByFulfillerId(fulfillerId, function(error, result){
+        if(error){
+            respond.json(error);
+        } else {
+            respond.json(result);
+        }
+    });
+}
 
-module.exports = { getAllListing, addListing, getListingByUserID, getListingNotByUserID, cancelListing, deleteListing, getRestaurants, getListingByListingId, changeListingStatus};
+
+module.exports = { getAllListing, addListing, getListingByUserID, getListingNotByUserID, cancelListing, deleteListing, getRestaurants, getListingByListingId, changeListingStatus, getListingByFulfillerId};

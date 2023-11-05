@@ -35,7 +35,9 @@
     </script> -->
 </head>
 
-<body class="body-wrapper" onload="load()">
+<body class="body-wrapper">
+	
+<div id='app'>
 	<!-- Nav Bar -->
 	<header>
 		<div class="container">
@@ -63,13 +65,79 @@
 <!-- Display Listings -->
 <div class="myListings">
 	<section id="listingsZone">
-		<div class="wrapper" >
-		<!--This is the heading showing how many listings there are-->
+		<div class="wrapper">
+			<!--This is the heading showing how many listings there are-->
 			<h5 id="summary" style="color: lightslategray; margin-left: 30px; font-weight: 400;"></h5>
-			<div id="listingZone" class="row" style="margin-left:20px;"></div> 
+			<div id="listingZone" class="row" style="margin-left:20px;"></div>
 		</div>
-
 	</section>
+</div>
+
+<div class="mx-5 mt-2 text-secondary">
+    <h5>{{foodListingsLength}} Listings</h5>
+</div>
+<div class="col-md-12 mt-3" v-for="listing in foodListings" :key="listing.listingID">
+    <div class="listing px-2">
+        <div class="listing-container row">
+            <div class="col-md-3">
+                <img :src="listing.img" class="img-fluid" alt="Listing Image">
+            </div>
+            <div class="col-md-5">
+                <div class="listing-header">
+                    <h5 class="listing-title">{{ listing.title }}</h5>
+                </div>
+                <div class="listing-body">
+                    <p class="user-room">Room: {{ listing.room }}</p>
+                    <p class="user-location" style="font-weight:bold; color: #28a745">User Location: {{ listing.location }}</p>
+                    <p class="listing-restaurant">Restaurant: {{ listing.restaurantName }}</p>
+                    <p class="listing-description">Description: {{ listing.description }}</p>
+                </div>
+            </div>
+			<div class="col-md-4">
+				<p class="m-0">Status:</p>
+				<span>{{listing.status}}</span>&nbsp;
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-square-fill" viewBox="0 0 16 16">
+					<path d="M0 14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v12zm4.5-6.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5a.5.5 0 0 1 0-1z"/>
+				</svg>
+				&nbsp;
+				<!-- Dropdown for selecting status -->
+				<select v-model="listing.selectedStatus">
+					<option v-for="status in listingStatusOptions" :value="status">{{ status }}</option>
+				</select>
+
+				<!-- Button to prompt the API -->
+				<button @click="showConfirmationModal(listing.listingID, listing.selectedStatus, listing.title)" class="btn btn-success mt-3">Change Status</button>
+
+			</div>
+        </div>
+    </div>
+</div>
+
+<!-- Confirmation Modal -->
+<div id="confirmationModal" class="modal fade" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalLabel">Confirm Status Change</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to change: 
+				<p>Status to : "{{ confirmationModalSelectedStatus }}" For {{ confirmationModalListingTitle }}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" @click="changeStatusConfirmed">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
 </div>
 
 <!-- Scripts -->
@@ -80,6 +148,7 @@ crossorigin="anonymous"></script>
 <script src='https://unpkg.com/axios/dist/axios.min.js'></script>
 <!-- Vue 3 -->
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<!-- Vue App -->
+<script src="./js/accepted-listings.js"></script>
 
-<!-- Open create listing modal on click-->
 <script>
