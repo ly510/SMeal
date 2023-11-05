@@ -50,3 +50,8 @@
     color: grey;
     margin-bottom: 2px;
   }
+
+  #restaurantImg {
+    object-fit: cover;
+    max-height: 150px;
+  }

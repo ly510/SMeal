@@ -54,6 +54,7 @@ async function getRestaurants(request, respond) {
         const query = `https://places.googleapis.com/v1/places:searchNearby?key=` + process.env.GOOGLE_API_KEY;
         const data = {
             "includedPrimaryTypes": ["restaurant"],
+            "includedTypes": ["restaurant", "fast_food_restaurant", "cafe", "bakery", "meal_takeaway"],
             "rankPreference": "DISTANCE",
             "locationRestriction": {
                 "circle": {
@@ -69,24 +70,43 @@ async function getRestaurants(request, respond) {
         const response = await axios.post(query, data, {
             headers: {
                 'Content-Type': 'application/json',
-                'X-Goog-FieldMask': 'places.formattedAddress,places.location,places.displayName.text,places.currentOpeningHours.openNow,places.photos,places.takeout'
+                'X-Goog-FieldMask': 'places.formattedAddress,places.location,places.displayName.text,places.currentOpeningHours.openNow,places.photos,places.takeout,places.rating'
             }
         });
 
         if (response.status == 200) {
             const results = response.data.places;
             const restaurants = [];
+            var restaurantImg = null;
+            var restaurantRating = null;
 
             for (let i = 0; i < results.length; i++) {
                 // Check if opened and can takeout
                 if (results[i].currentOpeningHours && results[i].currentOpeningHours.openNow === true && results[i].takeout == true) {
+                    // Set image if any
+                    if (results[i].photos && results[i].photos.length > 0) {
+                        restaurantImg = await obtainImage(results[i].photos[0].name);
+                    }
+                    else {
+                        restaurantImg = null;
+                    }
+
+                    if (results[i].rating) {
+                        restaurantRating = results[i].rating;
+                    } 
+                    else {
+                        restaurantRating = "No rating available";
+                    }
+
                     const restaurant = {
                         name: results[i].displayName.text,
                         address: results[i].formattedAddress,
+                        rating: restaurantRating,
                         lat: results[i].location.latitude,
                         lng: results[i].location.longitude,
-                        photos: results[i].photos && results[i].photos.length > 0 ? results[i].photos[0].name : null
+                        photo: restaurantImg
                     };
+
                     restaurants.push(restaurant);
                 }
             }
@@ -117,6 +137,24 @@ async function getLatLng(location) {
     }
 
     return;
+}
+
+async function obtainImage(imgName) {
+    try {
+        const query = `https://places.googleapis.com/v1/${imgName}/media?maxHeightPx=400&maxWidthPx=400&key=` + process.env.GOOGLE_API_KEY;
+
+        const response = await axios.get(query)
+
+        if (response.status == 200) {
+            return response.request.res.responseUrl;
+        }
+        else {
+            return null;
+        }
+    }
+    catch (error) {
+        console.error(error);
+    }
 }
 
 module.exports = { getAllListing, addListing, getRestaurants };

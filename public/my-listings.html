@@ -111,8 +111,8 @@ aria-hidden="true">
 					<input id="restaurant" class="form-control" type="text" placeholder="Click Search to find available restaurants" value="" required disabled>
 					<button type="button" class="btn btn-primary font-weight-bold" id="nearbyRestaurant-btn" onclick="getNearbyRestaurants()">Search</button>
 				</div>
-				<input id="lat" class="form-control mb-3" type="text" value="1.3004113685595007" disabled>
-				<input id="lng" class="form-control mb-3" type="text" value="103.85194077717043" disabled>
+				<label id="resAddr" for="restaurantAddress" class="form-label" hidden>Restaurant Address: </label>
+				<input id="restaurantAddress" class="form-control mb-3" type="text" value="" disabled hidden>
 
 				<!-- Payment Type -->
 				<label for="payment-type" class="form-label">Select Payment Type: </label>
@@ -133,18 +133,15 @@ aria-hidden="true">
 
 <!-- Display Nearby Restaurants Modal -->
 <div class="modal fade" id="nearbyRestaurantModal" tabindex="-1" role="dialog" aria-labelledby="nearbyRestaurantModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered">
+	<div class="modal-dialog modal-dialog-centered modal-lg">
 		<div class="modal-content">
 		  <div class="modal-header">
-			<h5 class="modal-title" id="exampleModalLabel">Nearby Restaurants</h5>
-			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			<h5 class="modal-title" id="nearbyRestaurantModalLabel">Nearby Restaurants</h5>
+			<button type="button" class="btn-close" data-bs-target="#createModal" data-bs-toggle="modal" data-bs-dismiss="modal" aria-label="Close"></button>
 		  </div>
-		  <div class="modal-body">
-			...
-		  </div>
+		  <div class="modal-body" id="nearbyRestaurants"></div>
 		  <div class="modal-footer">
-			<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-			<button type="button" class="btn btn-primary">Confirm Selection</button>
+			<button type="button" class="btn btn-secondary" data-bs-target="#createModal" data-bs-toggle="modal" data-bs-dismiss="modal">Cancel</button>
 		  </div>
 		</div>
 	  </div>
@@ -181,12 +178,39 @@ document.getElementById('createListing-btn').addEventListener('click', function 
 
 document.getElementById('nearbyRestaurant-btn').addEventListener('click', function () {
 	if (document.getElementById("user-location").value !== "Select your school") {
-		// not working properly yet
-		var createModal = new bootstrap.Modal(document.getElementById('createModal'));
-		var restaurantModal = new bootstrap.Modal(document.getElementById('nearbyRestaurantModal'));
+		var createModal = bootstrap.Modal.getInstance(document.getElementById('createModal'));
 		createModal.hide();
+
+		var restaurantModal = new bootstrap.Modal(document.getElementById('nearbyRestaurantModal'));
 		restaurantModal.show();
+
+		document.getElementById('restaurantAddress').innerText = "";
+        document.getElementById('restaurantAddress').value = "";
 	}
+});
+
+document.addEventListener('click', function(event) {
+    if (event.target.closest('#selectedRestaurant')) {
+        const selectedRestaurant = event.target.closest('#selectedRestaurant');
+        const name = selectedRestaurant.querySelector('h5').textContent;
+        const address = selectedRestaurant.querySelector('span').textContent;
+        const imgSrc = selectedRestaurant.querySelector('img').getAttribute('src');
+        const lat = selectedRestaurant.dataset.lat;
+        const lng = selectedRestaurant.dataset.lng;
+
+        document.getElementById('restaurant').innerText = name;
+        document.getElementById('restaurant').value = name;
+
+		document.getElementById('restaurantAddress').innerText = address;
+        document.getElementById('restaurantAddress').value = address;
+
+		document.getElementById('resAddr').removeAttribute('hidden');
+		document.getElementById('restaurantAddress').removeAttribute('hidden');
+
+        sessionStorage.setItem('restaurantImg', imgSrc);
+        sessionStorage.setItem('lat', lat);
+        sessionStorage.setItem('lng', lng);
+    }
 });
 
 </script>

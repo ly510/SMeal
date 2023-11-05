@@ -66,8 +66,8 @@ function addListing(){
     newListing.description = document.getElementById("listing-desc").value;
     newListing.location = document.getElementById("user-location").value;
     newListing.restaurantName = document.getElementById("restaurant").value;
-    newListing.lat = document.getElementById("lat").value;
-    newListing.lng = document.getElementById("lng").value;
+    newListing.lat = sessionStorage.getItem("lat");
+    newListing.lng = sessionStorage.getItem("lng");
     newListing.paymentType = document.getElementById("payment-type").value;
     newListing.fulfillerId = null;
     newListing.status = "Awaiting Acceptance";
@@ -115,9 +115,13 @@ function getNearbyRestaurants() {
     request.onload = function() {
         if (request.status === 200) {
             // Get all listing records into our listing_array
-            console.log(request.responseText);
-            // Decide how to display
-            // To display obtained photos: https://developers.google.com/maps/documentation/places/web-service/place-photos (to rmb to check for null photos)
+            restaurant_array = JSON.parse(request.responseText);
+            if (restaurant_array && restaurant_array.length > 0) {
+                displayRestaurants(restaurant_array);
+            } else {
+                // fix dont display nearbyRestaurant modal
+                alert("No restaurants found in your area!"); // proper alert here
+            }
         } else {
             // Handle errors, e.g., display an error message
             console.error('Failed to retrieve restaurant data');
@@ -130,4 +134,37 @@ function getNearbyRestaurants() {
     }
 
     request.send(JSON.stringify(data));
+}
+
+function displayRestaurants(restaurants) {
+    var displayArea = document.getElementById("nearbyRestaurants");
+    displayArea.innerHTML = "";
+
+    var full = "";
+
+    for (var i = 0; i < restaurants.length; i++) {
+        var name = restaurants[i].name;
+        var address = restaurants[i].address;
+        var photo = restaurants[i].photo;
+        var rating = restaurants[i].rating;
+
+        var lat = restaurants[i].lat;
+        var lng = restaurants[i].lng;
+
+        var display = `<div class="row" id="selectedRestaurant" data-lat="${lat}" data-lng="${lng}" data-bs-target="#createModal" data-bs-toggle="modal" data-bs-dismiss="modal">
+                            <div class="col-md-3 py-0">
+                                ${photo !== null ? `<img src="${photo}" class="img-thumbnail w-100 h-auto" id="restaurantImg">` : `<img src="/img/restaurantDefault.png" class="img-thumbnail w-100 h-auto" id="restaurantImg">`}
+                            </div>
+                            <div class="col-md-9">
+                                <h5><b>${name}</b></h5>
+                                <p><b>Address:</b> <span>${address}</span></p>
+                                ${rating !== "No rating available" ? `<p><b>Rating:</b> ${rating} <i class="fa-solid fa-star" style="color: #ffeb14;"></i></p>` : `<p><b>Rating:</b> ${rating}</p>`}
+                            </div>
+                        </div>
+                        <hr>`;
+
+            full += display;
+        }
+
+    displayArea.innerHTML = full;
 }
