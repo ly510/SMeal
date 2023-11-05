@@ -95,6 +95,7 @@ function addListing(){
     newListing.restaurantName = document.getElementById("restaurant").value;
     newListing.lat = sessionStorage.getItem("lat");
     newListing.lng = sessionStorage.getItem("lng");
+    newListing.img = sessionStorage.getItem("restaurantImg");
     newListing.paymentType = document.getElementById("payment-type").value;
 
     // // Check if any value is null

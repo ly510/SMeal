@@ -48,7 +48,7 @@ class ListingDB
   // This function is for my listing page where user creates a new listing
   addListing(listing, callback)
   {
-    var sql = "INSERT into Listing (userId, title, description, location, room, restaurantName, paymentType, lat, lng, datePosted, fulfillerId, status) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+    var sql = "INSERT into Listing (userId, title, description, location, room, restaurantName, paymentType, lat, lng, img, datePosted, fulfillerId, status) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
     var values = [
       listing.getUserID(),
@@ -60,6 +60,7 @@ class ListingDB
       listing.getPaymentType(),
       listing.getLat(),
       listing.getLng(),
+      listing.getImg(),
       new Date(),
       listing.getFulfillerId(),
       "Awaiting Acceptance",

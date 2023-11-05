@@ -22,7 +22,7 @@ function getAllListing(request, respond)
 function addListing(request, respond)
 {
     var now = new Date();
-    var listing = new Listing(null, parseInt(request.body.userId), request.body.title, request.body.description, request.body.location, request.body.room, request.body.restaurantName, request.body.paymentType, request.body.lat, request.body.lng, formatDate(now), null, request.body.status);
+    var listing = new Listing(null, parseInt(request.body.userId), request.body.title, request.body.description, request.body.location, request.body.room, request.body.restaurantName, request.body.paymentType, request.body.lat, request.body.lng, request.body.img, formatDate(now), null, request.body.status);
     
     listingDB.addListing(listing, function(error, result)
     {
