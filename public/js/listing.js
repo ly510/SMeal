@@ -117,6 +117,7 @@ function addListing() {
     newListing.lng = sessionStorage.getItem("lng");
     newListing.img = sessionStorage.getItem("restaurantImg");
     newListing.paymentType = document.getElementById("payment-type").value;
+    newListing.phoneNo = sessionStorage.getItem("phoneNo");
 
     // Check if any value is null
     for (var key in newListing) {
@@ -223,47 +224,49 @@ function displayListingByUserID(listings) {
         }
 
         var cell = '<div class="listing px-2">' +
-            '<div class="listing-container row">' +
-            '<div class="col-md-5">' +
-            '<div class="listing-header">' +
-            '<h5 class="listing-title">' + title + '</h5>' +
-            '</div>' +
-            '<div class="listing-body">' +
-            '<p class="user-room"> Room: ' + room + '</p>' +
-            '<p class="user-location" style="font-weight:bold; color: #28a745"> User Location: ' + location + '</p>' +
-            '<p class="listing-restaurant">Restaurant: ' + restaurant + '</p>' +
-            '<p class="listing-description">Description: ' + description + '</p>' +
-            '</div>' +
-            '</div>' +
-            '<div class="col-md-6">' +
-            '<br><div class="listing-status">' +
-            '<ul id="progressbar-2" class="d-flex justify-content-between mx-0 mt-0 mb-5 px-0 pt-0 pb-2">' +
-            '<li class="step0 ' + (status >= 1 ? 'active' : '') + ' text-center" id="step1"></li>' +
-            '<li class="step0 ' + (status >= 2 ? 'active' : '') + ' text-center" id="step2"></li>' +
-            '<li class="step0 ' + (status >= 3 ? 'active' : '') + ' text-center" id="step3"></li>' +
-            '<li class="step0 ' + (status >= 4 ? 'active' : '') + ' text-muted text-end" id="step4"></li>' +
-            '</ul>' +
-            '<div class="d-flex justify-content-between mx-0 mt-0 mb-5 px-0 pt-0 pb-2">' +
-            '<p class="text-left">Awaiting Acceptance</p>' +
-            '<p class="text-center">Listing Accepted</p>' +
-            '<p class="text-center">On the Way</p>' +
-            '<p class="text-center">Listing Completed</p>' +
-            '</div>' +
-            '</div>' +
-            '</div>' +
-            '<div class="col-md-1 text-end">' +
-            (status == 0 ? '<button class="btn btn-secondary float-end my-2 mx-1" disabled>Cancelled</button>' + '<button id="deleteButton" class="btn btn-danger float-end my-2 mx-1" onclick="deleteListing(' + listingID + ')" value="' + listingID + '"">Delete</button>' :
-                (status >= 2 ?
-                    '<form action="/api/stripe/create-checkout-session" method="POST">' +
-                    '<button type="submit" class="btn btn-success payment-button paymentButton" id="checkout" value="' + listingID + '">Pay</button>' +
-                    '</form>'
-                    :
-                    '<button class="btn btn-danger cancel-button float-end my-2 mx-1" id="cancelButton" onclick="cancelListing(' + listingID + ')" value="' + listingID + '">Cancel</button>')) +
-            '</div>' +
-            // '<div class="col-md-1 text-end">' +
-            //     (status >= 4 ? '<button class="btn btn-success delete-button" id="deleteButton" @click=deleteListing()>X</button>': '<button class="btn btn-success payment-button disabled" id="deleteButton" @click=deleteListing()>X</button>') +
-            // '</div>' +
-            '</div>' +
+                '<div class="listing-container row">' +
+                    '<div class="col-md-5">' +
+                        '<div class="listing-header">' +
+                            '<h5 class="listing-title">' + title + '</h5>' +
+                        '</div>' +
+                        '<div class="listing-body">' +
+                            '<p class="user-room"> Room: ' + room + '</p>' +
+                            '<p class="user-location" style="font-weight:bold; color: #28a745"> User Location: ' + location + '</p>' +
+                            '<p class="listing-restaurant">Restaurant: ' + restaurant + '</p>' +
+                            '<p class="listing-description">Description: ' + description + '</p>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="col-md-6">' +
+                        '<br><div class="listing-status">' +
+                        '<ul id="progressbar-2" class="d-flex justify-content-between mx-0 mt-0 mb-5 px-0 pt-0 pb-2">' +
+                        '<li class="step0 ' + (status >= 1 ? 'active' : '') + ' text-center" id="step1"></li>' +
+                        '<li class="step0 ' + (status >= 2 ? 'active' : '') + ' text-center" id="step2"></li>' +
+                        '<li class="step0 ' + (status >= 3 ? 'active' : '') + ' text-center" id="step3"></li>' +
+                        '<li class="step0 ' + (status >= 4 ? 'active' : '') + ' text-muted text-end" id="step4"></li>' +
+                    '</ul>' +
+                    '<div class="d-flex justify-content-between mx-0 mt-0 mb-5 px-0 pt-0 pb-2">' +
+                        '<p class="text-left">Awaiting Acceptance</p>' +
+                        '<p class="text-center">Listing Accepted</p>' +
+                        '<p class="text-center">On the Way</p>' +
+                        '<p class="text-center">Listing Completed</p>' +
+                    '</div>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="col-md-1 text-end">' +
+                        (status == 0 ? '<button class="btn btn-secondary float-end my-2 mx-1" disabled>Cancelled</button>'+ '<button id="deleteButton" class="btn btn-danger float-end my-2 mx-1" onclick="deleteListing('+listingID+')" value="'+listingID+'"">Delete</button>' :
+                        (status >= 2 ? 
+                            '<form action="/api/stripe/create-checkout-session" method="POST">' +
+                            (sessionStorage.getItem("paymentStatus") == "success" && sessionStorage.getItem("paymentListingId") == listingID
+                            ? '<button type="submit" class="btn btn-success payment-button paymentButton" disabled id="checkout" value="' + listingID + '">Paid</button>'
+                            : '<button type="submit" class="btn btn-success payment-button paymentButton" id="checkout" value="' + listingID + '">Pay</button>') +
+                        '</form>'
+                        : 
+                            '<button class="btn btn-danger cancel-button float-end my-2 mx-1" id="cancelButton" onclick="cancelListing('+listingID+')" value="'+listingID+'">Cancel</button>')) +
+                    '</div>' +
+                    // '<div class="col-md-1 text-end">' +
+                    //     (status >= 4 ? '<button class="btn btn-success delete-button" id="deleteButton" @click=deleteListing()>X</button>': '<button class="btn btn-success payment-button disabled" id="deleteButton" @click=deleteListing()>X</button>') +
+                    // '</div>' +
+                '</div>' +
             '</div>';
 
         table.insertAdjacentHTML('beforeend', cell);
@@ -291,7 +294,8 @@ function displayListingByUserID(listings) {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        description: description
+                        description: description,
+                        listingID: listingID
                     })
                 });
                 const data = await response.json();
@@ -313,13 +317,16 @@ function cancelListing(listingID) {
         // User clicked Cancel, do not proceed
         return;
     }
+    
+    tocancel = new Object();
+    tocancel.phoneNo = sessionStorage.getItem("phoneNo");
 
     var request = new XMLHttpRequest();
     request.open("PUT", listing_url + "/" + listingID, true);
     request.setRequestHeader("Content-Type", "application/json");
 
-    request.send();
-
+    request.send(JSON.stringify(tocancel));
+    
     Swal.fire({
         icon: 'success',
         title: "Listing Cancelled",
@@ -340,12 +347,15 @@ function deleteListing(listingID) {
         return;
     }
 
+    todelete = new Object();
+    todelete.phoneNo = sessionStorage.getItem("phoneNo");
+
     var request = new XMLHttpRequest();
     request.open("DELETE", deleteListing_url + listingID, true);
     request.setRequestHeader("Content-Type", "application/json");
 
-    request.send();
-
+    request.send(JSON.stringify(todelete));
+    
     Swal.fire({
         icon: 'success',
         title: "Listing Deleted",
@@ -447,6 +457,8 @@ function displayMap(lat, lng, name) {
 
 
 // Click on accept listing button
+var acceptListingButton = document.getElementById('acceptListingButton');
+if(acceptListingButton){
 document.addEventListener('DOMContentLoaded', function () {
     var acceptListingButton = document.querySelector('[name="acceptListingButton"]');
     acceptListingButton.addEventListener('click', function () {
@@ -464,6 +476,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+}
 function handleAcceptListing(listingId) {
     try {
         var fulfillerId = sessionStorage.getItem("userId");
@@ -493,6 +506,16 @@ function handleAcceptListing(listingId) {
         // Handle the error, show an alert, or perform other actions
     }
 }
+ 
+document.addEventListener("DOMContentLoaded", function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const paymentSuccess = urlParams.get('payment');
+    const listingID = urlParams.get('listingID');
+    console.log('Payment Success:', paymentSuccess);
+    console.log('Listing ID:', listingID);
+    sessionStorage.setItem("paymentStatus",paymentSuccess);
+    sessionStorage.setItem("paymentListingId",listingID);
+});
 
 const listing = Vue.createApp({
     data() {
@@ -607,4 +630,4 @@ const listing = Vue.createApp({
         },
     } // methods
 });
-const vmListing = listing.mount('#app'); 
+const vmListing = listing.mount('#app');
