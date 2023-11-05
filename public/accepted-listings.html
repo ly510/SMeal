@@ -106,8 +106,9 @@
 				</select>
 
 				<!-- Button to prompt the API -->
-				<button @click="showConfirmationModal(listing.listingID, listing.selectedStatus, listing.title)" class="btn btn-success mt-3">Change Status</button>
-
+				<div>
+					<button @click="showConfirmationModal(listing.listingID, listing.selectedStatus, listing.title)" class="btn btn-success mt-3">Change Status</button>
+				</div>
 			</div>
         </div>
     </div>

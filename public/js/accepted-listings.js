@@ -6,7 +6,7 @@ const app = Vue.createApp({
             confirmationModalListingID: null,
             confirmationModalListingTitle: null,
             confirmationModalSelectedStatus: null,
-            listingStatusOptions: ["Listing Accepted", "On the Way", "Listing Completed"],
+            listingStatusOptions: ["On the Way", "Listing Completed"],
         };
     },
     mounted() {
