@@ -19,6 +19,11 @@ function routeListing(app) {
         .delete(listingController.deleteListing);
     app.route('/restaurant')
         .post(listingController.getRestaurants);
+    app.route('/foodlistingbylistingId/:listingID')
+        .get(listingController.getListingByListingId);
+    app.route('/changeListingStatus/:listingID')
+        .put(listingController.changeListingStatus);
+    
 }
 
 module.exports = { routeListing };

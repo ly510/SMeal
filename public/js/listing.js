@@ -60,28 +60,49 @@ function displayListing(listings) {
     container.innerHTML = "";
 
     for (var count = 0; count < listings.length; count++) {
+        var listingID = listings[count].listingID
         var title = listings[count].title;
         var date = listings[count].datePosted;
         var date = date.substring(0, 10);
+        var image_url = listings[count].img;
 
         var cell = '<div class="col-md-3 col-sm-4">' +
             '<div class="card">' +
-                '<img src="img/food2.jpg" class="card-img-top" alt="Food image">' +
+                '<img src="'+ image_url +'" class="card-img-top" alt="Food image">' +
                 '<div class="card-body">' +
                     '<h5 class="card-title">' + title + '</h5>' +
                     '<h6 class="card-subtitle mb-2 text-muted">' + date + '</h6>' +
-                    '<button class="btn btn-info my-2">View More</button>' +
-                    '<button class="btn btn-success mx-2 my-2 float-end">Accept</button>' +
+                    '<button class="btn btn-info my-2" data-listing-id="'+ listingID +'">View More</button>' +
+                    '<button class="btn btn-success mx-2 my-2 float-end accept-btn" data-listing-id="'+ listingID +'">Accept</button>' +
                 '</div>' +
             '</div>' +
         '</div>';
 
         container.insertAdjacentHTML('beforeend', cell);
     }
-
     message = listings.length + " Listings";
     document.getElementById("numListings").textContent = message;
+
+
+    // Add click event listener to accept button
+    var acceptButtons = document.querySelectorAll('.accept-btn');
+    acceptButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            var listingID = this.getAttribute('data-listing-id');
+            console.log("Accept Button Clicked - Listing ID: " + listingID);
+            // Prompt the user for confirmation
+            var confirmationModal = new bootstrap.Modal(document.getElementsByName('confirmationModal')[0]);
+            confirmationModal.show();
+            // Set up event listener for the confirmation button
+            var confirmButton = document.getElementById('confirmButton');
+            confirmButton.addEventListener('click', function () {
+                handleAcceptListing(listingID);
+                confirmationModal.hide();
+            });
+        });
+    });
 }
+
 
 function addListing(){
     
@@ -410,3 +431,113 @@ function displayRestaurants(restaurants) {
 
     displayArea.innerHTML = full;
 }
+
+// Click on one of the listings to open a modal
+document.addEventListener('DOMContentLoaded', function () {
+    var container = document.querySelector('.food-list-container .row');
+    var modal = new bootstrap.Modal(document.getElementById('listingModal'));
+
+    container.addEventListener('click', function (event) {
+        if (event.target.classList.contains('btn-info')) {
+            var listingId = event.target.getAttribute('data-listing-id');
+            
+            // Call the function to fetch more details based on listingId
+            fetchMoreDetails(listingId)
+                .then(function (details) {
+                    // Update modal content with details
+                    updateModalContent(details);
+                    // Show the modal
+                    modal.show();
+                })
+                .catch(function (error) {
+                    console.error(error);
+                });
+        }
+    });
+});
+function fetchMoreDetails(listingId) {
+    return new Promise(function (resolve, reject) {
+        var request = new XMLHttpRequest();
+        request.open('GET', `/foodlistingbylistingId/${listingId}`, true);
+        request.setRequestHeader('Content-Type', 'application/json');
+        request.onload = function () {
+            if (request.status === 200) {
+                var details = JSON.parse(request.responseText);
+                resolve(details);
+            } else {
+                reject('Network response was not ok');
+            }
+        };
+        request.onerror = function () {
+            reject('Error fetching more details');
+        };
+        request.send();
+    });
+}
+function updateModalContent(details) {
+    document.getElementById('modalListingImage').src = details[0].img;
+    document.getElementById('modalListingName').textContent = details[0].name;
+    document.getElementById('modalListingUserLocation').textContent = details[0].location;
+    var room = details[0].room;
+    console.log(room);
+    if (room.length === 0){
+        room = "-No Room Specified-";
+        document.getElementById('modalListingRoom').style.color = 'grey';
+    }
+    document.getElementById('modalListingRoom').textContent = room
+    document.getElementById('modalListingTitle').textContent = details[0].title;
+    document.getElementById('modalListingDesc').textContent = details[0].description;
+    document.getElementById('modalListingLat').textContent = details[0].lat;
+    document.getElementById('modalListingLng').textContent = details[0].lng;
+
+    sessionStorage.setItem("currentListingID", details[0].listingID);
+}
+
+// Click on accept listing button
+document.addEventListener('DOMContentLoaded', function () {
+    var acceptListingButton = document.querySelector('[name="acceptListingButton"]');
+    acceptListingButton.addEventListener('click', function () {
+        console.log("clicked");
+        // Prompt the user for confirmation
+        var confirmationModal = new bootstrap.Modal(document.getElementsByName('confirmationModal')[0]);
+        confirmationModal.show();
+
+        // Set up event listener for the confirmation button
+        var confirmButton = document.getElementById('confirmButton');
+        confirmButton.addEventListener('click', function () {
+            var listingId = sessionStorage.getItem("currentListingID");
+            handleAcceptListing(listingId);
+            confirmationModal.hide();
+        });
+    });
+});
+function handleAcceptListing(listingId) {
+    try {
+        var fulfillerId = sessionStorage.getItem("userId");
+        var request = new XMLHttpRequest();
+        request.open("PUT", `/changeListingStatus/${listingId}`, true);
+        request.setRequestHeader('Content-Type', 'application/json');
+        request.onload = function () {
+            if (request.status === 200) {
+                // Close the modal
+                var modal = new bootstrap.Modal(document.getElementById('listingModal'));
+                modal.hide();
+                // Redirect to accepted-listings.html
+                window.location.href = 'accepted-listings.html';
+            } else {
+                console.error('Error accepting the listing:', request.statusText);
+                // Handle the error, show an alert, or perform other actions
+            }
+        };
+        request.onerror = function () {
+            console.error('Network error while accepting the listing');
+            // Handle network errors
+        };
+        request.send(JSON.stringify({ status: 'Listing Accepted', fulfillerId }));
+        
+    } catch (error) {
+        console.error('Error accepting the listing:', error.message);
+        // Handle the error, show an alert, or perform other actions
+    }
+}
+

@@ -34,7 +34,8 @@ class ListingDB
 
   getListingNotByUserID(userId, callback)
   {
-    var sql = "SELECT * FROM smeal.Listing WHERE userId != ?";
+    // Check if not userid not the creator of listing and the status is "Awaiting Acceptance"
+    var sql = "SELECT * FROM smeal.Listing WHERE userId != ? AND status = 'Awaiting Acceptance'";
 
     db.query(sql, [userId])
     .then(([rows, fields]) => {
@@ -103,7 +104,55 @@ class ListingDB
         callback(error, null);
       });
     }
+
+
+  getListingByListingId(listingId, callback) {
+    var sql = `
+      SELECT l.*, a.name
+      FROM smeal.Listing l
+      JOIN smeal.Accounts a ON l.userId = a.id
+      WHERE l.listingId = ?
+    `;
+
+    db.query(sql, [listingId])
+      .then(([rows, fields]) => {
+        callback(null, rows);
+      })
+      .catch((error) => {
+        callback(error, null);
+      });
   }
+
+changeListingStatus(listing, callback) {
+    var sql;
+    
+    // Check if the status is "Listing Accepted"
+    if (listing.getStatus() === "Listing Accepted") {
+        sql = "UPDATE Listing SET status = ?, fulfillerId = ? WHERE listingID = ?";
+
+        db.query(sql, [listing.getStatus(), listing.getFulfillerId(), listing.listingID])
+        .then(([rows, fields]) => {
+            callback(null, rows);
+        })
+        .catch((error) => {
+            callback(error, null);
+        });
+    } else {
+        sql = "UPDATE Listing SET status = ? WHERE listingID = ?";
+
+        db.query(sql, [listing.getStatus(), listing.listingID])
+        .then(([rows, fields]) => {
+            callback(null, rows);
+        })
+        .catch((error) => {
+            callback(error, null);
+        });
+    }
+}
+
+
+}
+  
   
 
 module.exports = ListingDB;
