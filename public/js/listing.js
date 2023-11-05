@@ -352,6 +352,7 @@ function deleteListing(listingID){
 }
 
 function getNearbyRestaurants() {
+    var restaurantList = document.getElementById("restaurantList");
     var selectedLocation = document.getElementById("user-location").value;
     var locationAlert = document.getElementById("locationAlert");
     var restaurantAlert = document.getElementById("restaurantAlert");
@@ -387,6 +388,7 @@ function getNearbyRestaurants() {
             if (restaurant_array && restaurant_array.length > 0) {
                 displayRestaurants(restaurant_array);
             } else {
+                restaurantList.innerHTML = "";
                 restaurantAlert.innerText = "No restaurants found nearby!";
                 restaurantAlert.classList.remove('d-none');
             }
