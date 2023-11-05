@@ -1,6 +1,8 @@
 function editProfile() {
     var request = new XMLHttpRequest();
     var email = sessionStorage.getItem("userEmail");
+    var profileAlert = document.getElementById("profileAlert");
+    var successAlert = document.getElementById("successAlert");
 
     request.open("POST", editProfile_url, true);
     request.setRequestHeader("Content-Type", "application/json");
@@ -21,8 +23,48 @@ function editProfile() {
             vmProfile.name = editProfile_array[0].userName;
             vmProfile.email = editProfile_array[0].userEmail;
             vmProfile.currPass = editProfile_array[0].userPassword;
-            vmProfile.phoneNo = editProfile_array[0].userPhone;
+            vmProfile.fullNum = editProfile_array[0].userPhone;
             vmProfile.points = editProfile_array[0].userPoints;
+
+            // Display phone number
+            vmProfile.countryCode = vmProfile.fullNum.substring(1, 3);
+            vmProfile.phoneNo = vmProfile.fullNum.substring(vmProfile.countryCode.length+1);
+            
+            const country = window.intlTelInputGlobals.getCountryData().find(country => country.dialCode === vmProfile.countryCode).iso2;
+
+            var input = document.getElementById('phone-number');
+            // Initialize intlTelInput
+            var iti = window.intlTelInput(input, {
+                separateDialCode: true,
+                initialCountry: country,
+            });
+
+            input.addEventListener('countrychange', function () {
+                vmProfile.countryCode = iti.getSelectedCountryData().dialCode;
+            });
+
+            input.addEventListener('input', function () {
+                var fullPhoneNumber = iti.getNumber().trim();
+        
+                // Check if the phone number is valid
+                var isValid = iti.isValidNumber();
+        
+                //Check if phone number is empty
+                var isEmpty = !fullPhoneNumber.trim();
+                if (isEmpty) isValid = false;
+
+                if (isValid && !isEmpty) {
+                    profileAlert.innerText = "";
+                    profileAlert.classList.add('d-none');
+                    sessionStorage.setItem("phoneNo", fullPhoneNumber);
+                } else {
+                    successAlert.innerText = "";
+                    successAlert.classList.add('d-none');
+                    profileAlert.innerText = "Please enter a valid phone number!";
+                    profileAlert.classList.remove('d-none');
+                }
+                sessionStorage.setItem("invalidPhoneNo", isValid);
+            });
             
             if (editProfile_array[0].userImg != null) {
                 vmProfile.img = editProfile_array[0].userImg;
@@ -55,7 +97,7 @@ function updateProfile(event) {
 
     var request = new XMLHttpRequest();
 
-    if (vmProfile.phoneNo.length != 8) {
+    if (sessionStorage.getItem("invalidPhoneNo") == "false") {
         profileAlert.innerText = "Please enter a valid phone number!";
         profileAlert.classList.remove('d-none');
         return;
@@ -83,7 +125,7 @@ function updateProfile(event) {
         var data = {
             id: vmProfile.id,
             name: vmProfile.name.trim(),
-            phoneNo: vmProfile.phoneNo,
+            phoneNo: sessionStorage.getItem("phoneNo"),
             img: vmProfile.img === '' ? null : compressedImage,
         };
 
@@ -94,6 +136,7 @@ function updateProfile(event) {
             if (request.status === 200) {
                 vmProfile.display = vmProfile.name.trim();
                 vmProfile.name = vmProfile.name.trim();
+                vmProfile.phoneNo = vmProfile.phoneNo.replace(/\s/g, '');
 
                 // Display success alert
                 successAlert.innerText = "Profile successfully updated!";
@@ -226,6 +269,8 @@ const profile = Vue.createApp({
             display: "", // for display
             name: "",
             email: "",
+            fullNum: "",
+            countryCode: "",
             phoneNo: "",
             img: "",
             points: 0,

@@ -147,3 +147,7 @@ label {
     width: 100%; 
     object-fit: contain;
 }
+
+.iti {
+    display: block;
+}

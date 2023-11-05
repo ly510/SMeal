@@ -97,6 +97,7 @@ aria-hidden="true">
 
 				<!-- User Location -->
 				<label for="user-location" class="form-label">Delivery Location: </label>
+				<div class="alert alert-danger d-none" role="alert" id="locationAlert"></div>
 				<select class="form-select mb-3" id="user-location" required>
 					<option selected disabled>Select your school</option>
 					<option value="SOSS/CIS">College of Integrative Studies (CIS)</option>
@@ -144,7 +145,10 @@ aria-hidden="true">
 			<h5 class="modal-title" id="nearbyRestaurantModalLabel">Nearby Restaurants</h5>
 			<button type="button" class="btn-close" data-bs-target="#createModal" data-bs-toggle="modal" data-bs-dismiss="modal" aria-label="Close"></button>
 		  </div>
-		  <div class="modal-body" id="nearbyRestaurants"></div>
+		  <div class="modal-body" id="nearbyRestaurants">
+			<div class="alert alert-danger d-block" role="alert" id="restaurantAlert"></div>
+			<div id="restaurantList"></div>
+		  </div>
 		  <div class="modal-footer">
 			<button type="button" class="btn btn-secondary" data-bs-target="#createModal" data-bs-toggle="modal" data-bs-dismiss="modal">Cancel</button>
 		  </div>
@@ -168,47 +172,48 @@ crossorigin="anonymous"></script>
 
 <!-- Open create listing modal on click-->
 <script>
-// Initially disable the submit button
-document.getElementById('submitListing').disabled = true;
+	// Initially disable the submit button
+	document.getElementById('submitListing').disabled = true;
 
-// Enable the submit button when the create button is clicked
-document.getElementById('createListing-btn').addEventListener('click', function () {
-	var myModal = new bootstrap.Modal(document.getElementById('createModal'));
-	myModal.show();
-	var submitBtn = document.getElementById('submitListing');
-	if (submitBtn){
-		document.getElementById('submitListing').addEventListener('click', function(e) {
+	// Enable the submit button when the create button is clicked
+	document.getElementById('createListing-btn').addEventListener('click', function () {
+		var myModal = new bootstrap.Modal(document.getElementById('createModal'));
+		myModal.show();
+		var submitBtn = document.getElementById('submitListing');
+		if (submitBtn){
+			submitBtn.disabled = false;
+			document.getElementById('submitListing').addEventListener('click', function(e) {
+				e.preventDefault();
+				addListing();
+			});
+		}
+	});
+
+	var cancelButton = document.getElementById('cancelButton');
+	if (cancelButton){
+		cancelButton.addEventListener('click', function(event) {
 			e.preventDefault();
-			addListing();
+			cancelListing();
 		});
 	}
-});
 
-  var cancelButton = document.getElementById('cancelButton');
-if (cancelButton){
-	cancelButton.addEventListener('click', function(event) {
-		e.preventDefault();
-		cancelListing();
-	});
-}
-
-var deleteButton = document.getElementById('deleteButton');
-if (deleteButton){
-	deleteButton.addEventListener('click', function(event) {
-		e.preventDefault();
-		deleteListing();
-	});
-}
-
-document.getElementById('nearbyRestaurant-btn').addEventListener('click', function () {
-	if (document.getElementById("user-location").value !== "Select your school") {
-		var createModal = bootstrap.Modal.getInstance(document.getElementById('createModal'));
-		createModal.hide();
-
-		var restaurantModal = new bootstrap.Modal(document.getElementById('nearbyRestaurantModal'));
-		restaurantModal.show();
+	var deleteButton = document.getElementById('deleteButton');
+	if (deleteButton){
+		deleteButton.addEventListener('click', function(event) {
+			e.preventDefault();
+			deleteListing();
+		});
 	}
-});
+
+	document.getElementById('nearbyRestaurant-btn').addEventListener('click', function () {
+		if (document.getElementById("user-location").value !== "Select your school") {
+			var createModal = bootstrap.Modal.getInstance(document.getElementById('createModal'));
+			createModal.hide();
+
+			var restaurantModal = new bootstrap.Modal(document.getElementById('nearbyRestaurantModal'));
+			restaurantModal.show();
+		}
+	});
 
 	document.addEventListener('click', function(event) {
 		if (event.target.closest('#selectedRestaurant')) {

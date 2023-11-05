@@ -353,10 +353,16 @@ function deleteListing(listingID){
 
 function getNearbyRestaurants() {
     var selectedLocation = document.getElementById("user-location").value;
+    var locationAlert = document.getElementById("locationAlert");
+    var restaurantAlert = document.getElementById("restaurantAlert");
 
-    // to set proper alert here, if user did not select their current location
+    locationAlert.innerText = "";
+    locationAlert.classList.add('d-none');
+
+    // Alert if user did not select their current location
     if (selectedLocation == "Select your school") {
-        alert("Please enter a location!");
+        locationAlert.innerText = "Please select a delivery location!";
+        locationAlert.classList.remove('d-none');
         return;
     }
 
@@ -381,8 +387,8 @@ function getNearbyRestaurants() {
             if (restaurant_array && restaurant_array.length > 0) {
                 displayRestaurants(restaurant_array);
             } else {
-                // fix dont display nearbyRestaurant modal
-                alert("No restaurants found in your area!"); // proper alert here
+                restaurantAlert.innerText = "No restaurants found nearby!";
+                restaurantAlert.classList.remove('d-none');
             }
         } else {
             // Handle errors, e.g., display an error message
@@ -399,8 +405,12 @@ function getNearbyRestaurants() {
 }
 
 function displayRestaurants(restaurants) {
-    var displayArea = document.getElementById("nearbyRestaurants");
+    var displayArea = document.getElementById("restaurantList");
+    var restaurantAlert = document.getElementById("restaurantAlert");
+
     displayArea.innerHTML = "";
+    restaurantAlert.innerText = "";
+    restaurantAlert.classList.add('d-none');
 
     var full = "";
 
