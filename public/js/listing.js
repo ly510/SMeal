@@ -478,8 +478,13 @@ function updateModalContent(details) {
     document.getElementById('modalListingImage').src = details[0].img;
     document.getElementById('modalListingName').textContent = details[0].name;
     document.getElementById('modalListingUserLocation').textContent = details[0].location;
-    document.getElementById('modalListingRoom').textContent = details[0].room;
-
+    var room = details[0].room;
+    console.log(room);
+    if (room.length === 0){
+        room = "-No Room Specified-";
+        document.getElementById('modalListingRoom').style.color = 'grey';
+    }
+    document.getElementById('modalListingRoom').textContent = room
     document.getElementById('modalListingTitle').textContent = details[0].title;
     document.getElementById('modalListingDesc').textContent = details[0].description;
     document.getElementById('modalListingLat').textContent = details[0].lat;
