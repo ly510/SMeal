@@ -5,6 +5,7 @@ const express = require("express");
 const routeListing = require('./public/js/routes/routeListing.js');
 const routeProfile = require('./public/js/routes/routeProfile.js');
 const routeAccount = require('./public/js/routes/routeAccount.js');
+const routeReward = require('./public/js/routes/routeReward.js');
 const stripe = require('./public/js/routes/stripe.js');
 
 const bodyParser = require("body-parser");
@@ -24,6 +25,7 @@ app.use("/api/stripe", stripe);
 routeListing.routeListing(app);
 routeProfile.routeProfile(app);
 routeAccount.routeAccount(app);
+routeReward.routeReward(app);
 
 function gotoIndex(req, res) {
     console.log(req.params);
