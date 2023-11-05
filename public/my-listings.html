@@ -170,38 +170,38 @@ crossorigin="anonymous"></script>
 integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" 
 crossorigin="anonymous"></script>
 
-<!-- Open create listing modal on click-->
 <script>
-	// Initially disable the submit button
-	document.getElementById('submitListing').disabled = true;
 
-	// Enable the submit button when the create button is clicked
-	document.getElementById('createListing-btn').addEventListener('click', function () {
-		var myModal = new bootstrap.Modal(document.getElementById('createModal'));
-		myModal.show();
-		var submitBtn = document.getElementById('submitListing');
-		if (submitBtn){
-			submitBtn.disabled = false;
-			document.getElementById('submitListing').addEventListener('click', function(e) {
-				e.preventDefault();
-				addListing();
-			});
-		}
-	});
+	// Open create listing modal on click
 
+	var createListingBtn = document.getElementById('createListing-btn');
+	if (createListingBtn){
+		document.getElementById('createListing-btn').addEventListener('click', function () {
+			document.getElementById('submitListing').disabled = false;
+			var myModal = new bootstrap.Modal(document.getElementById('createModal'));
+			myModal.show();
+			var submitBtn = document.getElementById('submitListing');
+			if (submitBtn){
+				document.getElementById('submitListing').addEventListener('click', function(e) {
+					e.preventDefault();
+					addListing();
+				});
+			}
+		});
+	}
 	var cancelButton = document.getElementById('cancelButton');
 	if (cancelButton){
-		cancelButton.addEventListener('click', function(event) {
+		cancelButton.addEventListener('click', async function(event) {
 			e.preventDefault();
-			cancelListing();
+			await cancelListing();
 		});
 	}
 
 	var deleteButton = document.getElementById('deleteButton');
 	if (deleteButton){
-		deleteButton.addEventListener('click', function(event) {
+		deleteButton.addEventListener('click', async function(event) {
 			e.preventDefault();
-			deleteListing();
+			await deleteListing();
 		});
 	}
 

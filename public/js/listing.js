@@ -117,13 +117,14 @@ function addListing(){
     newListing.lng = sessionStorage.getItem("lng");
     newListing.img = sessionStorage.getItem("restaurantImg");
     newListing.paymentType = document.getElementById("payment-type").value;
-
-    // // Check if any value is null
-    // for (var key in newListing) {
-    //     if (newListing[key] === null || newListing[key] === "") {
-    //         return; // If any value is null or empty, return early and don't add the listing
-    //     }
-    // }
+    
+    // Check if any value is null
+    for (var key in newListing) {
+        if (newListing[key] === null || newListing[key] === "") {
+            alert('All fields must be filled out');
+            return;
+        }
+    }
 
     newListing.fulfillerId = null;
     newListing.status = "Awaiting Acceptance";
@@ -257,7 +258,7 @@ function displayListingByUserID(listings) {
                             '<button type="submit" class="btn btn-success payment-button paymentButton" id="checkout" value="' + listingID + '">Pay</button>' +
                         '</form>' 
                         : 
-                            '<button class="btn btn-danger payment-button" id="cancelButton" onclick="cancelListing('+listingID+')" value="'+listingID+'">Cancel</button>')) +
+                            '<button class="btn btn-danger cancel-button float-end my-2 mx-1" id="cancelButton" onclick="cancelListing('+listingID+')" value="'+listingID+'">Cancel</button>')) +
                     '</div>' +
                     // '<div class="col-md-1 text-end">' +
                     //     (status >= 4 ? '<button class="btn btn-success delete-button" id="deleteButton" @click=deleteListing()>X</button>': '<button class="btn btn-success payment-button disabled" id="deleteButton" @click=deleteListing()>X</button>') +
@@ -305,50 +306,54 @@ function displayListingByUserID(listings) {
 
 function cancelListing(listingID){
     var response = confirm("Are you sure you want to cancel this request?");
-    var listingID = parseInt(document.getElementById("cancelButton").value);
+
+    if (response) {
+        // User clicked OK, proceed with the operation
+    } else {
+        // User clicked Cancel, do not proceed
+        return;
+    }
 
     var request = new XMLHttpRequest();
     request.open("PUT", listing_url+"/"+listingID, true);
     request.setRequestHeader("Content-Type", "application/json");
 
     request.send();
-    document.getElementById('cancelButton').addEventListener('click', function(e) {
-        e.preventDefault();
-        cancelListing();
-
-        Swal.fire({
-            icon: 'success',
-            title: "Listing Cancelled",
-            showConfirmButton: false,
-            timer: 2300
-          }).then(function() {
-            window.location.href = "/my-listings.html";
-          });
-    });
+    
+    Swal.fire({
+        icon: 'success',
+        title: "Listing Cancelled",
+        showConfirmButton: false,
+        timer: 2300
+        }).then(function() {
+        window.location.href = "/my-listings.html";
+        });
 }
 
 function deleteListing(listingID){
     var response = confirm("Are you sure you want to delete this request?");
-    var listingID = parseInt(document.getElementById("deleteButton").value);
+
+    if (response) {
+        // User clicked OK, proceed with the operation
+    } else {
+        // User clicked Cancel, do not proceed
+        return;
+    }
 
     var request = new XMLHttpRequest();
     request.open("DELETE", deleteListing_url+listingID, true);
     request.setRequestHeader("Content-Type", "application/json");
 
     request.send();
-    document.getElementById('deleteButton').addEventListener('click', function(e) {
-        e.preventDefault();
-        deleteListing();
-
-        Swal.fire({
-            icon: 'success',
-            title: "Listing Deleted",
-            showConfirmButton: false,
-            timer: 2300
-          }).then(function() {
-            window.location.href = "/my-listings.html";
-          });
-    });    
+    
+    Swal.fire({
+        icon: 'success',
+        title: "Listing Deleted",
+        showConfirmButton: false,
+        timer: 2300
+        }).then(function() {
+        window.location.href = "/my-listings.html";
+        });
 }
 
 function getNearbyRestaurants() {
