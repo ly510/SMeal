@@ -105,7 +105,7 @@ async function getRestaurants(request, respond) {
         const query = `https://places.googleapis.com/v1/places:searchNearby?key=` + process.env.GOOGLE_API_KEY;
         const data = {
             "includedPrimaryTypes": ["restaurant"],
-            "includedTypes": ["restaurant", "fast_food_restaurant", "cafe", "bakery", "meal_takeaway"],
+            "includedTypes": ["restaurant", "fast_food_restaurant", "cafe", "bakery", "meal_takeaway", "coffee_shop"],
             "rankPreference": "DISTANCE",
             "locationRestriction": {
                 "circle": {

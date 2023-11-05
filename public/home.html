@@ -27,14 +27,14 @@
 	
     <!-- CHANGE TO GET ACCEPTED LISTINGS -->
     <!-- <script src="./js/listing.js"></script>
-	<script src="./js/app.js"></script>
-	
+	<script src="./js/app.js"></script> -->
 
 	<script>
+        // getAllListings()
         function load(){
-            getAllListing();
+            document.getElementById("username").innerText = sessionStorage.getItem('name');
         }
-    </script> -->
+    </script>
 </head>
 
 <body class="body-wrapper" onload="load()">
@@ -51,7 +51,7 @@
     <!-- MAIN BODY -->
     <!-- Welcome message -->
     <div class="container mt-4">
-        <h2 id="welcome-msg">Welcome Back, <span id="username">Samanta</span></h2>
+        <h2 id="welcome-msg">Welcome Back, <span id="username"></span></h2>
         <hr>
         <h5 id="prompt-msg">What would you like to do today?</h5>
         <div class="d-flex align-items-center mt-3 custom-div">
