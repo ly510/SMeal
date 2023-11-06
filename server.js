@@ -10,7 +10,7 @@ const stripe = require('./public/js/routes/stripe.js');
 
 const bodyParser = require("body-parser");
 var app = express();
-var host = "127.0.0.1";
+var host = "0.0.0.0";
 var port = 5500;
 
 require("dotenv").config();
