@@ -4,6 +4,7 @@ const req = require('express/lib/request');
 const Accounts = require('../models/Accounts');
 const AccountsDB = require('../models/AccountsDB');
 const RewardsDB = require('../models/RewardsDB');
+const MyRewards = require('../models/MyRewards');
 
 const fs = require('fs');
 const path = require('path');
@@ -210,34 +211,33 @@ function getUserPoints(req, res) {
     });
 }
 
-function redeemReward(req, res) {
-    const userId = req.params.userId;
-    const rewardId = req.params.rewardId;
+function updateUserPoints(req, res) {
+    var userId = req.params.userId;
+    var points = req.body.updatedPoints;
 
-    accountsDB.getReqPoints(userId, function(error, userPoints) {
+    var pointsUpdate = new Accounts(parseInt(userId),null,null,null,null,null,points);
+    accountsDB.updateUserPoints(pointsUpdate, function(error, result) {
         if (error) {
             res.status(500).send(error);
         } else {
-            rewardsDB.getReqPoints(rewardId, function(error, reqPoints) {
-                if (error) {
-                    res.status(500).send(error);
-                } else {
-                    // Subtract the required points of the reward from the user's points
-                    const updatedPoints = userPoints - reqPoints;
-
-                    // Update the user's points in the database
-                    accountsDB.updateUserPoints(userId, updatedPoints, function(error, result) {
-                        if (error) {
-                            res.status(500).send(error);
-                        } else {
-                            // Return the updated points in the response
-                            res.json({ points: updatedPoints });
-                        }
-                    });
-                }
-            });
+            res.send(result);
         }
     });
 }
 
-module.exports = { createAccount, login, getAllAccounts, getCurrentAccount, updateAccountProfile, deleteAccount, getUserPoints, redeemReward };
+function addReward(req,res){
+    console.log(req.params);
+    var userId = req.params.userId;
+    var rewardId = req.params.rewardId;
+
+    var addUserReward = new MyRewards(parseInt(userId),parseInt(rewardId));
+    accountsDB.addReward(addUserReward, function(error, result){
+        if(error){
+            res.json(error);
+        } else {    
+            res.json(result);
+        }
+    });
+}
+
+module.exports = { createAccount, login, getAllAccounts, getCurrentAccount, updateAccountProfile, deleteAccount, getUserPoints, updateUserPoints, addReward };

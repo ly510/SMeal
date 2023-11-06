@@ -18,4 +18,19 @@ function getAllRewards(request, respond)
     });
 }
 
-module.exports = { getAllRewards };
+function getReqPoints(request, respond)
+{
+    var rewardID = request.params.id;
+
+    //Call the getReqPoints() function in the RewardsDB class.
+    rewardsDB.getReqPoints(rewardID, function(error, result)
+    {
+        if(error){
+            respond.json(error);
+        } else {
+            respond.json(result);
+        }
+    });
+}
+
+module.exports = { getAllRewards, getReqPoints };

@@ -12,6 +12,12 @@ function routeAccount(app) {
 
     app.route('/getUserPoints/:id')
     .get(accountsController.getUserPoints);
+
+    app.route('/updateUserPoints/:userId')
+    .put(accountsController.updateUserPoints);
+
+    app.route('/addReward/:userId/:rewardId')
+    .post(accountsController.addReward);
 }
 
 module.exports = { routeAccount };

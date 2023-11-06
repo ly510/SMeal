@@ -28,18 +28,10 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="./js/rewards.js"></script>
-	<script src="./js/app.js"></script>
-    <script src="./js/user-profile.js"></script>
 
-	<script>
-        function load(){
-            getAllRewards();
-        }
-    </script>
 </head>
 
-<body class="body-wrapper" onload="load()">
+<body class="body-wrapper">
 	<!-- Nav Bar -->
 	<header>
 		<div class="container">
@@ -53,32 +45,35 @@
     <div><h3 id="header-title">Redeem Rewards</h3></div>
 
     <!-- Display rewards -->
-    <div class="rewards-container row">
-        <section id="rewardsZone">
-            <div class="wrapper">
-                <div id="rewardsZone" class="row" style="margin-top: 20px;"></div> 
+    <div id="rewardsApp">
+        <div class="rewards-container row">
+            <div class="col-md-4" v-for="reward in rewards" @click="openModal(reward)">
+                <div class="card">
+                    <img :src="reward.img" class="card-img-top" alt="Reward Image">
+                    <div class="card-body">
+                    <h5 class="card-title text-muted">{{ reward.name }}</h5>   
+                    <h6 class="card-subtitle mb-2 text-muted">Points Required: {{ reward.pointsReq }}</h6>
+                </div>
             </div>
-        </section>
-    </div>
-
-    <!-- The Modal -->
-    
-    <div id="myModal" class="modal">
-        <!-- Modal content -->
-        <div class="modal-content" style="width: 60%; margin: auto;">
-            <div class="modal-header">
-                <h2 id="modal-title"></h2>
-                <span id="closeModal" style="cursor:pointer;">&times;</span>
-            </div>
-            <img id="modal-img" src="" alt="Reward image">
-            <p class="text-primary" id="modal-pointsReq"></p>
-            <p id="modal-userPoints"></p>
-            <progress id="modal-progress" value="0" max="100"></progress>
-            <button id="redeem-btn">Redeem Reward</button>
         </div>
+    
+        <div id="myModal" v-if="showModal">
+            <!-- Modal content here -->
+            <div class="modal-content" style="width: 60%; margin: auto;">
+                <div class="modal-header">
+                    <h2 id="modal-title">{{ selectedReward.name }}</h2>
+                    <span id="closeModal" style="cursor:pointer;" @click="closeModal">&times;</span>
+                </div>
+                <img id="modal-img" :src="selectedReward.img" alt="Reward image">
+                <p class="text-primary" id="modal-pointsReq">Points Required: {{ selectedReward.pointsReq }}</p>
+                <p id="modal-userPoints">Your Points: {{ userPoints }}</p>
+                <progress id="modal-progress" :value="progress" max="100"></progress>
+                <button id="redeem-btn" class="btn btn-success" @click="updateUserPoints(selectedReward)"  :disabled="userPoints < selectedReward.pointsReq">Redeem Reward</button>
+            </div>
     </div>
-
+    
     <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
     crossorigin="anonymous"></script>
@@ -86,5 +81,9 @@
     <script src='https://unpkg.com/axios/dist/axios.min.js'></script>
     <!-- Vue 3 -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    </body>
-    </html>
+	<script src="./js/app.js"></script>
+    <script src="./js/rewards.js"></script>
+    <script src="./js/user-profile.js"></script>
+
+</body>
+</html>
