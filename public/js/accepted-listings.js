@@ -69,8 +69,10 @@ const app = Vue.createApp({
         },
 
         showDeleteConfirmationModal(listingID, selectedTitle, dateAccepted, status) {
+            console.log("clicked");
+            console.log(status == "Listing Accepted")
             if (status == "Listing Accepted"){
-                if (this.isCancellationDisabled(dateAccepted)){
+                if (!this.isCancellationDisabled(dateAccepted)){
                     this.confirmationModalListingID = listingID;
                     this.confirmationModalListingTitle = selectedTitle;
                     this.confirmationModalSelectedStatus = "Awaiting Acceptance";
