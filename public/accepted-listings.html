@@ -99,34 +99,45 @@
                 </div>
             </div>
             <div class="col-md-5">
-                <div class="p-3 bg-light">
-                    <p class="m-2">Status:</p>
-                    <span style="font-size: medium;" class="badge border border- m-2" :class="{'bg-success': listing.status === 'Listing Completed', 'bg-danger': listing.status === 'Listing Accepted', 'bg-warning': listing.status === 'On the Way'}">
+
+                <div class="p-3 bg-light ">
+                    <h6 class="m-2">Status:</h6>
+                    <span style="font-size: medium;" class="badge border border- mx-2" :class="{'bg-success': listing.status === 'Listing Completed', 'bg-danger': listing.status === 'Listing Accepted', 'bg-warning': listing.status === 'On the Way'}">
                         {{ listing.status }}
-                    </span> &nbsp;
+                    </span>
                     <svg v-if="listing.statusOptions.length > 0" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-square-fill" viewBox="0 0 16 16">
                         <path d="M0 14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v12zm4.5-6.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5a.5.5 0 0 1 0-1z"/>
-                    </svg> &nbsp;
-                    <select v-if="listing.statusOptions.length > 0" v-model="listing.selectedStatus" class="m-2">
+                    </svg>
+                    <select v-if="listing.statusOptions.length > 0" v-model="listing.selectedStatus"  style="height: 30px;" class="m-2">
                         <option value="" disabled selected>Select Status</option>
                         <option v-for="status in listing.statusOptions" :value="status">{{ status }}</option>
                     </select>
                     <!-- Button to prompt the API -->
                     <span v-if="listing.statusOptions.length > 0">
-                        &nbsp;
-                        <button @click="showConfirmationModal(listing.listingID, listing.selectedStatus, listing.title)" class="btn btn-outline-primary btn-sm m-2">Update Status</button>
+                        <button @click="showConfirmationModal(listing.listingID, listing.selectedStatus, listing.title)" class="btn btn-outline-primary btn-sm rounded-0 mx-2 mb-1">Update Status</button>
                     </span>
                 </div>
+
+                <div class="p-3 mt-1 bg-light">
+                    <!-- Price -->
+                    <div class="w-50">
+                        <div class="input-group">
+                            <input v-model="listing.newPrice" type="number" class="form-control" placeholder="$0.00" aria-label="New Price" pattern="[0-9]+">
+                            <button @click="updateListingPrice(listing.listingID)" class="btn btn-outline-primary">Update Price</button> 
+                            <p style="font-size: small; font-style: italic;" class="m-1">Enter the total price of the food</p>
+                            <span class="text-secondary mx-1">Current Total Price: $ {{ listing.price }}</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-1">
-                <button
+            <div class="col-md-1 ">
+                <button 
                     @click="showDeleteConfirmationModal(listing.listingID, listing.title, listing.dateAccepted, listing.status)"
                     class="btn btn-danger btn-sm m-2"
                     v-if="isCancellationDisabled(listing.dateAccepted, listing.status)"
                 >
                     Cancel
                 </button>
-
             </div>
         </div>
     </div>

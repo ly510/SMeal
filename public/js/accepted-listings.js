@@ -7,6 +7,7 @@ const app = Vue.createApp({
             confirmationModalListingTitle: null,
             confirmationModalSelectedStatus: null,
             dateAccepted: null,
+            newPrice: null,
         };
     },
     mounted() {
@@ -51,7 +52,6 @@ const app = Vue.createApp({
 
         async changeStatus(listingId, newStatus, fulfillerId) {
             try {
-
                 const response = await axios.put(`/changeListingStatus/${listingId}`, {
                     status: newStatus,
                     fulfillerId: fulfillerId,
@@ -103,12 +103,36 @@ const app = Vue.createApp({
             if (status == 'Listing Accepted'){
                 return true;
             }
-            
         },
-
-             
+        
+        async updateListingPrice(listingId) {
+            try {
+                const listing = this.foodListings.find(listing => listing.listingID === listingId);
+        
+                if (!listing) {
+                    console.error('Listing not found');
+                    return;
+                }
+        
+                const response = await axios.put(`/changeListingPrice/${listingId}`, {
+                    price: listing.newPrice,
+                });
+        
+                if (response.status === 200) {
+                    console.log('Listing price updated successfully:', listing.newPrice);
+                    // reset the input field after updating the price
+                    listing.newPrice = null;
+                    window.location.reload();
+                } else {
+                    this.error = 'Error updating listing price: ' + response.statusText;
+                }
+            } catch (error) {
+                this.error = 'Network error while updating listing price';
+                console.error('Error updating listing price:', error.message);
+            }
+        },
+        
     },
-    
 });
 
 const vm = app.mount('#app');
