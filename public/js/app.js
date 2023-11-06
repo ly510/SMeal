@@ -15,6 +15,7 @@ var foodListingCount = 0;
 
 var reward_url = "/rewards";
 var reward_array = [] //This creates an empty reward array
+var userpoints_array =[];
 
 var restaurant_url = "/restaurant";
 var restaurant_array = [];

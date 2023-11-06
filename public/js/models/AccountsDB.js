@@ -115,6 +115,37 @@ class AccountsDB {
             });
     }
 
+    getUserPoints(userId, callback) {
+        const sql = `SELECT points FROM smeal.Accounts WHERE id = ?`;
+    
+        db.query(sql, [userId])
+            .then(([rows, fields]) => {
+                if (rows.length > 0) {
+                    const userPoints = rows[0].points;
+                    callback(null, userPoints);
+                } else {
+                    callback(null, null);
+                }
+            })
+            .catch((error) => {
+                callback(error, null);
+            });
+    }
+
+    // FOR POINTS REDEMPTION
+    // updateUserPoints(userId, updatedPoints, callback) {
+    //     const sql = `UPDATE smeal.Accounts SET points = ? WHERE id = ?`;
+    
+    //     db.query(sql, [updatedPoints, userId])
+    //         .then(([rows, fields]) => {
+    //             callback(null, rows);
+    //         })
+    //         .catch((error) => {
+    //             callback(error, null);
+    //         });
+    // }
+    
+
     // addListing(Listing, callback)
     // {
     //     var sql = "INSERT into Listing (listingID, userID, title, description, location, restaurantName, lat, long, paymentType, datePosted, fulfillerId, status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";

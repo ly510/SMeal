@@ -3,11 +3,14 @@
 const req = require('express/lib/request');
 const Accounts = require('../models/Accounts');
 const AccountsDB = require('../models/AccountsDB');
+const RewardsDB = require('../models/RewardsDB');
 
 const fs = require('fs');
 const path = require('path');
+const { error } = require('console');
 
 var accountsDB = new AccountsDB();
+var rewardsDB = new RewardsDB();
 
 //This function creates a user
 function createAccount(request, respond) {
@@ -196,5 +199,48 @@ function deleteAccount(request, respond)
     });
 }
 
+function getUserPoints(req, res) {
+    var userId = req.params.id;
+    // console.log(userId);
+    accountsDB.getUserPoints(userId, function(error, points) {
+        if (error) {
+            res.status(500).send(error);
+        } else if (points === null) {
+            res.status(404).send({message: 'User not found'});
+        } else {
+            res.send({points: points});
+        }
+    });
+}
 
-module.exports = { createAccount, login, getAllAccounts, getCurrentAccount, updateAccountProfile, deleteAccount};
+function redeemReward(req, res) {
+    const userId = req.params.userId;
+    const rewardId = req.params.rewardId;
+
+    accountsDB.getReqPoints(userId, function(error, userPoints) {
+        if (error) {
+            res.status(500).send(error);
+        } else {
+            rewardsDB.getReqPoints(rewardId, function(error, reqPoints) {
+                if (error) {
+                    res.status(500).send(error);
+                } else {
+                    // Subtract the required points of the reward from the user's points
+                    const updatedPoints = userPoints - reqPoints;
+
+                    // Update the user's points in the database
+                    accountsDB.updateUserPoints(userId, updatedPoints, function(error, result) {
+                        if (error) {
+                            res.status(500).send(error);
+                        } else {
+                            // Return the updated points in the response
+                            res.json({ points: updatedPoints });
+                        }
+                    });
+                }
+            });
+        }
+    });
+}
+
+module.exports = { createAccount, login, getAllAccounts, getCurrentAccount, updateAccountProfile, deleteAccount, getUserPoints, redeemReward };
