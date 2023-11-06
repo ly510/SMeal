@@ -76,45 +76,53 @@
 
 <div class="mx-5 mt-2 text-secondary">
 	<h5>{{foodListingsLength}} Listings</h5>
-  </div>
-  <div class="col-md-12 mt-3" v-for="listing in foodListings" :key="listing.listingID">
-	<div class="listing px-2">
-	  <div class="listing-container row">
-		<div class="col-md-3">
-		  <img :src="listing.img" class="img-fluid" alt="Listing Image">
-		</div>
-		<div class="col-md-5">
-		  <div class="listing-header">
-			<h5 class="listing-title">{{ listing.title }}</h5>
-		  </div>
-		  <div class="listing-body">
-			<p class="user-room">Room: {{ listing.room }}</p>
-			<p class="user-location" style="font-weight:bold; color: #28a745">User Location: {{ listing.location }}</p>
-			<p class="listing-restaurant">Restaurant: {{ listing.restaurantName }}</p>
-			<p class="listing-description">Description: {{ listing.description }}</p>
-		  </div>
-		</div>
-		<div class="col-md-4">
-		  <p class="m-0">Status:</p>
-		  <span :style="{ color: listing.status === 'Listing Completed' ? 'green' : 'black', 'font-weight': listing.status === 'Listing Completed' ? 'bold' : 'normal' }">{{ listing.status }}</span>
-		  &nbsp;
-		  <svg v-if="listing.statusOptions.length > 0" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-square-fill" viewBox="0 0 16 16">
-			<path d="M0 14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v12zm4.5-6.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5a.5.5 0 0 1 0-1z"/>
-		  </svg>
-		  &nbsp;
-		  <select v-if="listing.statusOptions.length > 0" v-model="listing.selectedStatus">
-			<option value="" disabled selected>Select Status</option>
-			<option v-for="status in listing.statusOptions" :value="status">{{ status }}</option>
-		  </select>
+</div>
+<div class="col-md-12 mt-3" v-for="listing in foodListings" :key="listing.listingID">
+    <div class="listing px-2">
+        <div class="listing-container row">
+            <div class="col-md-2">
+                <img :src="listing.img" class="img-fluid" alt="Listing Image">
+            </div>
+            <div class="col-md-4">
+                <div class="listing-header">
+                <h5 class="listing-title mt-1">{{ listing.title }}</h5>
+                </div>
+                <div class="listing-body">
+                <p class="user-room">Room: {{ listing.room }}</p>
+                <p class="user-location">
+                    <strong class="text-success">User Location: {{ listing.location }}</strong>
+                </p>
+                <p class="listing-restaurant">Restaurant: {{ listing.restaurantName }}</p>
+                <p class="listing-description">Description: {{ listing.description }}</p>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="p-3 bg-light">
+                    <p class="m-2">Status:</p>
+                    <span style="font-size: medium;" class="badge border border- m-2" :class="{'bg-success': listing.status === 'Listing Completed', 'bg-danger': listing.status === 'Listing Accepted', 'bg-warning': listing.status === 'On the Way'}">
+                        {{ listing.status }}
+                    </span> &nbsp;
+                    <svg v-if="listing.statusOptions.length > 0" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-square-fill" viewBox="0 0 16 16">
+                        <path d="M0 14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v12zm4.5-6.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5a.5.5 0 0 1 0-1z"/>
+                    </svg> &nbsp;
+                    <select v-if="listing.statusOptions.length > 0" v-model="listing.selectedStatus" class="m-2">
+                        <option value="" disabled selected>Select Status</option>
+                        <option v-for="status in listing.statusOptions" :value="status">{{ status }}</option>
+                    </select>
+                    <!-- Button to prompt the API -->
+                    <span v-if="listing.statusOptions.length > 0">
+                        &nbsp;
+                        <button @click="showConfirmationModal(listing.listingID, listing.selectedStatus, listing.title)" class="btn btn-outline-primary btn-sm m-2">Update Status</button>
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <button @click="showDeleteConfirmationModal(listing.listingID, listing.title)" class="btn btn-danger btn-sm m-2">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
   
-		  <!-- Button to prompt the API -->
-		  <div v-if="listing.statusOptions.length > 0">
-			<button @click="showConfirmationModal(listing.listingID, listing.selectedStatus, listing.title)" class="btn btn-success mt-3">Change Status</button>
-		  </div>
-		</div>
-	  </div>
-	</div>
-  </div>
 
   
 
@@ -128,7 +136,7 @@
             </div>
             <div class="modal-body">
                 Are you sure you want to change: 
-				<p>Status to : "{{ confirmationModalSelectedStatus }}" For {{ confirmationModalListingTitle }}</p>
+				<strong>Status to : "{{ confirmationModalSelectedStatus }}" For {{ confirmationModalListingTitle }}</strong>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -137,6 +145,28 @@
         </div>
     </div>
 </div>
+
+
+
+<!-- Cancel Confirmation Modal -->
+<div id="deleteConfirmationModal" class="modal fade" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteConfirmationModalLabel">Confirm Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to cancel <strong>{{confirmationModalListingTitle}}</strong> this listing?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button @click="deleteConfirmed" type="button" class="btn btn-danger">Remove</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 </div>

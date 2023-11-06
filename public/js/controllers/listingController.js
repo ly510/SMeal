@@ -241,10 +241,14 @@ function changeListingStatus(request, respond) {
     var listingID = parseInt(request.params.listingID);
     var status = request.body.status;
     var fulfillerId = null;
-    // Check if the status is "Listing Accepted"
-    if (status === "Listing Accepted") {
+
+    console.log(status);
+    console.log(status === "Awaiting Acceptance");
+    // Check if the status is "Listing Accepted" or "Awaiting Acceptance"
+    if (status === "Listing Accepted" || status === "Awaiting Acceptance") {
         fulfillerId = request.body.fulfillerId;
     }
+    console.log(request.body.fulfillerId);
     var toChangeStatus = new Listing(listingID, null, null, null, null, null, null, null, null, null, null, null, fulfillerId, status);
     listingDB.changeListingStatus(toChangeStatus, function (error, result) {
         if (error) {
