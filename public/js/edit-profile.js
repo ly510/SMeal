@@ -57,10 +57,17 @@ const profile = Vue.createApp({
                     this.fullNum = editProfile_array[0].userPhone;
                     this.points = editProfile_array[0].userPoints;
 
-                    // Display phone number
-                    this.countryCode = this.fullNum.substring(1, 3);
-                    this.phoneNo = this.fullNum.substring(this.countryCode.length + 1);
+                    // Get country code and phone number
+                    var dialCodeList = [];
+                    window.intlTelInputGlobals.getCountryData().find(country => {dialCodeList.push("+"+country.dialCode)});
+                    dialCodeList.forEach(dialCode => {
+                        if (this.fullNum.includes(dialCode)) {
+                            this.countryCode = dialCode.replace("+", "");                            
+                            this.phoneNo = this.fullNum.substring(this.countryCode.length + 1);
+                        }
+                    });
 
+                    // Get country based on country code
                     const country = window.intlTelInputGlobals.getCountryData().find(country => country.dialCode === this.countryCode).iso2;
 
                     var input = document.getElementById('phone-number');
@@ -76,7 +83,6 @@ const profile = Vue.createApp({
                     input.addEventListener('input', function () {
                         var fullPhoneNumber = iti.getNumber().trim();
                         var isValid = iti.isValidNumber();
-                        console.log(fullPhoneNumber, isValid)
                         var isEmpty = !fullPhoneNumber.trim();
                         
                         if (isEmpty) isValid = false;
