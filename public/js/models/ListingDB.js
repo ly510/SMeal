@@ -156,29 +156,6 @@ changeListingStatus(listing, callback) {
             callback(error, null);
         });
     }
-
-    // // Check if the status is "Listing Accepted"
-    // if (listing.getStatus() === "Listing Accepted" || listing.getStatus() === "Awaiting Acceptance") {
-    //     sql = "UPDATE Listing SET status = ?, fulfillerId = ? WHERE listingID = ?";
-
-    //     db.query(sql, [listing.getStatus(), listing.getFulfillerId(), listing.listingID])
-    //     .then(([rows, fields]) => {
-    //         callback(null, rows);
-    //     })
-    //     .catch((error) => {
-    //         callback(error, null);
-    //     });
-    // } else {
-    //     sql = "UPDATE Listing SET status = ? WHERE listingID = ?;";
-
-    //     db.query(sql, [listing.getStatus(), listing.listingID])
-    //     .then(([rows, fields]) => {
-    //         callback(null, rows);
-    //     })
-    //     .catch((error) => {
-    //         callback(error, null);
-    //     });
-    // }
 }
 
 getListingByFulfillerId(fulfillerId, callback) {
