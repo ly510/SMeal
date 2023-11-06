@@ -29,10 +29,11 @@ const app = Vue.createApp({
                 console.error('Error fetching food listings:', error.message);
             }
         },
-        
+
 
         changeStatusConfirmed() {
-            this.changeStatus(this.confirmationModalListingID, this.confirmationModalSelectedStatus);
+            const fulfillerId = sessionStorage.getItem("userId");
+            this.changeStatus(this.confirmationModalListingID, this.confirmationModalSelectedStatus, fulfillerId);
             const modalElement = document.getElementById('confirmationModal');
             const modal = bootstrap.Modal.getInstance(modalElement);
             modal.hide();
@@ -50,16 +51,14 @@ const app = Vue.createApp({
             }
         },
 
-        async changeStatus(listingId) {
+        async changeStatus(listingId, newStatus, fulfillerId) {
             try {
-                const fulfillerId = sessionStorage.getItem("userId");
-                const newStatus = this.foodListings.find(listing => listing.listingID === listingId).selectedStatus;
 
                 const response = await axios.put(`/changeListingStatus/${listingId}`, {
                     status: newStatus,
-                    fulfillerId,
+                    fulfillerId: fulfillerId,
                 });
-
+    
                 if (response.status === 200) {
                     console.log('Listing status changed successfully:', newStatus);
                 } else {
@@ -70,8 +69,22 @@ const app = Vue.createApp({
                 console.error('Error changing listing status:', error.message);
             }
         },
-        
-        
+
+        showDeleteConfirmationModal(listingID, selectedTitle) {
+            this.confirmationModalListingID = listingID;
+            this.confirmationModalListingTitle = selectedTitle;
+            this.confirmationModalSelectedStatus = "Awaiting Acceptance";
+            const modal = new bootstrap.Modal(document.getElementById('deleteConfirmationModal'));
+            modal.show();
+        },
+
+        deleteConfirmed() {
+            this.changeStatus(this.confirmationModalListingID, this.confirmationModalSelectedStatus, 123); // Unable to pass in null to update data in db to null hence use ""
+            const modalElement = document.getElementById('deleteConfirmationModal');
+            const modal = bootstrap.Modal.getInstance(modalElement);
+            modal.hide();
+            window.location.reload();
+        },
     },
     
 });

@@ -126,7 +126,7 @@ class ListingDB
 changeListingStatus(listing, callback) {
     var sql;
     // Check if the status is "Listing Accepted"
-    if (listing.getStatus() === "Listing Accepted") {
+    if (listing.getStatus() === "Listing Accepted" || listing.getStatus() === "Awaiting Acceptance") {
         sql = "UPDATE Listing SET status = ?, fulfillerId = ? WHERE listingID = ?";
 
         db.query(sql, [listing.getStatus(), listing.getFulfillerId(), listing.listingID])
