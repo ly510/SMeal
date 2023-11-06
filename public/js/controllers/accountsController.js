@@ -35,7 +35,6 @@ function login(request, respond){
     //check if all fields fillled
     if (email == "" || pw == ""){
         msg = "Please fill in all fields";
-        console.log(msg);
         respond.json(prepMessage(msg));
     }
     
@@ -47,7 +46,6 @@ function login(request, respond){
                 if (result.length > 0){
                     if (pw == result[0].password){
                         msg = 1; // "Success!";
-                        console.log(msg);
                         // Include user information in the response
                         const userInfo = {
                             id: result[0].id,
@@ -59,7 +57,6 @@ function login(request, respond){
                         respond.json(prepMessage(msg, userInfo));
                     } else{
                         msg = "Incorrect Password!";
-                        console.log(msg);
                         respond.json(prepMessage(msg));
                     }
                 } else{

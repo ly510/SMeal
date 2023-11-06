@@ -94,6 +94,8 @@
                 </p>
                 <p class="listing-restaurant">Restaurant: {{ listing.restaurantName }}</p>
                 <p class="listing-description">Description: {{ listing.description }}</p>
+                <p class="text-secondary m-0">Date Posted: {{ new Date(listing.datePosted).toLocaleString() }}</p>
+                <p class="text-secondary m-0">Accepted Listing Date: {{ new Date(listing.dateAccepted).toLocaleString() }}</p>
                 </div>
             </div>
             <div class="col-md-5">
@@ -117,7 +119,14 @@
                 </div>
             </div>
             <div class="col-md-1">
-                <button @click="showDeleteConfirmationModal(listing.listingID, listing.title)" class="btn btn-danger btn-sm m-2">Cancel</button>
+                <button
+                    @click="showDeleteConfirmationModal(listing.listingID, listing.title, listing.dateAccepted, listing.status)"
+                    class="btn btn-danger btn-sm m-2"
+                    v-if="isCancellationDisabled(listing.dateAccepted, listing.status)"
+                >
+                    Cancel
+                </button>
+
             </div>
         </div>
     </div>

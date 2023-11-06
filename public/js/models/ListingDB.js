@@ -125,21 +125,10 @@ class ListingDB
 
 changeListingStatus(listing, callback) {
     var sql;
-    // Check if the status is "Listing Accepted"
-    if (listing.getStatus() === "Listing Accepted" || listing.getStatus() === "Awaiting Acceptance") {
-        sql = "UPDATE Listing SET status = ?, fulfillerId = ? WHERE listingID = ?";
-
-        db.query(sql, [listing.getStatus(), listing.getFulfillerId(), listing.listingID])
-        .then(([rows, fields]) => {
-            callback(null, rows);
-        })
-        .catch((error) => {
-            callback(error, null);
-        });
-    } else {
-        sql = "UPDATE Listing SET status = ? WHERE listingID = ?";
-
-        db.query(sql, [listing.getStatus(), listing.listingID])
+    if (listing.getStatus() === "Listing Accepted"){
+        const currentDate = new Date();
+        sql = "UPDATE Listing SET status = ?, dateAccepted = ? ,fulfillerId = ? WHERE listingID = ?";
+        db.query(sql, [listing.getStatus(), currentDate, listing.getFulfillerId(), listing.listingID])
         .then(([rows, fields]) => {
             callback(null, rows);
         })
@@ -147,6 +136,49 @@ changeListingStatus(listing, callback) {
             callback(error, null);
         });
     }
+    else if (listing.getStatus() === "Awaiting Acceptance"){
+        sql = "UPDATE Listing SET status = ?, dateAccepted = null, fulfillerId = ? WHERE listingID = ?";
+        db.query(sql, [listing.getStatus(), listing.getFulfillerId(), listing.listingID])
+        .then(([rows, fields]) => {
+            callback(null, rows);
+        })
+        .catch((error) => {
+            callback(error, null);
+        });
+    }
+    else{
+        sql = "UPDATE Listing SET status = ?, fulfillerId = ? WHERE listingID = ?";
+        db.query(sql, [listing.getStatus(), listing.getFulfillerId(), listing.listingID])
+        .then(([rows, fields]) => {
+            callback(null, rows);
+        })
+        .catch((error) => {
+            callback(error, null);
+        });
+    }
+
+    // // Check if the status is "Listing Accepted"
+    // if (listing.getStatus() === "Listing Accepted" || listing.getStatus() === "Awaiting Acceptance") {
+    //     sql = "UPDATE Listing SET status = ?, fulfillerId = ? WHERE listingID = ?";
+
+    //     db.query(sql, [listing.getStatus(), listing.getFulfillerId(), listing.listingID])
+    //     .then(([rows, fields]) => {
+    //         callback(null, rows);
+    //     })
+    //     .catch((error) => {
+    //         callback(error, null);
+    //     });
+    // } else {
+    //     sql = "UPDATE Listing SET status = ? WHERE listingID = ?;";
+
+    //     db.query(sql, [listing.getStatus(), listing.listingID])
+    //     .then(([rows, fields]) => {
+    //         callback(null, rows);
+    //     })
+    //     .catch((error) => {
+    //         callback(error, null);
+    //     });
+    // }
 }
 
 getListingByFulfillerId(fulfillerId, callback) {

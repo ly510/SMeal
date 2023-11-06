@@ -6,6 +6,7 @@ const app = Vue.createApp({
             confirmationModalListingID: null,
             confirmationModalListingTitle: null,
             confirmationModalSelectedStatus: null,
+            dateAccepted: null,
         };
     },
     mounted() {
@@ -22,14 +23,12 @@ const app = Vue.createApp({
                     statusOptions: listing.status === "On the Way" ? ["Listing Completed"] : (listing.status === "Listing Accepted" ? ["On the Way", "Listing Completed"] : []),
                     selectedStatus: "", // You can set the initial status here if needed
                 }));
-                console.log(this.foodListings);
                 this.foodListingsLength = this.foodListings.length;
             } catch (error) {
                 // Handle fetching errors
                 console.error('Error fetching food listings:', error.message);
             }
         },
-
 
         changeStatusConfirmed() {
             const fulfillerId = sessionStorage.getItem("userId");
@@ -40,7 +39,6 @@ const app = Vue.createApp({
             window.location.reload();
         },
         
-
         showConfirmationModal(listingID, selectedStatus, selectedtitle) {
             if (selectedStatus !== ""){
             this.confirmationModalListingID = listingID;
@@ -70,21 +68,45 @@ const app = Vue.createApp({
             }
         },
 
-        showDeleteConfirmationModal(listingID, selectedTitle) {
-            this.confirmationModalListingID = listingID;
-            this.confirmationModalListingTitle = selectedTitle;
-            this.confirmationModalSelectedStatus = "Awaiting Acceptance";
-            const modal = new bootstrap.Modal(document.getElementById('deleteConfirmationModal'));
-            modal.show();
+        showDeleteConfirmationModal(listingID, selectedTitle, dateAccepted, status) {
+            if (status == "Listing Accepted"){
+                if (this.isCancellationDisabled(dateAccepted)){
+                    this.confirmationModalListingID = listingID;
+                    this.confirmationModalListingTitle = selectedTitle;
+                    this.confirmationModalSelectedStatus = "Awaiting Acceptance";
+                    this.dateAccepted = dateAccepted;
+                    const modal = new bootstrap.Modal(document.getElementById('deleteConfirmationModal'));
+                    modal.show();
+                }
+            }
         },
 
         deleteConfirmed() {
-            this.changeStatus(this.confirmationModalListingID, this.confirmationModalSelectedStatus, 123); // Unable to pass in null to update data in db to null hence use ""
+            this.changeStatus(this.confirmationModalListingID, this.confirmationModalSelectedStatus, ""); // Unable to pass in null to update data in db to null hence use ""
             const modalElement = document.getElementById('deleteConfirmationModal');
             const modal = bootstrap.Modal.getInstance(modalElement);
             modal.hide();
             window.location.reload();
         },
+
+        isCancellationDisabled(dateAccepted, status) {
+            // Convert dateAccepted to a Date object
+            const acceptedDate = new Date(dateAccepted);
+            // Get the current date
+            const currentDate = new Date();
+            // Calculate the difference in milliseconds
+            const timeDifference = currentDate - acceptedDate;
+            // Check if the difference is greater than 1 minute
+            if (timeDifference > 60000){
+                return !(timeDifference > 60000);
+            }
+            if (status == 'Listing Accepted'){
+                return true;
+            }
+            
+        },
+
+             
     },
     
 });
