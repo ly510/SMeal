@@ -132,62 +132,28 @@ class AccountsDB {
             });
     }
 
-    // FOR POINTS REDEMPTION
-    // updateUserPoints(userId, updatedPoints, callback) {
-    //     const sql = `UPDATE smeal.Accounts SET points = ? WHERE id = ?`;
+    updateUserPoints(pointsUpdate, callback) {
+        const sql = 'UPDATE Accounts SET points = ? WHERE id = ?';
+        db.query(sql, [pointsUpdate.points, pointsUpdate.id])
+            .then(([rows, fields]) => {
+                callback(null, rows);
+            })
+            .catch((error) => {
+                callback(error, null);
+            });
+    }
+
+    addReward(addUserReward, callback) {
+        const sql = `INSERT INTO smeal.MyRewards (userId, rewardId) VALUES (?, ?)`;
     
-    //     db.query(sql, [updatedPoints, userId])
-    //         .then(([rows, fields]) => {
-    //             callback(null, rows);
-    //         })
-    //         .catch((error) => {
-    //             callback(error, null);
-    //         });
-    // }
-    
-
-    // addListing(Listing, callback)
-    // {
-    //     var sql = "INSERT into Listing (listingID, userID, title, description, location, restaurantName, lat, long, paymentType, datePosted, fulfillerId, status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-    //     db.query(sql, [
-    //         Listing.getListingId(),
-    //         Listing.getUserId(),
-    //         Listing.getTitle(),
-    //         Listing.getDescription(),
-    //         Listing.getLocation(),
-    //         Listing.getRestaurantName(),
-    //         Listing.getLat(),
-    //         Listing.getLong(),
-    //         Listing.getPaymentType(),
-    //         Listing.getDatePosted(),
-    //         Listing.getFulfillerId(),
-    //         Listing.getStatus()
-    //     ], callback);
-    // }
-
-    // updateListing(Listing, callback)
-    // {
-    //     var sql = "UPDATE Listing SET title = ?, description = ?, location = ?, restaurantName = ?, paymentType = ?, datePosted = ? WHERE listingID = ?";
-
-    //     return db.query(sql, [
-    //         Listing.getTitle(),
-    //         Listing.getDescription(),
-    //         Listing.getLocation(),
-    //         Listing.getRestaurantName(),
-    //         Listing.getPaymentType(),
-    //         Listing.getDatePosted(),
-    //         Listing.getListingId()
-    //     ], callback);
-    // }
-
-    // deleteListing(ListingID, callback)
-    // {
-    //     var sql = "DELETE from Listing WHERE listingID = ?";
-
-    //     return db.query(sql, [ListingID], callback);
-    // }
-
+        db.query(sql, [addUserReward.userId, addUserReward.rewardId])
+            .then(([rows, fields]) => {
+                callback(null, rows);
+            })
+            .catch((error) => {
+                callback(error, null);
+            });
+    }
 }
 
 module.exports = AccountsDB;

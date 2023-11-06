@@ -18,17 +18,17 @@ class RewardsDB
           });
       }
 
-      // For points deduction
-      getReqPoints(rewardId, callback) {
-        var sql = "SELECT pointsReq FROM smeal.Rewards WHERE id = ?";
+    // For points deduction
+    getReqPoints(rewardID, callback) {
+      var sql = "SELECT pointsReq FROM smeal.Rewards WHERE id = ?";
 
-        db.query(sql, [rewardId])
-            .then(([rows, fields]) => {
-                callback(null, rows[0].pointsReq);
-            })
-            .catch((error) => {
-                callback(error, null);
-            });
+      db.query(sql, [rewardID])
+          .then(([rows, fields]) => {
+              callback(null, rows[0].pointsReq);
+          })
+          .catch((error) => {
+              callback(error, null);
+          });
     }
 
   }
