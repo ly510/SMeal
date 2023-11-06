@@ -175,6 +175,22 @@ getListingByFulfillerId(fulfillerId, callback) {
     });
 }
 
+changeListingPrice(listing, callback) {
+  var sql;
+  const currentDate = new Date();
+  sql = "UPDATE Listing SET price = ? WHERE listingID = ?";
+
+
+
+  db.query(sql, [listing.getPrice(), listing.listingID])
+  .then(([rows, fields]) => {
+      callback(null, rows);
+  })
+  .catch((error) => {
+      callback(error, null);
+  });
+}
+
 
 }
   

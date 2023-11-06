@@ -263,7 +263,20 @@ function getListingByFulfillerId(request, respond){
     });
 }
 
+function changeListingPrice(request, respond) {
+    var listingID = parseInt(request.params.listingID);
+    var price = request.body.price;
+    var toChangePrice = new Listing(listingID, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, price);
+    listingDB.changeListingPrice(toChangePrice, function (error, result) {
+        if (error) {
+            respond.json(error);
+        } else {
+            respond.json(result);
+        }
+    });
+}
 
 
 
-module.exports = { getAllListing, addListing, getListingByUserID, getListingNotByUserID, cancelListing, deleteListing, getRestaurants, getListingByListingId, changeListingStatus, getListingByFulfillerId};
+
+module.exports = { getAllListing, addListing, getListingByUserID, getListingNotByUserID, cancelListing, deleteListing, getRestaurants, getListingByListingId, changeListingStatus, getListingByFulfillerId, changeListingPrice};

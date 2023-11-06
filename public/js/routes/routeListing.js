@@ -26,6 +26,8 @@ function routeListing(app) {
         .put(listingController.changeListingStatus);
     app.route('/foodlistingbyfulfullerId/:fulfillerId')
         .get(listingController.getListingByFulfillerId);
+    app.route('/changeListingPrice/:listingID')
+        .put(listingController.changeListingPrice);
 }
 
 module.exports = { routeListing};
