@@ -69,10 +69,8 @@ const app = Vue.createApp({
         },
 
         showDeleteConfirmationModal(listingID, selectedTitle, dateAccepted, status) {
-            console.log("clicked");
-            console.log(status == "Listing Accepted")
             if (status == "Listing Accepted"){
-                if (!this.isCancellationDisabled(dateAccepted)){
+                if (this.isCancellationDisabled(dateAccepted, status) == false){
                     this.confirmationModalListingID = listingID;
                     this.confirmationModalListingTitle = selectedTitle;
                     this.confirmationModalSelectedStatus = "Awaiting Acceptance";
@@ -100,9 +98,12 @@ const app = Vue.createApp({
             const timeDifference = currentDate - acceptedDate;
             // Check if the difference is greater than 1 minute
             if (timeDifference > 60000){
-                return !(timeDifference > 60000);
+                return true;
             }
             if (status == 'Listing Accepted'){
+                return false;
+            }
+            else{
                 return true;
             }
         },

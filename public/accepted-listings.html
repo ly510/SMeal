@@ -134,7 +134,7 @@
                 <button 
                     @click="showDeleteConfirmationModal(listing.listingID, listing.title, listing.dateAccepted, listing.status)"
                     class="btn btn-danger btn-sm m-2"
-                    v-if="isCancellationDisabled(listing.dateAccepted, listing.status)"
+                    v-if="isCancellationDisabled(listing.dateAccepted, listing.status) != true "
                 >
                     Cancel
                 </button>
