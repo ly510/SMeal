@@ -1,7 +1,7 @@
 "use strict";
 
 class Listing{
-constructor(listingID, userId, title, description, location, room, restaurantName, paymentType, lat, lng, img, datePosted, fulfillerId, status, paymentStatus, dateAccepted){
+constructor(listingID, userId, title, description, location, room, restaurantName, paymentType, lat, lng, img, datePosted, fulfillerId, status, paymentStatus, dateAccepted, price){
     this.listingID = listingID;
     this.userId = userId;
     this.title = title;
@@ -18,6 +18,7 @@ constructor(listingID, userId, title, description, location, room, restaurantNam
     this.status = status;
     this.paymentStatus = paymentStatus;
     this.dateAccepted = dateAccepted;
+    this.price = price;
 }
 
 getListingID(){
@@ -84,6 +85,10 @@ getDateAccepted(){
     return this.dateAccepted;
 }
 
+getPrice(){
+    return this.price;
+}
+
 setListingID(listingID){
     this.listingID = listingID;
 }
@@ -144,6 +149,11 @@ setPaymentStatus(paymentStatus){
 setDateAccepted(dateAccepted){
     this.dateAccepted = dateAccepted;
 }
+
+setPrice(price){
+    this.price = price;
+}
+
 
 }
 
