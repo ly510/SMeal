@@ -9,6 +9,9 @@ function routeAccount(app) {
 
     app.route('/login')
     .post(accountsController.login);
+
+    app.route('/getUserPoints/:id')
+    .get(accountsController.getUserPoints);
 }
 
 module.exports = { routeAccount };
