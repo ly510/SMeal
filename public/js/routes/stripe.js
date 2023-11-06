@@ -10,9 +10,15 @@ var port = 5500;
 router.post('/create-checkout-session', async (req, res) => {
     const DOMAIN = `http://${host}:${port}`;
     // Extract the product details from req.body
-    const { description } = req.body;
-    const listingID = req.body.listingID;
+    const { description, listingID, price } = req.body;
+    // const listingID = req.body.listingID;
 
+    if (price === null || price === undefined) {
+      res.status(400).send({
+        error: 'Product price missing.',
+      });
+      return;
+    }
     const session = await stripe.checkout.sessions.create({
         // an array of items
         line_items: [
@@ -22,7 +28,7 @@ router.post('/create-checkout-session', async (req, res) => {
             product_data: {
               name: description,
             },
-            unit_amount: 500,
+            unit_amount: price * 100,
           },
           quantity: 1,
         },
