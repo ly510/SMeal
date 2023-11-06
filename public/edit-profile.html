@@ -53,7 +53,7 @@
 		<!-- Edit User Profile -->
 		<section class="user-profile section">
 			<div class="container">
-				<div class="alert alert-success d-none" role="alert" id="successAlert"></div>
+				<div class="alert alert-success d-block" role="alert" id="successAlert" v-if="successAlert.isVisible">{{ successAlert.text }}</div>
 				<div class="row">
 					<div class="col-lg-4">
 						<div class="sidebar">
@@ -86,7 +86,7 @@
 							<div class="col-lg-6 col-md-6">
 								<div class="widget personal-info">
 									<h3 class="widget-header user">Edit Personal Information</h3>
-									<div class="alert alert-danger d-none" role="alert" id="profileAlert"></div>
+									<div class="alert alert-danger d-block" role="alert" id="profileAlert" v-if="profileAlert.isVisible">{{ profileAlert.text }}</div>
 									<form action="#">
 										<!-- Email -->
 										<div class="form-group">
@@ -119,7 +119,7 @@
 								<!-- Change Password -->
 								<div class="widget change-password">
 									<h3 class="widget-header user">Edit Password</h3>
-									<div class="alert alert-danger d-none" role="alert" id="passwordAlert"></div>
+									<div class="alert alert-danger d-block" role="alert" id="passwordAlert" v-if="passwordAlert.isVisible">{{ passwordAlert.text }}</div>
 									<form action="#">
 										<!-- Current Password -->
 										<div class="form-group">

@@ -17,6 +17,20 @@ const profile = Vue.createApp({
             typedPass: "",
             newPass: "",
             confirmPass: "",
+
+            // Alerts
+            profileAlert: {
+                text: '',
+                isVisible: false
+            },
+            successAlert: {
+                text: '',
+                isVisible: false
+            },
+            passwordAlert: {
+                text: '',
+                isVisible: false
+            },
         };
     },
     mounted() {
@@ -25,8 +39,6 @@ const profile = Vue.createApp({
     methods: {
         editProfile() {
             var email = sessionStorage.getItem("userEmail");
-            var profileAlert = document.getElementById("profileAlert");
-            var successAlert = document.getElementById("successAlert");
 
             axios.post(editProfile_url, { email }, {
                 headers: {
@@ -58,25 +70,26 @@ const profile = Vue.createApp({
                     });
 
                     input.addEventListener('countrychange', function () {
-                        this.countryCode = iti.getSelectedCountryData().dialCode;
+                        vmProfile.countryCode = iti.getSelectedCountryData().dialCode;
                     });
 
                     input.addEventListener('input', function () {
                         var fullPhoneNumber = iti.getNumber().trim();
                         var isValid = iti.isValidNumber();
+                        console.log(fullPhoneNumber, isValid)
                         var isEmpty = !fullPhoneNumber.trim();
                         
                         if (isEmpty) isValid = false;
 
                         if (isValid && !isEmpty) {
-                            profileAlert.innerText = "";
-                            profileAlert.classList.add('d-none');
+                            vmProfile.profileAlert.text = "";
+                            vmProfile.profileAlert.isVisible = false;
                             sessionStorage.setItem("phoneNo", fullPhoneNumber);
                         } else {
-                            successAlert.innerText = "";
-                            successAlert.classList.add('d-none');
-                            profileAlert.innerText = "Please enter a valid phone number!";
-                            profileAlert.classList.remove('d-none');
+                            vmProfile.successAlert.text = "";
+                            vmProfile.successAlert.isVisible = false;
+                            vmProfile.profileAlert.text = "Please enter a valid phone number!";
+                            vmProfile.profileAlert.isVisible = true;
                         }
                         sessionStorage.setItem("invalidPhoneNo", isValid);
                     });
@@ -95,20 +108,17 @@ const profile = Vue.createApp({
         updateProfile(event) {
             // Prevent refresh
             event.preventDefault();
-        
-            var profileAlert = document.getElementById("profileAlert");
-            var successAlert = document.getElementById("successAlert");
             
             // Remove alert
-            profileAlert.innerText = "";
-            profileAlert.classList.add('d-none');
+            this.profileAlert.text = "";
+            this.profileAlert.isVisible = false;
         
-            successAlert.innerText = "";
-            successAlert.classList.add('d-none');
+            this.successAlert.text = "";
+            this.successAlert.isVisible = false;
                 
             if (sessionStorage.getItem("invalidPhoneNo") == "false") {
-                profileAlert.innerText = "Please enter a valid phone number!";
-                profileAlert.classList.remove('d-none');
+                this.profileAlert.text = "Please enter a valid phone number!";
+                this.profileAlert.isVisible = true;
                 return;
             }
         
@@ -122,8 +132,8 @@ const profile = Vue.createApp({
                     if (compressedBase64) {
                         this.initiateRequest(compressedBase64);
                     } else {
-                        profileAlert.innerText = "Error occurred. Please try again.";
-                        profileAlert.classList.remove('d-none');
+                        this.profileAlert.text = "Error occurred. Please try again.";
+                        this.profileAlert.isVisible = true;
                     }
                 });
             } else {
@@ -190,9 +200,8 @@ const profile = Vue.createApp({
                     this.phoneNo = this.phoneNo.replace(/\s/g, '');
             
                     // Display success alert
-                    var successAlert = document.getElementById("successAlert");
-                    successAlert.innerText = "Profile successfully updated!";
-                    successAlert.classList.remove('d-none');
+                    this.successAlert.text = "Profile successfully updated!";
+                    this.successAlert.isVisible = true;
             
                     // For navbar
                     sessionStorage.setItem("name", this.name.trim());
@@ -238,27 +247,24 @@ const profile = Vue.createApp({
         updatePassword(event) {
             event.preventDefault();
 
-            var passwordAlert = document.getElementById("passwordAlert");
-            var successAlert = document.getElementById("successAlert");
-
             // Remove alert
-            passwordAlert.innerText = "";
-            passwordAlert.classList.add('d-none');
+            this.passwordAlert.text = "";
+            this.passwordAlert.isVisible = false;
 
-            successAlert.innerText = "";
-            successAlert.classList.add('d-none');
+            this.successAlert.text = "";
+            this.successAlert.isVisible = false;
 
             if (this.currPass === "" || this.newPass === "" || this.confirmPass === "") {
-                passwordAlert.innerText = "Please fill in all the password fields!";
-                passwordAlert.classList.remove('d-none');
+                this.passwordAlert.text = "Please fill in all the password fields!";
+                this.passwordAlert.isVisible = true;
                 return;
             } else if (this.currPass != this.typedPass) {
-                passwordAlert.innerText = "Current password is incorrect!";
-                passwordAlert.classList.remove('d-none');
+                this.passwordAlert.text = "Current password is incorrect!";
+                this.passwordAlert.isVisible = true;
                 return;
             } else if (this.newPass != this.confirmPass) {
-                passwordAlert.innerText = "New password does not match!";
-                passwordAlert.classList.remove('d-none');
+                this.passwordAlert.text = "New password does not match!";
+                this.passwordAlert.isVisible = true;
                 return;
             } else {
                 axios.put(editProfile_url + "?type=password", {
@@ -277,8 +283,8 @@ const profile = Vue.createApp({
                         this.confirmPass = "";
 
                         // Display success alert
-                        successAlert.innerText = "Password successfully updated!";
-                        successAlert.classList.remove('d-none');
+                        this.successAlert.text = "Password successfully updated!";
+                        this.successAlert.isVisible = true;
                     }
                 })
                 .catch(error => {

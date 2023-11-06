@@ -99,7 +99,7 @@
 
 								<!-- User Location -->
 								<label for="user-location" class="form-label">Delivery Location: </label>
-								<div class="alert alert-danger d-none" role="alert" id="locationAlert"></div>
+								<div class="alert alert-danger d-block" role="alert" id="locationAlert" v-if="locationAlert.isVisible">{{ locationAlert.text }}</div>
 								<select class="form-select mb-3" id="user-location" @change="clearRestaurant" required>
 									<option selected disabled>Select your school</option>
 									<option value="SOSS/CIS">College of Integrative Studies (CIS)</option>
@@ -121,8 +121,8 @@
 									<input id="restaurant" class="form-control" type="text" placeholder="Click Search to find available restaurants" v-model="restaurantName" required disabled>
 									<button type="button" class="btn btn-primary font-weight-bold" id="nearbyRestaurant-btn" @click="getNearbyRestaurants">Search</button>
 								</div>
-								<label id="resAddr" for="restaurantAddress" class="form-label" hidden>Restaurant Address: </label>
-								<input id="restaurantAddress" class="form-control mb-3" type="text" v-model="restaurantAddress" disabled hidden>
+								<label id="resAddr" for="restaurantAddress" class="form-label" v-if="showResAddr">Restaurant Address: </label>
+								<input id="restaurantAddress" class="form-control mb-3" type="text" v-model="restaurantAddress" disabled v-if="showResAddr">
 
 								<!-- Payment Type -->
 								<label for="payment-type" class="form-label">Select Payment Type: </label>
@@ -152,12 +152,12 @@
 							data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body" id="nearbyRestaurants">
-						<div class="d-flex align-items-center justify-content-center" id="loadingDisplay">
+						<div class="d-flex align-items-center justify-content-center" id="loadingDisplay" v-if="loadingDisplay">
 							<h4><strong>Loading...</strong></h4>
 							<span class="loader"></span>
 						</div>											
-						<div class="alert alert-danger d-block" role="alert" id="restaurantAlert"></div>
-						<div id="restaurantList">
+						<div class="alert alert-danger d-block" role="alert" id="restaurantAlert" v-if="restaurantAlert.isVisible">{{ restaurantAlert.text }}</div>
+						<div id="restaurantList" v-if="showRestaurantList">
 							<div v-for="(restaurant, index) in restaurants" :key="index" class="row" data-lat="restaurant.lat" data-lng="restaurant.lng" data-bs-target="#createModal" data-bs-toggle="modal" data-bs-dismiss="modal" @click="selectedRestaurant(restaurant)">
 								<div class="col-md-3 py-0">
 									<img v-if="restaurant.photo !== null" :src="restaurant.photo" class="img-thumbnail w-100 h-auto" id="restaurantImg">
@@ -174,7 +174,7 @@
 										<b>Rating:</b> {{ restaurant.rating }}
 									</p>
 								</div>
-								<hr>
+								<hr class="mt-3">
 							</div>
 						</div>
 					</div>

@@ -523,6 +523,19 @@ const listing = Vue.createApp({
             restaurants: [],
             restaurantName: "",
             restaurantAddress: "",
+
+            // alerts
+            loadingDisplay: false,
+            showRestaurantList: false,
+            locationAlert: {
+                text: '',
+                isVisible: false
+            },
+            restaurantAlert: {
+                text: '',
+                isVisible: false
+            },
+            showResAddr: false,
         };
     }, // data
     // computed: { 
@@ -535,36 +548,28 @@ const listing = Vue.createApp({
     // mounted() { 
     // },
     methods: {
-        clearRestaurant() {
-            var resAddr = document.getElementById('resAddr');
-            var restaurantAddress = document.getElementById('restaurantAddress');
-            
-            resAddr.setAttribute('hidden', true);
-            restaurantAddress.setAttribute('hidden', true);
+        clearRestaurant() {            
+            this.showResAddr = false;
 
             this.restaurantName = "";
             this.restaurantAddress = "";
         },
         getNearbyRestaurants() {
-            var restaurantList = document.getElementById("restaurantList");
             var selectedLocation = document.getElementById("user-location").value;
-            var locationAlert = document.getElementById("locationAlert");
-            var restaurantAlert = document.getElementById("restaurantAlert");
-            var loadingDisplay = document.getElementById("loadingDisplay");
 
-            loadingDisplay.classList.remove('d-none');
-            restaurantList.classList.add('d-none');
+            this.loadingDisplay = true;
+            this.showRestaurantList = false;
 
-            locationAlert.innerText = "";
-            locationAlert.classList.add('d-none');
+            this.locationAlert.text = "";
+            this.locationAlert.isVisible = false;
 
-            restaurantAlert.innerText = "";
-            restaurantAlert.classList.add('d-none');
+            this.restaurantAlert.text = "";
+            this.restaurantAlert.isVisible = false;
 
             // Alert if user did not select their current location
             if (selectedLocation == "Select your school") {
-                locationAlert.innerText = "Please select a delivery location!";
-                locationAlert.classList.remove('d-none');
+                this.locationAlert.text = "Please select a delivery location!";
+                this.locationAlert.isVisible = true;
                 return;
             }
             else {
@@ -584,16 +589,14 @@ const listing = Vue.createApp({
                 .then(response => {
                     if (response.status === 200) {
                         // Stop displaying loading
-                        loadingDisplay.classList.add('d-none');
-                        
-                        restaurant_array = response.data;
-                        
+                        this.loadingDisplay = false;
+                        restaurant_array = response.data;                        
                         if (restaurant_array && restaurant_array.length > 0) {
-                            restaurantList.classList.remove('d-none');
+                            this.showRestaurantList = true;
                             this.restaurants = restaurant_array;
                         } else {
-                            restaurantAlert.innerText = "No restaurants found nearby!";
-                            restaurantAlert.classList.remove('d-none');
+                            this.restaurantAlert.text = "No restaurants found nearby!";
+                            this.restaurantAlert.isVisible = true;
                         }
                     }
                 })
@@ -615,8 +618,7 @@ const listing = Vue.createApp({
             this.restaurantAddress = restaurant.address;
 
             // Display address after selection
-            document.getElementById('resAddr').removeAttribute('hidden');
-            document.getElementById('restaurantAddress').removeAttribute('hidden');
+            this.showResAddr = true;
 
             // Store to add listing
             sessionStorage.setItem('lat', restaurant.lat);
