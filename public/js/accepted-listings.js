@@ -6,7 +6,6 @@ const app = Vue.createApp({
             confirmationModalListingID: null,
             confirmationModalListingTitle: null,
             confirmationModalSelectedStatus: null,
-            listingStatusOptions: ["On the Way", "Listing Completed"],
         };
     },
     mounted() {
@@ -17,16 +16,20 @@ const app = Vue.createApp({
             try {
                 const fulfillerId = sessionStorage.getItem("userId");
                 const response = await axios.get(`/foodlistingbyfulfullerId/${fulfillerId}`);
-                
-                this.foodListings = response.data;
+        
+                this.foodListings = response.data.map(listing => ({
+                    ...listing,
+                    statusOptions: listing.status === "On the Way" ? ["Listing Completed"] : (listing.status === "Listing Accepted" ? ["On the Way", "Listing Completed"] : []),
+                    selectedStatus: "", // You can set the initial status here if needed
+                }));
+                console.log(this.foodListings);
                 this.foodListingsLength = this.foodListings.length;
-
-                
             } catch (error) {
                 // Handle fetching errors
                 console.error('Error fetching food listings:', error.message);
             }
         },
+        
 
         changeStatusConfirmed() {
             this.changeStatus(this.confirmationModalListingID, this.confirmationModalSelectedStatus);
@@ -38,12 +41,13 @@ const app = Vue.createApp({
         
 
         showConfirmationModal(listingID, selectedStatus, selectedtitle) {
+            if (selectedStatus !== ""){
             this.confirmationModalListingID = listingID;
             this.confirmationModalSelectedStatus = selectedStatus;
             this.confirmationModalListingTitle = selectedtitle;
-
-            const modal = new bootstrap.Modal(document.getElementById('confirmationModal'));
-            modal.show();
+                const modal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+                modal.show();
+            }
         },
 
         async changeStatus(listingId) {
