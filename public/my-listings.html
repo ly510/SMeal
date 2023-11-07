@@ -22,7 +22,8 @@
 	<link href="css/navbar.css" rel="stylesheet">
 	<link href="css/progress-bar.css" rel="stylesheet">
 	<link href="css/my-listings.css" rel="stylesheet">
-
+	<script src="js/welcome.js"></script>
+	
 	<!-- Nav Bar js-->
 	<script src="js/nav-bar.js"></script>
 
@@ -35,13 +36,13 @@
 
 </head>
 
-<body class="body-wrapper" onload="load()">
+<body class="body-wrapper" onload="load();checkSession();">
 	<div id="app">
 		<!-- Nav Bar -->
 		<header>
 			<div class="container">
 				<div class="row">
-					<div class="col-md-12" id="navBar">
+					<div class="col-md-12" id="navBar">				
 					</div>
 				</div>
 			</div>
