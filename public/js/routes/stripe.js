@@ -4,7 +4,7 @@ require("dotenv").config();
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 const router = express.Router();
 
-var host = "127.0.0.1";
+var host = "0.0.0.0";
 var port = 5500;
 
 router.post('/create-checkout-session', async (req, res) => {
