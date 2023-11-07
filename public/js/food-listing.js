@@ -70,7 +70,7 @@ function displayListing(listings) {
             '<div class="card-body">' +
             '<h5 class="card-title">' + title + '</h5>' +
             '<h6 class="card-subtitle mb-2 text-muted">' + date + '</h6>' +
-            '<button class="btn btn-info my-2" data-listing-id="' + listingID + '">View More</button>' +
+            '<button class="btn btn-info my-2 viewMore" data-listing-id="' + listingID + '">View More</button>' +
             '<button class="btn btn-success mx-2 my-2 float-end accept-btn" data-listing-id="' + listingID + '">Accept</button>' +
             '</div>' +
             '</div>' +
@@ -168,6 +168,65 @@ function updateModalContent(details) {
 
 }
 
+
+// Add click event listener to elements with the "viewMore" class
+document.addEventListener('click', function (event) {
+    if (event.target.classList.contains('viewMore')) {
+        var listingId = event.target.getAttribute('data-listing-id');
+        console.log('Listing ID from data-listing-id attribute:', listingId);
+        sessionStorage.setItem("selectedListId", listingId);
+    }
+});
+
+document.addEventListener('click', function(event){
+    var listingId = sessionStorage.getItem("selectedListId");
+    console.log(listingId);
+
+    if (event.target.id === 'confirmButton') {
+        handleAcceptListingInModal(listingId);
+    }
+});
+
+
+function handleAcceptListingInModal(listingId) {
+    try {
+        var fulfillerId = sessionStorage.getItem("userId");
+        var request = new XMLHttpRequest();
+        request.open("PUT", `/changeListingStatus/${listingId}`, true);
+        request.setRequestHeader('Content-Type', 'application/json');
+        request.onload = function () {
+            if (request.status === 200) {
+                // Close the modal
+                // var modal = new bootstrap.Modal(document.getElementById('listingModal'));
+                // modal.hide();
+                // Redirect to accepted-listings.html
+                window.location.href = 'accepted-listings.html';
+            } else {
+                console.error('Error accepting the listing:', request.statusText);
+                // Handle the error, show an alert, or perform other actions
+            }
+        };
+        request.onerror = function () {
+            console.error('Network error while accepting the listing');
+            // Handle network errors
+        };
+        request.send(JSON.stringify({ status: 'Listing Accepted', fulfillerId }));
+
+    } catch (error) {
+        console.error('Error accepting the listing:', error.message);
+        // Handle the error, show an alert, or perform other actions
+    }
+}
+
+
+
+
+
+
+  
+
+
+
 function displayMap(lat, lng, name) {
     const myLatlng = { lat: lat, lng: lng };
     const map = new google.maps.Map(document.getElementById("modalMap"), {
@@ -190,27 +249,32 @@ function displayMap(lat, lng, name) {
 }
 
 
-// Click on accept listing button
-var acceptListingButton = document.getElementById('acceptListingButton');
-if(acceptListingButton){
-document.addEventListener('DOMContentLoaded', function () {
+// // Click on accept listing button
+// var acceptListingButton = document.getElementById('acceptListingButton');
+// console.log(acceptListingButton);
+// if(acceptListingButton){
+// document.addEventListener('DOMContentLoaded', function () {
 
-    var acceptListingButton = document.getElementById('acceptListingButton');
-    acceptListingButton.addEventListener('click', function () {
-        console.log("clicked");
-        // Prompt the user for confirmation
-        var confirmationModal = new bootstrap.Modal(document.getElementsByName('confirmationModal')[0]);
-        confirmationModal.show();
-        // Set up event listener for the confirmation button
-        var confirmButton = document.getElementById('confirmButton');
-        confirmButton.addEventListener('click', function () {
-            var listingId = sessionStorage.getItem("currentListingID");
-            handleAcceptListing(listingId);
-            confirmationModal.hide();
-        });
-    });
-});
-}
+//     var acceptListingButton = document.getElementById('acceptListingButton');
+//     console.log("12321qaa");
+//     acceptListingButton.addEventListener('click', function () {
+//         console.log("clicked");
+//         // Prompt the user for confirmation
+//         // var confirmationModal = new bootstrap.Modal(document.getElementsByName('confirmationModal')[0]);
+//         // confirmationModal.show();
+//         // Set up event listener for the confirmation button
+//     });
+
+//     var confirmButton = document.getElementById('confirmButton');
+//     confirmButton.addEventListener('click', function () {
+//         console.log("run111");
+//         var listingId = sessionStorage.getItem("currentListingID");
+//         handleAcceptListing(listingId);
+//         // confirmationModal.hide();
+//     });
+// });
+// }
+
 function handleAcceptListing(listingId) {
     try {
         var fulfillerId = sessionStorage.getItem("userId");
@@ -240,6 +304,7 @@ function handleAcceptListing(listingId) {
         // Handle the error, show an alert, or perform other actions
     }
 }
+
  
 document.addEventListener("DOMContentLoaded", function () {
     const urlParams = new URLSearchParams(window.location.search);
