@@ -145,7 +145,7 @@ function displayListingByUserID(listings) {
         var listingID = listings[count].listingID;
         var listingPrice = listings[count].price;
         var paymentStatus = listings[count].paymentStatus;
-        var img = listings[count].img;
+        var img_url = listings[count].img;
 
 
         if (status == "Awaiting Acceptance") {
@@ -162,10 +162,10 @@ function displayListingByUserID(listings) {
 
         var cell = '<div class="listing px-2">' +
                 '<div class="listing-container row">' +
-                    '<div class="col-md-2">' +
-                        '<img src="' + img + '" class="card-top-img my-2">' +
-                    '</div>' +
                     '<div class="col-md-3">' +
+                        '<img src="' + img_url + '" class="card-img-top">' +
+                    '</div>' +
+                    '<div class="col-md-4">' +
                         '<div class="listing-header">' +
                             '<h5 class="listing-title">' + title + '</h5>' +
                         '</div>' +
@@ -176,7 +176,7 @@ function displayListingByUserID(listings) {
                             '<p class="listing-description">Description: ' + description + '</p>' +
                         '</div>' +
                     '</div>' +
-                    '<div class="col-md-6">' +
+                    '<div class="col-md-4">' +
                         '<br><div class="listing-status">' +
                         '<ul id="progressbar-2" class="d-flex justify-content-between mx-0 mt-0 mb-5 px-0 pt-0 pb-2">' +
                         '<li class="step0 ' + (status >= 1 ? 'active' : '') + ' text-center" id="step1"></li>' +
