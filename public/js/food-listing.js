@@ -147,7 +147,6 @@ function updateModalContent(details) {
     document.getElementById('modalListingName').textContent = details[0].name;
     document.getElementById('modalListingUserLocation').textContent = details[0].location;
     var room = details[0].room;
-    console.log(room);
     if (room.length === 0) {
         room = "-No Room Specified-";accept
         document.getElementById('modalListingRoom').style.color = 'grey';
@@ -173,15 +172,12 @@ function updateModalContent(details) {
 document.addEventListener('click', function (event) {
     if (event.target.classList.contains('viewMore')) {
         var listingId = event.target.getAttribute('data-listing-id');
-        console.log('Listing ID from data-listing-id attribute:', listingId);
         sessionStorage.setItem("selectedListId", listingId);
     }
 });
 
 document.addEventListener('click', function(event){
     var listingId = sessionStorage.getItem("selectedListId");
-    console.log(listingId);
-
     if (event.target.id === 'confirmButton') {
         handleAcceptListingInModal(listingId);
     }
