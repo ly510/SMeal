@@ -38,4 +38,11 @@
 
 **Twilio**
 - **Number has to be verified within our Twilio console else an error would occur as Twilio trial version does not support sending SMS messages to unverified numbers**
+
+Sample Messages:
+
+- Create Listing: 'Your listing has been created. Please wait for a fulfiller to accept your listing.'
+- Cancel Listing: 'Your listing has been successfully cancelled.'
+- Delete Listing: 'Your listing has been deleted. Hope to see you with SMEAL again! Have a great day~'
+
 - 
