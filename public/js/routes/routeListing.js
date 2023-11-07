@@ -28,6 +28,8 @@ function routeListing(app) {
         .get(listingController.getListingByFulfillerId);
     app.route('/changeListingPrice/:listingID')
         .put(listingController.changeListingPrice);
+    app.route('/changePaymentStatus/:listingID')
+        .put(listingController.changePaymentStatus);
 }
 
 module.exports = { routeListing};

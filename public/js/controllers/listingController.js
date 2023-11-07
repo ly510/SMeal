@@ -276,7 +276,21 @@ function changeListingPrice(request, respond) {
     });
 }
 
+function changePaymentStatus(request, respond) {
+    console.log(request);
+    var listingID = parseInt(request.params.listingID);
+    var paymentStatus = request.body.paymentStatus;
+    var toChangePayStatus = new Listing(listingID, null, null, null, null, null, null, null, null, null, null, null, null, null, paymentStatus, null, null);
+    listingDB.changePaymentStatus(toChangePayStatus, function (error, result) {
+        if (error) {
+            respond.json(error);
+        } else {
+            respond.json(result);
+        }
+    });
+}
 
 
 
-module.exports = { getAllListing, addListing, getListingByUserID, getListingNotByUserID, cancelListing, deleteListing, getRestaurants, getListingByListingId, changeListingStatus, getListingByFulfillerId, changeListingPrice};
+module.exports = { getAllListing, addListing, getListingByUserID, getListingNotByUserID, cancelListing, deleteListing, getRestaurants, 
+    getListingByListingId, changeListingStatus, getListingByFulfillerId, changeListingPrice, changePaymentStatus};

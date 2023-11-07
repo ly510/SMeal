@@ -180,8 +180,6 @@ changeListingPrice(listing, callback) {
   const currentDate = new Date();
   sql = "UPDATE Listing SET price = ? WHERE listingID = ?";
 
-
-
   db.query(sql, [listing.getPrice(), listing.listingID])
   .then(([rows, fields]) => {
       callback(null, rows);
@@ -191,7 +189,19 @@ changeListingPrice(listing, callback) {
   });
 }
 
-
+changePaymentStatus(toChangePayStatus, callback) {
+  console.log(toChangePayStatus);
+  var sql;
+  const currentDate = new Date();
+  sql = "UPDATE Listing SET paymentStatus = ? WHERE listingID = ?";
+  db.query(sql, [toChangePayStatus.getPaymentStatus(), toChangePayStatus.listingID])
+  .then(([rows, fields]) => {
+      callback(null, rows);
+  })
+  .catch((error) => {
+      callback(error, null);
+  });
+}
 }
   
   

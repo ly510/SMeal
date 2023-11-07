@@ -114,6 +114,18 @@ function getListingDetails(listingID) {
     request.send();
 }
 
+// // After payment success, update payment status to paid
+window.addEventListener('load', async () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const payment = urlParams.get('payment');
+    const listingID = urlParams.get('listingID');
+
+    // If payment equals success, update the payment status
+    if (payment === 'success') {
+        changePaymentStatus(listingID);
+    }
+});
+
 function displayListingByUserID(listings) {
 
     var table = document.getElementById("listingZone");
@@ -131,6 +143,9 @@ function displayListingByUserID(listings) {
         var room = listings[count].room;
         var status = listings[count].status;
         var listingID = listings[count].listingID;
+        var listingPrice = listings[count].price;
+        var paymentStatus = listings[count].paymentStatus;
+
 
         if (status == "Awaiting Acceptance") {
             status = 1;
@@ -177,16 +192,15 @@ function displayListingByUserID(listings) {
                         (status == 0 ? '<button class="btn btn-secondary float-end my-2 mx-1" disabled>Cancelled</button>'+ '<button id="deleteButton" class="btn btn-danger float-end my-2 mx-1" onclick="deleteListing('+listingID+')" value="'+listingID+'"">Delete</button>' :
                         (status >= 2 ? 
                             '<form action="/api/stripe/create-checkout-session" method="POST">' +
-                            (sessionStorage.getItem("paymentStatus") == "success" && sessionStorage.getItem("paymentListingId") == listingID
-                            ? '<button type="submit" class="btn btn-success payment-button paymentButton" disabled id="checkout" value="' + listingID + '">Paid</button>'
-                            : '<button type="submit" class="btn btn-success payment-button paymentButton" id="checkout" value="' + listingID + '">Pay</button>') +
-                        '</form>'
+                            (paymentStatus == "paid"
+                                ? '<button type="submit" class="btn btn-success payment-button paymentButton" disabled id="checkout" value="' + listingID + '">' + 'Paid' + '</button>'
+                                : (listingPrice
+                                    ? '<button type="submit" class="btn btn-success payment-button paymentButton" id="checkout" value="' + listingID + '">' + 'Pay $' + listingPrice + '</button>'
+                                    : '<button type="submit" class="btn btn-success payment-button paymentButton" disabled id="checkout" value="' + listingID + '">Hold for Payment</button>')) +
+                            '</form>'
                         : 
                             '<button class="btn btn-danger cancel-button float-end my-2 mx-1" id="cancelButton" onclick="cancelListing('+listingID+')" value="'+listingID+'">Cancel</button>')) +
                     '</div>' +
-                    // '<div class="col-md-1 text-end">' +
-                    //     (status >= 4 ? '<button class="btn btn-success delete-button" id="deleteButton" @click=deleteListing()>X</button>': '<button class="btn btn-success payment-button disabled" id="deleteButton" @click=deleteListing()>X</button>') +
-                    // '</div>' +
                 '</div>' +
             '</div>';
 
@@ -208,7 +222,16 @@ function displayListingByUserID(listings) {
                     console.error('Listing not found');
                     return;
                 }
+                // Listing price
+                if (listing.price === null) {
+                    event.target.disabled = true;
+                    return;
+                } else {
+                    event.target.textContent = `Pay $${listing.price}`;
+                }
+            
                 const description = listing.description;
+                const price = listing.price;
                 const response = await fetch('/api/stripe/create-checkout-session', {
                     method: 'POST',
                     headers: {
@@ -216,17 +239,45 @@ function displayListingByUserID(listings) {
                     },
                     body: JSON.stringify({
                         description: description,
-                        listingID: listingID
+                        listingID: listingID,
+                        price: price
                     })
                 });
                 const data = await response.json();
-                window.location.href = data.url;
-            });
+
+                if (data.url) {
+                    // Redirect to Stripe Checkout
+                    window.location.href = data.url;
+                } else {
+                    // Handle error
+                }
         });
-    }
+    }); 
+}
 
     message = mylistingCount + " Listings";
     document.getElementById("summary").textContent = message;
+}
+
+async function changePaymentStatus(listingID) {
+    // Update the payment status
+    var updatePayment = new Object();
+    updatePayment.paymentStatus = "paid";
+
+    var request = new XMLHttpRequest();
+    request.open("PUT", `/changePaymentStatus/${listingID}`, true);
+    request.setRequestHeader('Content-Type', 'application/json');
+    request.onload = function () {
+        if (request.status === 200) {
+            // redirect to my-listings.html
+            window.location.href = '/my-listings.html';
+        } else {
+            console.error('Failed to update payment status');
+            return;
+        }
+    };
+    console.log(updatePayment);
+    request.send(JSON.stringify(updatePayment));
 }
 
 function cancelListing(listingID) {
