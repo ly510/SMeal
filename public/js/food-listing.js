@@ -155,8 +155,8 @@ function updateModalContent(details) {
     document.getElementById('modalListingTitle').textContent = details[0].title;
     document.getElementById('modalListingDesc').textContent = details[0].description;
     document.getElementById('modalListingRName').textContent = details[0].restaurantName;
-    document.getElementById('modalListingLat').textContent = details[0].lat;
-    document.getElementById('modalListingLng').textContent = details[0].lng;
+    // document.getElementById('modalListingLat').textContent = details[0].lat;
+    // document.getElementById('modalListingLng').textContent = details[0].lng;
 
     sessionStorage.setItem("currentListingID", details[0].listingID);
 
