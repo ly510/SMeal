@@ -6,7 +6,7 @@
 
 1. Ensure npm is installed and that you have the provided `.env` file
 
-2. Access the terminal and enter `npm install` to install the necessary packages
+2. Access the terminal locate the the Smeal folder and enter `npm install` to install the necessary packages
 
 3. Run the application with `npm start`
 
