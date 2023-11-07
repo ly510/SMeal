@@ -112,11 +112,11 @@
 
                 <div class="p-3 mt-1 bg-light">
                     <!-- Price -->
-                    <div class="w-50">
+                    <div>
                         <div class="input-group">
-                            <input v-model="listing.newPrice" type="number" class="form-control" placeholder="$0.00" aria-label="New Price" pattern="[0-9]+">
+                            <input v-model="listing.newPrice" type="number" class="form-control" style="width: 80px;" placeholder="$0.00" aria-label="New Price" pattern="[0-9]+">
                             <button @click="updateListingPrice(listing.listingID)" class="btn btn-outline-primary">Update Price</button> 
-                            <p style="font-size: small; font-style: italic;" class="m-1">Enter the total price of the food</p>
+                            <div><h5 style="font-size: small; font-style: italic;" class="m-1">Enter the total price of the food</h5>
                             <span class="text-secondary mx-1">Current Total Price: $ {{ listing.price }}</span>
                         </div>
                     </div>
