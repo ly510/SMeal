@@ -163,7 +163,7 @@ getListingByFulfillerId(fulfillerId, callback) {
     SELECT l.*, a.name
     FROM smeal.Listing l
     JOIN smeal.Accounts a ON l.fulfillerId = a.id
-    WHERE l.fulfillerId = ?
+    WHERE l.fulfillerId = ? AND l.status != 'Cancelled'
   `;
 
   db.query(sql, [fulfillerId])

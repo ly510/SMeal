@@ -15,7 +15,7 @@ var rewardsDB = new RewardsDB();
 
 //This function creates a user
 function createAccount(request, respond) {
-    var users = new Accounts(null, request.body.name, request.body.email, request.body.password, request.body.phoneNo, null);
+    var users = new Accounts(null, request.body.name, request.body.email, request.body.password, request.body.phoneNo, img, 50);
 
     accountsDB.createAccount(users, function(error, result)
     {
