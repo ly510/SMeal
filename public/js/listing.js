@@ -37,7 +37,6 @@ function addListing() {
     newListing.lat = sessionStorage.getItem("lat");
     newListing.lng = sessionStorage.getItem("lng");
     newListing.img = sessionStorage.getItem("restaurantImg");
-    newListing.paymentType = document.getElementById("payment-type").value;
     newListing.phoneNo = sessionStorage.getItem("phoneNo");
 
     // Check if any value is null
@@ -49,6 +48,7 @@ function addListing() {
     }
 
     newListing.fulfillerId = null;
+    newListing.paymentType = "Credit/Debit Card";
     newListing.status = "Awaiting Acceptance";
 
     var request = new XMLHttpRequest();
@@ -145,6 +145,7 @@ function displayListingByUserID(listings) {
         var listingID = listings[count].listingID;
         var listingPrice = listings[count].price;
         var paymentStatus = listings[count].paymentStatus;
+        var img = listings[count].img;
 
 
         if (status == "Awaiting Acceptance") {
@@ -161,7 +162,10 @@ function displayListingByUserID(listings) {
 
         var cell = '<div class="listing px-2">' +
                 '<div class="listing-container row">' +
-                    '<div class="col-md-5">' +
+                    '<div class="col-md-2">' +
+                        '<img src="' + img + '" class="card-top-img my-2">' +
+                    '</div>' +
+                    '<div class="col-md-3">' +
                         '<div class="listing-header">' +
                             '<h5 class="listing-title">' + title + '</h5>' +
                         '</div>' +
@@ -190,7 +194,8 @@ function displayListingByUserID(listings) {
                     '</div>' +
                     '<div class="col-md-1 text-end">' +
                         (status == 0 ? '<button class="btn btn-secondary float-end my-2 mx-1" disabled>Cancelled</button>'+ '<button id="deleteButton" class="btn btn-danger float-end my-2 mx-1" onclick="deleteListing('+listingID+')" value="'+listingID+'"">Delete</button>' :
-                        (status >= 2 ? 
+                        (status == 2 ) ? '<button id="cancelButton" disabled class="btn btn-danger float-end my-2 mx-1" onclick="cancelListing('+listingID+')" value="'+listingID+'">Cancel</button>' :
+                        (status >= 3 ? 
                             '<form action="/api/stripe/create-checkout-session" method="POST">' +
                             (paymentStatus == "paid"
                                 ? '<button type="submit" class="btn btn-success payment-button paymentButton" disabled id="checkout" value="' + listingID + '">' + 'Paid' + '</button>'

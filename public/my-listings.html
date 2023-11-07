@@ -114,14 +114,6 @@
 								<label id="resAddr" for="restaurantAddress" class="form-label" v-if="showResAddr">Restaurant Address: </label>
 								<input id="restaurantAddress" class="form-control mb-3" type="text" v-model="restaurantAddress" disabled v-if="showResAddr">
 
-								<!-- Payment Type -->
-								<label for="payment-type" class="form-label">Select Payment Type: </label>
-								<select class="form-select mb-3" id="payment-type">
-									<option selected disabled>Payment Type</option>
-									<option value="Credit/Debit">Credit/Debit Card</option>
-									<option value="PayNow">PayNow</option>
-								</select>
-
 								<button type="submit" class="btn btn-primary font-weight-bold mt-3" id="submitListing"
 									@click="addListing()">Confirm Listing</button>
 							</fieldset>
