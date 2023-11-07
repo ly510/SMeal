@@ -33,3 +33,9 @@
 - **Date of Expiry**: Use a valid future date, such as 12/34.
 - **CVC**: Use any three-digit number
 - **Remaining fields (email, name on card, etc.)**: Use any value you like
+
+---
+
+**Twilio**
+- **Number has to be verified within our Twilio console else an error would occur as Twilio trial version does not support sending SMS messages to unverified numbers**
+- 
