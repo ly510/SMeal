@@ -26,6 +26,8 @@
 
 - Alternatively, you can choose to **sign up** to create an account with your SMU email and preferred password
 
+---
+
 **Stripe Card Details:**
 - **Card Number**: 4242 4242 4242 4242
 - **Date of Expiry**: Use a valid future date, such as 12/34.
