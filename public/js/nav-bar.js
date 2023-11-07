@@ -14,15 +14,6 @@ else{
 	htmlImg = `<img src="../` + img_url + `" alt="Create Listing" class="bi img-fluid">`
 }
 
-console.log("This are session id you can call:");
-console.log("============================");
-console.log("userId:", userId);
-console.log("userEmail:", userEmail);
-console.log("name:", user_name);
-console.log("phoneNo:", phoneNo);
-console.log("img_url:", img_url);
-console.log("============================");
-
 // Navigation Bar
 window.addEventListener('load', function(){
 	var navBar = document.getElementById("navBar");

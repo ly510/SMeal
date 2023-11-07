@@ -94,7 +94,6 @@ function getAllAccounts(request, respond){
 //This function get the current user's details.
 function getCurrentAccount(request, respond){
     var email = request.body.email;
-    
     if (email) {
         accountsDB.getCurrentAccount(email, function(error, result){
             if(error) {

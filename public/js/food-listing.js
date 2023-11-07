@@ -196,10 +196,6 @@ function handleAcceptListingInModal(listingId) {
         request.setRequestHeader('Content-Type', 'application/json');
         request.onload = function () {
             if (request.status === 200) {
-                // Close the modal
-                // var modal = new bootstrap.Modal(document.getElementById('listingModal'));
-                // modal.hide();
-                // Redirect to accepted-listings.html
                 window.location.href = 'accepted-listings.html';
             } else {
                 console.error('Error accepting the listing:', request.statusText);
@@ -217,15 +213,6 @@ function handleAcceptListingInModal(listingId) {
         // Handle the error, show an alert, or perform other actions
     }
 }
-
-
-
-
-
-
-  
-
-
 
 function displayMap(lat, lng, name) {
     const myLatlng = { lat: lat, lng: lng };
@@ -247,33 +234,6 @@ function displayMap(lat, lng, name) {
     // Open the InfoWindow
     infoWindow.open(map);
 }
-
-
-// // Click on accept listing button
-// var acceptListingButton = document.getElementById('acceptListingButton');
-// console.log(acceptListingButton);
-// if(acceptListingButton){
-// document.addEventListener('DOMContentLoaded', function () {
-
-//     var acceptListingButton = document.getElementById('acceptListingButton');
-//     console.log("12321qaa");
-//     acceptListingButton.addEventListener('click', function () {
-//         console.log("clicked");
-//         // Prompt the user for confirmation
-//         // var confirmationModal = new bootstrap.Modal(document.getElementsByName('confirmationModal')[0]);
-//         // confirmationModal.show();
-//         // Set up event listener for the confirmation button
-//     });
-
-//     var confirmButton = document.getElementById('confirmButton');
-//     confirmButton.addEventListener('click', function () {
-//         console.log("run111");
-//         var listingId = sessionStorage.getItem("currentListingID");
-//         handleAcceptListing(listingId);
-//         // confirmationModal.hide();
-//     });
-// });
-// }
 
 function handleAcceptListing(listingId) {
     try {
