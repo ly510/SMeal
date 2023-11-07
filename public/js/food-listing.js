@@ -64,7 +64,7 @@ function displayListing(listings) {
         var date = date.substring(0, 10);
         var image_url = listings[count].img;
 
-        var cell = '<div class="col-md-3 col-sm-4">' +
+        var cell = '<div class="col-lg-3 col-md-4 col-sm-6">' +
             '<div class="card">' +
             '<img src="' + image_url + '" class="card-img-top" alt="Food image">' +
             '<div class="card-body">' +
@@ -75,6 +75,7 @@ function displayListing(listings) {
             '</div>' +
             '</div>' +
             '</div>';
+    
 
         container.insertAdjacentHTML('beforeend', cell);
     }
