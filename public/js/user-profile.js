@@ -93,7 +93,37 @@ const profile = Vue.createApp({
                 return usersArray
             }
             // if no rewards
-            return result
+            if (result[0].rewardId == null) {
+                return result
+            }
+            else {
+                // if 1 reward
+                const userProfile = {};
+
+                const reward = {
+                    id: result[0].rewardId,
+                    name: result[0].rewardName,
+                    description: result[0].rewardDesc,
+                    pointsReq: result[0].rewardPointsReq,
+                    img: result[0].rewardImg
+                };
+
+                userProfile[result[0].userId] = {
+                    userId: result[0].userId,
+                    userName: result[0].userName,
+                    userEmail: result[0].userEmail,
+                    userPassword: result[0].userPassword,
+                    userPhone: result[0].userPhone,
+                    userImg: result[0].userImg,
+                    userPoints: result[0].userPoints,
+                    rewards: []
+                };
+
+                userProfile[result[0].userId].rewards.push(reward);
+                const usersArray = Object.values(userProfile);
+        
+                return usersArray
+            }
         },
     }
 });
